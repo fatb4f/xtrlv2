@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RankPolicy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_kind", "rank_policy_id", "tuple_order"],
+  "properties": {
+    "artifact_kind": {"const": "rank_policy"},
+    "rank_policy_id": {"type": "string", "minLength": 1},
+    "hard_filters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "forbidden_paths": {"type": "array", "items": {"type": "string"}},
+        "max_diff_lines_total": {"type": "integer", "minimum": 0}
+      }
+    },
+    "tuple_order": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["field", "direction"],
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "checks_passed",
+              "checks_failed",
+              "diff_lines_total",
+              "files_touched",
+              "policy_warnings",
+              "created_at"
+            ]
+          },
+          "direction": {"type": "string", "enum": ["asc", "desc"]}
+        }
+      }
+    }
+  }
+}

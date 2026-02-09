@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PatchProposal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_kind",
+    "candidate_id",
+    "work_item_id",
+    "pattern",
+    "base_ref"
+  ],
+  "properties": {
+    "artifact_kind": {
+      "const": "patch_proposal"
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "work_item_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "string"
+    },
+    "unified_diff": {
+      "type": "string"
+    },
+    "patch_path": {
+      "type": "string"
+    },
+    "pattern": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "oneOf": [
+    {
+      "required": [
+        "unified_diff"
+      ]
+    },
+    {
+      "required": [
+        "patch_path"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RunManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_kind",
+    "run_id",
+    "repo_root",
+    "base_ref",
+    "last_good_ref",
+    "desired_state_id",
+    "pattern",
+    "budgets",
+    "policy",
+    "output_root"
+  ],
+  "properties": {
+    "artifact_kind": {
+      "const": "run_manifest"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repo_root": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "last_good_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "desired_state_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "budgets": {
+      "type": "object"
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowed_paths",
+        "forbidden_paths",
+        "allowed_commands"
+      ],
+      "properties": {
+        "allowed_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "forbidden_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "allowed_commands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "output_root": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pattern": {
+      "type": "string",
+      "minLength": 1
+    },
+    "prompt_profile_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

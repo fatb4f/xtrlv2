@@ -1,0 +1,68 @@
+{
+  "schema_version": "xtrl.pre_contract/v0.2",
+  "packet_id": "pkt-src-0002-snapshots-ast",
+  "component": "xtrlv2",
+  "repo": "xtrlv2",
+  "base_ref": "origin/main",
+  "mode": "NORMAL",
+  "budgets": {
+    "time_minutes": 60,
+    "iteration_budget": 2,
+    "diff_budget": { "max_files_changed": 80, "max_lines_changed": 1500 }
+  },
+  "constraints": {
+    "clean_repo_required": true,
+    "deny_repo_local_roots": [".codex", ".quint"],
+    "allowed_paths": [
+      "src/**",
+      "control/**",
+      "docs/**",
+      "tools/**",
+      "schemas/**",
+      "packets/**",
+      "README.md"
+    ],
+    "forbidden_paths": [".git/**"],
+    "forbidden_patterns": [
+      "bash\\s+-lc",
+      "subprocess\\.run\\(.*shell\\s*=\\s*True",
+      "os\\.system\\(",
+      "eval\\(",
+      "exec\\(",
+      "\\|\\|\\s*true"
+    ]
+  },
+  "actions": {
+    "test": ["python", "-m", "pytest", "-q", "--junitxml", "evidence/tests.junit.xml"]
+  },
+  "evidence": {
+    "required_files": [
+      "evidence/plan.md",
+      "evidence/decision.md",
+      "evidence/scope.json",
+      "evidence/integrity.json",
+      "evidence/tests.junit.xml",
+      "evidence/regression.md",
+      "evidence/events.jsonl",
+      "commands.log",
+      "summary.md",
+      "packet.json",
+      "contract.json",
+      "exec-prompt.md"
+    ]
+  },
+  "plan_card": {
+    "why": "Make src/ drift visible via deterministic snapshots.",
+    "what": "Emit dep_graph.json, api_surface.json, module_manifest.json using AST extraction.",
+    "how": "Parse .py under src/ with ast.parse; stable ordering and normalized paths.",
+    "where": "tools/ + evidence/",
+    "who": "controller",
+    "when": "EXEC → CHECK"
+  },
+  "inputs": {
+    "notes": [
+      "Outputs: evidence/dep_graph.json, evidence/api_surface.json, evidence/module_manifest.json.",
+      "Deterministic ordering and canonicalized paths required."
+    ]
+  }
+}

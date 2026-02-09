@@ -1,0 +1,25 @@
+{
+  "artifact_kind": "run_manifest",
+  "run_id": "run-0001",
+  "repo_root": "/path/to/repo",
+  "base_ref": "origin/main",
+  "last_good_ref": "origin/main",
+  "desired_state_id": "ds-0001",
+  "budgets": {
+    "max_iterations": 10
+  },
+  "policy": {
+    "allowed_paths": [
+      "."
+    ],
+    "forbidden_paths": [
+      ".codex/"
+    ],
+    "allowed_commands": [
+      "pytest -q"
+    ]
+  },
+  "output_root": "$CODEX_STATE/xtrl/out/run-0001",
+  "pattern": "fix",
+  "prompt_profile_id": "pp_fix_v1"
+}

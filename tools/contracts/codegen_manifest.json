@@ -1,0 +1,16 @@
+{
+  "disable_timestamp": true,
+  "entries": [
+    {
+      "output": "src/xtrl_contracts/ssot/evidence.py",
+      "schema": "control/ssot/schemas/evidence_capsule.schema.json"
+    },
+    {
+      "output": "src/xtrl_contracts/ssot/decisions.py",
+      "schema": "control/ssot/schemas/gate_decision.schema.json"
+    }
+  ],
+  "input_file_type": "jsonschema",
+  "output_model_type": "pydantic_v2.BaseModel",
+  "version": "0.1.0"
+}

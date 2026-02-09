@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/fuzz_mutation_report.schema.json",
+  "title": "Fuzz Mutation Report",
+  "type": "object",
+  "required": ["schema_version", "generated_at_utc", "seed", "mutations"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string"},
+    "generated_at_utc": {"type": "string"},
+    "seed": {"type": "string"},
+    "mutations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["mutation_id", "case_id", "result", "reason_codes"],
+        "additionalProperties": false,
+        "properties": {
+          "mutation_id": {"type": "string"},
+          "case_id": {"type": "string"},
+          "result": {"type": "string"},
+          "reason_codes": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    }
+  }
+}

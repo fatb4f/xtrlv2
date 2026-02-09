@@ -1,0 +1,12 @@
+{
+  "artifact_kind": "plant_spec",
+  "plant_id": "xtrl-plant",
+  "version": "0.1",
+  "states": [{"name": "INIT"}, {"name": "RUN"}, {"name": "GATE"}],
+  "transitions": [
+    {"from": "INIT", "to": "RUN", "on": "start"},
+    {"from": "RUN", "to": "GATE", "on": "checks_done"}
+  ],
+  "artifact_contracts": {"per_iteration": ["evidence_capsule", "gate_decision"]},
+  "defaults": {"budgets": {"max_iterations": 10}}
+}

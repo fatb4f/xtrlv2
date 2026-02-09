@@ -1,0 +1,68 @@
+{
+  "schema_version": "xtrl.pre_contract/v0.2",
+  "packet_id": "pkt-src-0001-seed-conventions",
+  "component": "xtrlv2",
+  "repo": "xtrlv2",
+  "base_ref": "origin/main",
+  "mode": "NORMAL",
+  "budgets": {
+    "time_minutes": 60,
+    "iteration_budget": 2,
+    "diff_budget": { "max_files_changed": 80, "max_lines_changed": 1500 }
+  },
+  "constraints": {
+    "clean_repo_required": true,
+    "deny_repo_local_roots": [".codex", ".quint"],
+    "allowed_paths": [
+      "src/**",
+      "control/**",
+      "docs/**",
+      "tools/**",
+      "schemas/**",
+      "packets/**",
+      "README.md"
+    ],
+    "forbidden_paths": [".git/**"],
+    "forbidden_patterns": [
+      "bash\\s+-lc",
+      "subprocess\\.run\\(.*shell\\s*=\\s*True",
+      "os\\.system\\(",
+      "eval\\(",
+      "exec\\(",
+      "\\|\\|\\s*true"
+    ]
+  },
+  "actions": {
+    "test": ["python", "-m", "pytest", "-q", "--junitxml", "evidence/tests.junit.xml"]
+  },
+  "evidence": {
+    "required_files": [
+      "evidence/plan.md",
+      "evidence/decision.md",
+      "evidence/scope.json",
+      "evidence/integrity.json",
+      "evidence/tests.junit.xml",
+      "evidence/regression.md",
+      "evidence/events.jsonl",
+      "commands.log",
+      "summary.md",
+      "packet.json",
+      "contract.json",
+      "exec-prompt.md"
+    ]
+  },
+  "plan_card": {
+    "why": "Seed explicit src/ conventions so validators can decide PASS/FAIL without interpretation.",
+    "what": "Add src/CONVENTIONS.md + control/src_conventions.json and validator stub.",
+    "how": "Encode allowed roots, public API definition, import layering, and forbidden moves.",
+    "where": "src/ and control/",
+    "who": "controller",
+    "when": "PRECHECK → EXEC"
+  },
+  "inputs": {
+    "notes": [
+      "Rules must be explicit and machine-checkable.",
+      "Python public API = exports from src/<pkg>/__init__.py only."
+    ]
+  }
+}

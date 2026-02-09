@@ -1,0 +1,68 @@
+{
+  "schema_version": "xtrl.pre_contract/v0.2",
+  "packet_id": "pkt-src-0005-mutation-fuzz",
+  "component": "xtrlv2",
+  "repo": "xtrlv2",
+  "base_ref": "origin/main",
+  "mode": "NORMAL",
+  "budgets": {
+    "time_minutes": 90,
+    "iteration_budget": 2,
+    "diff_budget": { "max_files_changed": 60, "max_lines_changed": 1200 }
+  },
+  "constraints": {
+    "clean_repo_required": true,
+    "deny_repo_local_roots": [".codex", ".quint"],
+    "allowed_paths": [
+      "src/**",
+      "control/**",
+      "docs/**",
+      "tools/**",
+      "schemas/**",
+      "packets/**",
+      "README.md"
+    ],
+    "forbidden_paths": [".git/**"],
+    "forbidden_patterns": [
+      "bash\\s+-lc",
+      "subprocess\\.run\\(.*shell\\s*=\\s*True",
+      "os\\.system\\(",
+      "eval\\(",
+      "exec\\(",
+      "\\|\\|\\s*true"
+    ]
+  },
+  "actions": {
+    "test": ["python", "-m", "pytest", "-q", "--junitxml", "evidence/tests.junit.xml"]
+  },
+  "evidence": {
+    "required_files": [
+      "evidence/plan.md",
+      "evidence/decision.md",
+      "evidence/scope.json",
+      "evidence/integrity.json",
+      "evidence/tests.junit.xml",
+      "evidence/regression.md",
+      "evidence/events.jsonl",
+      "commands.log",
+      "summary.md",
+      "packet.json",
+      "contract.json",
+      "exec-prompt.md"
+    ]
+  },
+  "plan_card": {
+    "why": "Prove src/ validators catch boundary and API drift reliably.",
+    "what": "Mutation fuzz against src/ trees with seeded, bounded cases.",
+    "how": "Mutate temp copies (imports, __all__, illegal roots); assert deny-fast with stable codes.",
+    "where": "tools/ + evidence/",
+    "who": "controller",
+    "when": "CHECK → GATE"
+  },
+  "inputs": {
+    "notes": [
+      "Outputs: evidence/src_fuzz_mutation_report.json + .md.",
+      "Expected codes: SRC_FORBIDDEN_IMPORT, SRC_API_BREAKING_CHANGE, SRC_CONVENTION_VIOLATION."
+    ]
+  }
+}

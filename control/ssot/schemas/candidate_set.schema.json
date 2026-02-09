@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CandidateSet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_kind",
+    "queue_id",
+    "base_ref",
+    "candidates"
+  ],
+  "properties": {
+    "artifact_kind": {
+      "const": "candidate_set"
+    },
+    "queue_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_id",
+          "work_item_id",
+          "pattern",
+          "patch_proposal_path",
+          "evidence_path",
+          "gate_worker_path",
+          "metrics"
+        ],
+        "properties": {
+          "candidate_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "work_item_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "patch_proposal_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "gate_worker_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "metrics": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "diff_lines_total",
+              "files_touched",
+              "checks_passed"
+            ],
+            "properties": {
+              "diff_lines_total": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "files_touched": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "checks_passed": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "checks_failed": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "policy_warnings": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          },
+          "pattern": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

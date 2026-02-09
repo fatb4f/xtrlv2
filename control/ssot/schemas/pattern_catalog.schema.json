@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PatternCatalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_kind",
+    "version",
+    "patterns"
+  ],
+  "properties": {
+    "artifact_kind": {
+      "const": "pattern_catalog"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "patterns": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "prompt_profile_id"
+        ],
+        "properties": {
+          "prompt_profile_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "budgets": {
+            "type": "object"
+          },
+          "policy": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "allowed_paths": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "forbidden_paths": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "allowed_commands": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "rank_bias": {
+            "type": "object"
+          },
+          "deny_default_restart_class": {
+            "type": "string",
+            "enum": [
+              "REPAIRABLE",
+              "STRUCTURAL",
+              "STOP"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

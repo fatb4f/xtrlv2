@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/src_conventions.schema.json",
+  "title": "Source Conventions (Python)",
+  "type": "object",
+  "required": ["schema_version", "package_root", "public_api", "layers", "forbidden"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string"},
+    "package_root": {
+      "type": "object",
+      "required": ["path", "pattern"],
+      "additionalProperties": false,
+      "properties": {
+        "path": {"type": "string"},
+        "pattern": {"type": "string"}
+      }
+    },
+    "public_api": {
+      "type": "object",
+      "required": ["definition", "module"],
+      "additionalProperties": false,
+      "properties": {
+        "definition": {"type": "string", "enum": ["init_exports_only"]},
+        "module": {"type": "string"},
+        "allow_star_import": {"type": "boolean"}
+      }
+    },
+    "layers": {
+      "type": "object",
+      "required": ["map", "allow_imports"],
+      "additionalProperties": false,
+      "properties": {
+        "map": {
+          "type": "object",
+          "additionalProperties": {"type": "string"}
+        },
+        "allow_imports": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["from", "to"],
+            "additionalProperties": false,
+            "properties": {
+              "from": {"type": "string"},
+              "to": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    "forbidden": {
+      "type": "object",
+      "required": ["new_top_level_roots", "cross_layer_imports", "relative_escape", "star_imports"],
+      "additionalProperties": false,
+      "properties": {
+        "new_top_level_roots": {"type": "boolean"},
+        "cross_layer_imports": {"type": "boolean"},
+        "relative_escape": {"type": "boolean"},
+        "star_imports": {"type": "boolean"}
+      }
+    }
+  }
+}

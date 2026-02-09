@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/state_space.schema.json",
+  "title": "State Space",
+  "type": "object",
+  "required": ["schema_version", "generated_at_utc", "repo", "contract", "latest"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string"},
+    "generated_at_utc": {"type": "string"},
+    "repo": {
+      "type": "object",
+      "required": ["repo_key", "repo_root", "base_ref", "head_sha", "clean"],
+      "additionalProperties": false,
+      "properties": {
+        "repo_key": {"type": "string"},
+        "repo_root": {"type": "string"},
+        "base_ref": {"type": "string"},
+        "head_sha": {"type": "string"},
+        "clean": {"type": "boolean"}
+      }
+    },
+    "contract": {
+      "type": "object",
+      "required": ["allowed_paths", "budgets", "actions"],
+      "additionalProperties": false,
+      "properties": {
+        "allowed_paths": {"type": "array", "items": {"type": "string"}},
+        "budgets": {"type": "object"},
+        "actions": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "latest": {
+      "type": "object",
+      "required": ["state_latest_path", "ledger_tail"],
+      "additionalProperties": false,
+      "properties": {
+        "state_latest_path": {"type": "string"},
+        "ledger_tail": {"type": "array"}
+      }
+    },
+    "decision_digest": {
+      "type": "object",
+      "required": ["decision", "reason_codes"],
+      "additionalProperties": false,
+      "properties": {
+        "decision": {"type": "string"},
+        "reason_codes": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

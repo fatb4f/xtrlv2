@@ -1,0 +1,36 @@
+{
+  "artifact_kind": "work_queue",
+  "queue_id": "queue-001",
+  "base_ref": "origin/main@deadbeef",
+  "desired_state_id": "desired-state-001",
+  "rank_policy_id": "rank-policy-001",
+  "work_items": [
+    {
+      "work_item_id": "wi-001",
+      "objective_slice": "Make the smallest change that fixes failing unit tests.",
+      "priority": 0,
+      "max_workers": 2,
+      "budgets": {
+        "max_patch_lines": 200,
+        "max_codex_minutes": 5
+      },
+      "policy": {
+        "allowed_paths": [
+          "src/",
+          "tests/"
+        ],
+        "forbidden_paths": [
+          ".git/",
+          ".codex/",
+          "state/"
+        ],
+        "allowed_commands": [
+          "pytest -q",
+          "python -m compileall ."
+        ]
+      },
+      "pattern": "fix"
+    }
+  ],
+  "pattern_catalog_id": "pattern_catalog-001"
+}

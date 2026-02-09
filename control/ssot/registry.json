@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "artifacts": {
+    "plant_spec": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/plant_spec.schema.json"
+    },
+    "run_manifest": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/run_manifest.schema.json"
+    },
+    "evidence_capsule": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/evidence_capsule.schema.json"
+    },
+    "gate_decision": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/gate_decision.schema.json"
+    },
+    "next_iter_plan": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/next_iter_plan.schema.json"
+    },
+    "work_queue": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/work_queue.schema.json"
+    },
+    "patch_proposal": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/patch_proposal.schema.json"
+    },
+    "candidate_set": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/candidate_set.schema.json"
+    },
+    "rank_policy": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/rank_policy.schema.json"
+    },
+    "pattern_catalog": {
+      "schema": "control/ssot/schemas/pattern_catalog.schema.json"
+    },
+    "state_space": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/state_space.schema.json"
+    },
+    "fuzz_replay_report": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/fuzz_replay_report.schema.json"
+    },
+    "fuzz_mutation_report": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/fuzz_mutation_report.schema.json"
+    },
+    "src_conventions": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/src_conventions.schema.json"
+    }
+  }
+}

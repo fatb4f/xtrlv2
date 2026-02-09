@@ -1,0 +1,9 @@
+{
+  "artifact_kind": "next_iter_plan",
+  "run_id": "run-0001",
+  "iteration_id": "iter-0001",
+  "restart_mode": "REITERATE_FROM_CANDIDATE",
+  "next_base_ref": "origin/main",
+  "carry_patch": true,
+  "tighten": {}
+}

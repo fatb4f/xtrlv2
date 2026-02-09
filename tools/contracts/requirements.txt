@@ -1,0 +1,5 @@
+pydantic>=2
+pydantic-settings>=2
+polyfactory>=2
+# codegen
+datamodel-code-generator>=0.25

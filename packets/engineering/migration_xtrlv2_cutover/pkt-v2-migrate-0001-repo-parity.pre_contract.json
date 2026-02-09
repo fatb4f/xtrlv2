@@ -1,0 +1,69 @@
+{
+  "schema_version": "xtrl.pre_contract/v0.2",
+  "packet_id": "pkt-v2-migrate-0001-repo-parity",
+  "component": "xtrlv2",
+  "repo": "xtrlv2",
+  "base_ref": "origin/main",
+  "mode": "NORMAL",
+  "budgets": {
+    "time_minutes": 90,
+    "iteration_budget": 2,
+    "diff_budget": { "max_files_changed": 200, "max_lines_changed": 5000 }
+  },
+  "constraints": {
+    "clean_repo_required": true,
+    "deny_repo_local_roots": [".codex", ".quint"],
+    "allowed_paths": [
+      "backlog/**",
+      "packets/**",
+      "skills-pack/**",
+      "tools/**",
+      "docs/**",
+      "reports/**",
+      "control/**",
+      "schemas/**",
+      "README.md"
+    ],
+    "forbidden_paths": [".git/**"],
+    "forbidden_patterns": [
+      "subprocess\\.run\\(.*shell\\s*=\\s*True",
+      "os\\.system\\(",
+      "eval\\(",
+      "exec\\(",
+      "\\|\\|\\s*true"
+    ]
+  },
+  "actions": {
+    "test": ["python", "-m", "pytest", "-q", "--junitxml", "evidence/tests.junit.xml"]
+  },
+  "evidence": {
+    "required_files": [
+      "evidence/plan.md",
+      "evidence/decision.md",
+      "evidence/scope.json",
+      "evidence/integrity.json",
+      "evidence/tests.junit.xml",
+      "evidence/regression.md",
+      "evidence/events.jsonl",
+      "commands.log",
+      "summary.md",
+      "packet.json",
+      "contract.json",
+      "exec-prompt.md"
+    ]
+  },
+  "plan_card": {
+    "why": "Establish xtrlv2 repo structure parity before enabling runtime cutover.",
+    "what": "Port backlog/, packets/, skills-pack/, tools/, docs/reports; align schemas under control/ssot as needed.",
+    "how": "Copy/port required trees, preserve relative paths, and add a compatibility note indicating xtrlv2 is primary.",
+    "where": "xtrlv2 repository root",
+    "who": "controller",
+    "when": "PRECHECK → EXEC"
+  },
+  "inputs": {
+    "notes": [
+      "Tree parity only; no runtime execution required in this packet.",
+      "Keep argv-only actions and deny masked failures (no || true)."
+    ]
+  }
+}

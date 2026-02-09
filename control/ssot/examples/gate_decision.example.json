@@ -1,0 +1,8 @@
+{
+  "artifact_kind": "gate_decision",
+  "run_id": "run-0001",
+  "iteration_id": "iter-0001",
+  "decision": "DENY",
+  "reason_codes": ["TESTS_FAILED"],
+  "pointers": {"evidence": ".../evidence_capsule.json"}
+}

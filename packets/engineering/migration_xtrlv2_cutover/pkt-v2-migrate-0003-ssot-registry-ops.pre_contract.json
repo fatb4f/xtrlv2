@@ -1,0 +1,65 @@
+{
+  "schema_version": "xtrl.pre_contract/v0.2",
+  "packet_id": "pkt-v2-migrate-0003-ssot-registry-ops",
+  "component": "xtrlv2",
+  "repo": "xtrlv2",
+  "base_ref": "origin/main",
+  "mode": "NORMAL",
+  "budgets": {
+    "time_minutes": 90,
+    "iteration_budget": 2,
+    "diff_budget": { "max_files_changed": 120, "max_lines_changed": 3000 }
+  },
+  "constraints": {
+    "clean_repo_required": true,
+    "deny_repo_local_roots": [".codex", ".quint"],
+    "allowed_paths": [
+      "control/**",
+      "schemas/**",
+      "docs/**",
+      "tools/**",
+      "README.md"
+    ],
+    "forbidden_paths": [".git/**"],
+    "forbidden_patterns": [
+      "subprocess\\.run\\(.*shell\\s*=\\s*True",
+      "os\\.system\\(",
+      "eval\\(",
+      "exec\\(",
+      "\\|\\|\\s*true"
+    ]
+  },
+  "actions": {
+    "test": ["python", "-m", "pytest", "-q", "--junitxml", "evidence/tests.junit.xml"]
+  },
+  "evidence": {
+    "required_files": [
+      "evidence/plan.md",
+      "evidence/decision.md",
+      "evidence/scope.json",
+      "evidence/integrity.json",
+      "evidence/tests.junit.xml",
+      "evidence/regression.md",
+      "evidence/events.jsonl",
+      "commands.log",
+      "summary.md",
+      "packet.json",
+      "contract.json",
+      "exec-prompt.md"
+    ]
+  },
+  "plan_card": {
+    "why": "Make operational artifacts first-class SSOT in xtrlv2.",
+    "what": "Register operational schemas in control/ssot/registry.json; validate in CI.",
+    "how": "Move/alias schemas into control/ssot/schemas; add registry entries; enforce argv-only invariant.",
+    "where": "control/ssot",
+    "who": "controller",
+    "when": "CHECK → GATE"
+  },
+  "inputs": {
+    "notes": [
+      "Registry must include pre_contract/contract, evidence_capsule, gate_decision, patch_proposal, work_queue.",
+      "CI validates schema + examples + no string command invariant."
+    ]
+  }
+}
