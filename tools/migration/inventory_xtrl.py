@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import argparse
 import json
-import os
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List
 
@@ -49,27 +49,29 @@ def build_mapping(root: Path) -> List[Dict[str, str]]:
     # Action: PORT/REPLACE/DROP/DEFER
     mapping = []
 
-    def add(src: str, dest: str, action: str, notes: str) -> None:
+    def add(src: str, dest: str, action: str, notes: str, owner: str = "TBD", depends: str = "") -> None:
         mapping.append({
             "source": src,
             "target": dest,
             "action": action,
             "notes": notes,
+            "owner": owner,
+            "depends": depends,
         })
 
-    add("control/", "control/ssot/", "PORT", "SSOT already exists in v2; align schemas and policies.")
-    add("schemas/", "control/ssot/schemas/", "REPLACE", "v2 owns schemas; map/merge as needed.")
-    add("tools/", "tools/", "PORT", "Runtime tooling to be ported selectively.")
-    add("packets/", "packets/", "REPLACE", "v2 packet formats may differ; normalize then port.")
+    add("control/", "control/ssot/", "PORT", "SSOT exists in v2; align schemas and policies.", depends="M1-T01")
+    add("schemas/", "control/ssot/schemas/", "REPLACE", "v2 owns schemas; map/merge as needed.", depends="M1-T01")
+    add("tools/", "tools/", "PORT", "Runtime tooling to be ported selectively.", depends="M2-T01")
+    add("packets/", "packets/", "REPLACE", "v2 packet formats may differ; normalize then port.", depends="M2-T01")
     add("templates/", "(tbd)", "DEFER", "Decide if templates live in v2 or tooling.")
     add("docs/", "docs/", "PORT", "Migration docs should move; keep as sources of truth.")
-    add("state/", "(v2 state root)", "REPLACE", "State layout changes handled in migration tool.")
-    add("ledger/", "(v2 state root)", "REPLACE", "Ledger schema and location to be finalized.")
-    add("out/", "(v2 state root)", "REPLACE", "Out dir layout to be defined by v2 evidence capsule.")
+    add("state/", "(v2 state root)", "REPLACE", "State layout changes handled in migration tool.", depends="M1-T04")
+    add("ledger/", "(v2 state root)", "REPLACE", "Ledger schema and location to be finalized.", depends="M1-T04")
+    add("out/", "(v2 state root)", "REPLACE", "Out dir layout to be defined by v2 evidence capsule.", depends="M1-T02")
     add("skills/", "(tbd)", "DEFER", "Decide: keep in v1 only or port.")
     add("skills-pack/", "(tbd)", "DEFER", "Decide: keep in v1 only or port.")
-    add("worktrees/", "(v2 state root)", "REPLACE", "Worktree layout defined in v2 state model.")
-    add("xtrl (entrypoint)", "xtrlv2 entrypoint", "REPLACE", "Define new canonical CLI and wrapper.")
+    add("worktrees/", "(v2 state root)", "REPLACE", "Worktree layout defined in v2 state model.", depends="M1-T04")
+    add("xtrl (entrypoint)", "xtrlv2 entrypoint", "REPLACE", "Define new canonical CLI and wrapper.", depends="M2-T01")
 
     return mapping
 
@@ -78,13 +80,29 @@ def write_mapping(md_path: Path, mapping: List[Dict[str, str]]) -> None:
     lines = [
         "# xtrl -> xtrlv2 Mapping",
         "",
+        "## Top-level domains",
+        "- CLI/Entrypoint",
+        "- control/ssot (schemas, policies, registry)",
+        "- packets/contracts",
+        "- runtime tools",
+        "- state/ledger/out/worktrees",
+        "- docs/templates/skills",
+        "",
+        "## Golden path (minimum viable cutover)",
+        "- v2 entrypoint runs a dry-run or describe-state action",
+        "- control/ssot schemas validated (ReasonCodes + gate decision bundle)",
+        "- one golden packet executes and emits evidence under v2 state root",
+        "",
         "Classification: PORT / REPLACE / DROP / DEFER",
         "",
-        "| Source | Target | Action | Notes |",
-        "| --- | --- | --- | --- |",
+        "| Source | Target | Action | Owner | Depends | Notes |",
+        "| --- | --- | --- | --- | --- | --- |",
     ]
     for row in mapping:
-        lines.append(f"| `{row['source']}` | `{row['target']}` | **{row['action']}** | {row['notes']} |")
+        lines.append(
+            f"| `{row['source']}` | `{row['target']}` | **{row['action']}** | "
+            f"{row['owner']} | {row['depends']} | {row['notes']} |"
+        )
     md_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -99,8 +117,18 @@ def main() -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     inventory = list_tree(xtrl_root)
+    metadata = {
+        "generated_at_utc": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "source_root": str(xtrl_root),
+        "tool": "tools/migration/inventory_xtrl.py",
+        "tool_version": "0.1",
+        "command": f"inventory_xtrl.py --xtrl-root {xtrl_root} --out-dir {out_dir}",
+    }
     inventory_path = out_dir / "inventory_xtrl.json"
-    inventory_path.write_text(json.dumps(inventory, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    inventory_path.write_text(
+        json.dumps({"metadata": metadata, "inventory": inventory}, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
 
     mapping = build_mapping(xtrl_root)
     mapping_path = out_dir / "mapping.md"
