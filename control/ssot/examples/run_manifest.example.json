@@ -21,5 +21,20 @@
   },
   "output_root": "$CODEX_STATE/xtrl/out/run-0001",
   "pattern": "fix",
-  "prompt_profile_id": "pp_fix_v1"
+  "prompt_profile_id": "pp_fix_v1",
+  "meta": {
+    "policy_linkage": {
+      "reason_codes_ref": {
+        "path": "control/ssot/reason_codes.json",
+        "version": "0.1"
+      }
+    },
+    "requirements": {
+      "required_evidence": []
+    },
+    "guards": {
+      "spec": [],
+      "eval": []
+    }
+  }
 }

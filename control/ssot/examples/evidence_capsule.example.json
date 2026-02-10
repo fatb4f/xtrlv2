@@ -3,9 +3,37 @@
   "run_id": "run-0001",
   "iteration_id": "iter-0001",
   "base_ref": "origin/main",
-  "inputs_hashes": {"run_manifest": "sha256:..."},
-  "diff_summary": {"files_changed": 0, "insertions": 0, "deletions": 0},
-  "checks": [{"name": "pytest", "ok": true}],
+  "inputs_hashes": {
+    "run_manifest": "sha256:..."
+  },
+  "diff_summary": {
+    "files_changed": 0,
+    "insertions": 0,
+    "deletions": 0
+  },
+  "checks": [
+    {
+      "name": "pytest",
+      "ok": true
+    }
+  ],
   "touched_paths": [],
-  "hash_manifest": {"evidence_capsule": "sha256:..."}
+  "hash_manifest": {
+    "evidence_capsule": "sha256:..."
+  },
+  "meta": {
+    "policy_linkage": {
+      "reason_codes_ref": {
+        "path": "control/ssot/reason_codes.json",
+        "version": "0.1"
+      }
+    },
+    "requirements": {
+      "required_evidence": []
+    },
+    "guards": {
+      "spec": [],
+      "eval": []
+    }
+  }
 }

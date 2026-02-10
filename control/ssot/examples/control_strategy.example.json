@@ -1,0 +1,141 @@
+{
+  "artifact_kind": "control_strategy",
+  "strategy_id": "codex_loop_v1",
+  "version": "0.1",
+  "meta": {
+    "policy_linkage": {
+      "reason_codes_ref": {
+        "path": "control/ssot/reason_codes.json",
+        "version": "0.1"
+      },
+      "plant_spec_ref": {
+        "path": "control/ssot/plant_spec.json",
+        "version": "0.1"
+      },
+      "guardrails_bundle_ref": {
+        "path": "control/ssot/policies/guardrails/default.guardrails.json",
+        "version": "0.1"
+      },
+      "rank_policy_ref": {
+        "path": "control/ssot/rank_policy.json",
+        "version": "0.1"
+      }
+    },
+    "requirements": {
+      "required_evidence": []
+    },
+    "guards": {
+      "spec": [],
+      "eval": []
+    }
+  },
+  "description": "Governed loop spine; denies must carry reason codes + evidence refs.",
+  "loop_spine": [
+    "PRECHECK",
+    "PLAN",
+    "EXEC",
+    "CHECK",
+    "GATE",
+    "PROMOTE",
+    "ITERATE"
+  ],
+  "inputs": {
+    "plant_spec_ref": {
+      "path": "control/ssot/plant_spec.json",
+      "version": "0.1"
+    },
+    "reason_codes_ref": {
+      "path": "control/ssot/reason_codes.json",
+      "version": "0.1"
+    },
+    "guardrails_bundle_ref": {
+      "path": "control/ssot/policies/guardrails/default.guardrails.json",
+      "version": "0.1"
+    },
+    "rank_policy_ref": {
+      "path": "control/ssot/rank_policy.json",
+      "version": "0.1"
+    }
+  },
+  "modes": {
+    "WORK": {
+      "policy_profile": "work",
+      "test_policy": {
+        "no_tests_collected_exit5": "SKIP"
+      },
+      "promotion_policy": {
+        "require_clean_repo": false,
+        "deny_legacy_roots": true
+      }
+    },
+    "PROMOTE": {
+      "policy_profile": "promote",
+      "test_policy": {
+        "no_tests_collected_exit5": "DENY"
+      },
+      "promotion_policy": {
+        "require_clean_repo": true,
+        "deny_legacy_roots": true
+      }
+    }
+  },
+  "state_resolution": {
+    "method": "hybrid",
+    "required_signals": [
+      "repo.clean",
+      "contract.allowed_paths"
+    ],
+    "tie_breaker": "highest_confidence",
+    "unknown_handling": "deny_transitions",
+    "emit_field": "state_resolution"
+  },
+  "transition_policy": {
+    "guard_evaluation_order": [
+      "structural",
+      "stop",
+      "repairable",
+      "advisory"
+    ],
+    "on_missing_evidence": "DENY",
+    "on_ambiguous_state": "DENY",
+    "record_denials_field": "transition_evaluation"
+  },
+  "tool_policy": {
+    "argv_only": true,
+    "allowed_action_kinds": [
+      "read_file",
+      "apply_patch",
+      "run_tests",
+      "emit_artifact"
+    ],
+    "budgets": {
+      "max_tool_calls_per_iter": 20,
+      "max_iterations": 50
+    },
+    "sandbox": {
+      "allowed_paths_source": "contract.allowed_paths",
+      "forbidden_paths_source": "rank_policy.hard_filters.forbidden_paths",
+      "allowed_commands_source": "contract.actions"
+    }
+  },
+  "tick_emission": {
+    "required_artifacts": [
+      "evidence_capsule",
+      "gate_decision",
+      "state_space"
+    ],
+    "require_decision_trace": true
+  },
+  "invariants": [
+    {
+      "id": "argv-only",
+      "level": "MUST",
+      "statement": "All actions are argv arrays; no shell strings."
+    },
+    {
+      "id": "deny-has-reasons",
+      "level": "MUST",
+      "statement": "Every DENY/STOP must include reason_codes + evidence_refs in state_space.transition_evaluation."
+    }
+  ]
+}

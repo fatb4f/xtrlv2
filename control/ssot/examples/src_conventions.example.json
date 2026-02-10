@@ -1,0 +1,45 @@
+{
+  "schema_version": "0.1",
+  "meta": {
+    "policy_linkage": {
+      "reason_codes_ref": {
+        "path": "control/ssot/reason_codes.json",
+        "version": "0.1"
+      }
+    },
+    "requirements": {
+      "required_evidence": []
+    },
+    "guards": {
+      "spec": [],
+      "eval": []
+    }
+  },
+  "package_root": {
+    "path": "src",
+    "pattern": "^src/"
+  },
+  "public_api": {
+    "definition": "init_exports_only",
+    "module": "src/__init__.py",
+    "allow_star_import": false
+  },
+  "layers": {
+    "map": {
+      "domain": "src/domain",
+      "infra": "src/infra"
+    },
+    "allow_imports": [
+      {
+        "from": "domain",
+        "to": "infra"
+      }
+    ]
+  },
+  "forbidden": {
+    "new_top_level_roots": true,
+    "cross_layer_imports": true,
+    "relative_escape": true,
+    "star_imports": true
+  }
+}

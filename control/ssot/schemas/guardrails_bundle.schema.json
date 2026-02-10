@@ -1,61 +1,96 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "PatchProposal",
+  "title": "GuardrailsBundle",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "artifact_kind",
-    "candidate_id",
-    "work_item_id",
-    "pattern",
-    "base_ref",
-    "meta"
+    "bundle_id",
+    "version",
+    "meta",
+    "guards"
   ],
   "properties": {
     "artifact_kind": {
-      "const": "patch_proposal"
+      "const": "guardrails_bundle"
     },
-    "candidate_id": {
+    "bundle_id": {
       "type": "string",
       "minLength": 1
     },
-    "work_item_id": {
-      "type": "string",
-      "minLength": 1
-    },
-    "base_ref": {
-      "type": "string",
-      "minLength": 1
-    },
-    "summary": {
-      "type": "string"
-    },
-    "unified_diff": {
-      "type": "string"
-    },
-    "patch_path": {
-      "type": "string"
-    },
-    "pattern": {
+    "version": {
       "type": "string",
       "minLength": 1
     },
     "meta": {
       "$ref": "#/definitions/meta"
+    },
+    "guards": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "guard_id",
+          "applies_to",
+          "deny_decision",
+          "reason_code",
+          "required_evidence"
+        ],
+        "properties": {
+          "guard_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "applies_to": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "artifact_kinds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "transitions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "actions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "deny_decision": {
+            "type": "string",
+            "enum": [
+              "DENY",
+              "STOP"
+            ]
+          },
+          "reason_code": {
+            "type": "string",
+            "pattern": "^[A-Z0-9_]+$"
+          },
+          "required_evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "predicate_ref": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
-  "oneOf": [
-    {
-      "required": [
-        "unified_diff"
-      ]
-    },
-    {
-      "required": [
-        "patch_path"
-      ]
-    }
-  ],
   "definitions": {
     "artifact_ref": {
       "type": "object",

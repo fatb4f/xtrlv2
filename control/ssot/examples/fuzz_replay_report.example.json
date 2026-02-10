@@ -1,14 +1,7 @@
 {
-  "artifact_kind": "gate_decision",
-  "run_id": "run-0001",
-  "iteration_id": "iter-0001",
-  "decision": "DENY",
-  "reason_codes": [
-    "TESTS_FAILED"
-  ],
-  "pointers": {
-    "evidence": ".../evidence_capsule.json"
-  },
+  "schema_version": "0.1",
+  "generated_at_utc": "2026-02-10T00:00:00Z",
+  "seed": "seed-0001",
   "meta": {
     "policy_linkage": {
       "reason_codes_ref": {
@@ -23,5 +16,13 @@
       "spec": [],
       "eval": []
     }
-  }
+  },
+  "cases": [
+    {
+      "case_id": "C1",
+      "out_dir": "out/fuzz/C1",
+      "result": "PASS",
+      "reason_codes": []
+    }
+  ]
 }

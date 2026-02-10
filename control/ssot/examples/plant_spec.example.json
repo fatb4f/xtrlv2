@@ -1,12 +1,70 @@
 {
   "artifact_kind": "plant_spec",
-  "plant_id": "xtrl-plant",
+  "plant_id": "xtrlv2",
   "version": "0.1",
-  "states": [{"name": "INIT"}, {"name": "RUN"}, {"name": "GATE"}],
-  "transitions": [
-    {"from": "INIT", "to": "RUN", "on": "start"},
-    {"from": "RUN", "to": "GATE", "on": "checks_done"}
+  "meta": {
+    "policy_linkage": {
+      "reason_codes_ref": {
+        "path": "control/ssot/reason_codes.json",
+        "version": "0.1"
+      }
+    },
+    "requirements": {
+      "required_evidence": []
+    },
+    "guards": {
+      "spec": [],
+      "eval": []
+    }
+  },
+  "states": [
+    {
+      "id": "S.RUN",
+      "name": "RUN"
+    },
+    {
+      "id": "S.GATE",
+      "name": "GATE"
+    },
+    {
+      "id": "S.PROMOTE",
+      "name": "PROMOTE"
+    }
   ],
-  "artifact_contracts": {"per_iteration": ["evidence_capsule", "gate_decision"]},
-  "defaults": {"budgets": {"max_iterations": 10}}
+  "transitions": [
+    {
+      "id": "T.RUN->GATE.checks_done",
+      "from": "S.RUN",
+      "to": "S.GATE",
+      "on": "checks_done",
+      "guards": [
+        {
+          "guard_id": "repo.clean",
+          "guard_kind": "structural",
+          "deny_decision": "DENY",
+          "deny_reason_code": "DIRTY_REPO_DENIED",
+          "evidence_kinds": [
+            "evidence_capsule"
+          ],
+          "predicate_ref": "git_status_clean"
+        }
+      ],
+      "required_evidence": [
+        "evidence_capsule",
+        "gate_decision"
+      ]
+    },
+    {
+      "id": "T.GATE->PROMOTE.promote",
+      "from": "S.GATE",
+      "to": "S.PROMOTE",
+      "on": "promote",
+      "guards": [],
+      "required_evidence": [
+        "gate_decision"
+      ]
+    }
+  ],
+  "artifact_contracts": {},
+  "defaults": {}
 }

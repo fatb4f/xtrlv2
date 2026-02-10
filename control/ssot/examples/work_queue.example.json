@@ -32,5 +32,20 @@
       "pattern": "fix"
     }
   ],
-  "pattern_catalog_id": "pattern_catalog-001"
+  "pattern_catalog_id": "pattern_catalog-001",
+  "meta": {
+    "policy_linkage": {
+      "reason_codes_ref": {
+        "path": "control/ssot/reason_codes.json",
+        "version": "0.1"
+      }
+    },
+    "requirements": {
+      "required_evidence": []
+    },
+    "guards": {
+      "spec": [],
+      "eval": []
+    }
+  }
 }

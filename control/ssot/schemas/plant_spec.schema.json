@@ -3,19 +3,51 @@
   "title": "PlantSpec",
   "type": "object",
   "additionalProperties": false,
-  "required": ["artifact_kind", "plant_id", "version", "states", "transitions", "artifact_contracts", "defaults"],
+  "required": [
+    "artifact_kind",
+    "plant_id",
+    "version",
+    "meta",
+    "states",
+    "transitions",
+    "artifact_contracts",
+    "defaults"
+  ],
   "properties": {
-    "artifact_kind": {"const": "plant_spec"},
-    "plant_id": {"type": "string", "minLength": 1},
-    "version": {"type": "string", "minLength": 1},
+    "artifact_kind": {
+      "const": "plant_spec"
+    },
+    "plant_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
     "states": {
       "type": "array",
       "minItems": 1,
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["name"],
-        "properties": {"name": {"type": "string", "minLength": 1}}
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          }
+        }
       }
     },
     "transitions": {
@@ -24,15 +56,259 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["from", "to", "on"],
+        "required": [
+          "id",
+          "from",
+          "to",
+          "on",
+          "guards",
+          "required_evidence"
+        ],
         "properties": {
-          "from": {"type": "string"},
-          "to": {"type": "string"},
-          "on": {"type": "string"}
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "from": {
+            "type": "string",
+            "minLength": 1
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1
+          },
+          "on": {
+            "type": "string",
+            "minLength": 1
+          },
+          "guards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/guard_spec"
+            },
+            "default": []
+          },
+          "required_evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          }
         }
       }
     },
-    "artifact_contracts": {"type": "object"},
-    "defaults": {"type": "object"}
+    "artifact_contracts": {
+      "type": "object"
+    },
+    "defaults": {
+      "type": "object"
+    },
+    "meta": {
+      "$ref": "#/definitions/meta"
+    }
+  },
+  "definitions": {
+    "artifact_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "version"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "guard_spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "guard_id",
+        "deny_decision",
+        "deny_reason_code",
+        "evidence_kinds"
+      ],
+      "properties": {
+        "guard_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "guard_kind": {
+          "type": "string",
+          "enum": [
+            "stop",
+            "structural",
+            "repairable",
+            "advisory"
+          ]
+        },
+        "predicate_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "deny_decision": {
+          "type": "string",
+          "enum": [
+            "DENY",
+            "STOP"
+          ]
+        },
+        "deny_reason_code": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "evidence_kinds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        }
+      }
+    },
+    "guard_eval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "guard_id",
+        "status"
+      ],
+      "properties": {
+        "guard_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "FAIL",
+            "SKIP"
+          ]
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "ALLOW",
+            "DENY",
+            "STOP"
+          ]
+        },
+        "reason_codes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_linkage",
+        "requirements",
+        "guards"
+      ],
+      "properties": {
+        "policy_linkage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "reason_codes_ref"
+          ],
+          "properties": {
+            "reason_codes_ref": {
+              "$ref": "#/definitions/artifact_ref"
+            },
+            "plant_spec_ref": {
+              "$ref": "#/definitions/artifact_ref"
+            },
+            "guardrails_bundle_ref": {
+              "$ref": "#/definitions/artifact_ref"
+            },
+            "control_strategy_ref": {
+              "$ref": "#/definitions/artifact_ref"
+            },
+            "rank_policy_ref": {
+              "$ref": "#/definitions/artifact_ref"
+            },
+            "pattern_catalog_ref": {
+              "$ref": "#/definitions/artifact_ref"
+            },
+            "src_conventions_ref": {
+              "$ref": "#/definitions/artifact_ref"
+            }
+          }
+        },
+        "requirements": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "required_evidence"
+          ],
+          "properties": {
+            "required_evidence": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            }
+          }
+        },
+        "guards": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "spec",
+            "eval"
+          ],
+          "properties": {
+            "spec": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/guard_spec"
+              },
+              "default": []
+            },
+            "eval": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/guard_eval"
+              },
+              "default": []
+            }
+          }
+        }
+      }
+    }
   }
 }

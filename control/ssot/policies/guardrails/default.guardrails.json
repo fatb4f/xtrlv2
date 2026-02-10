@@ -1,0 +1,40 @@
+{
+  "artifact_kind": "guardrails_bundle",
+  "bundle_id": "default",
+  "version": "0.1",
+  "meta": {
+    "policy_linkage": {
+      "reason_codes_ref": {
+        "path": "control/ssot/reason_codes.json",
+        "version": "0.1"
+      }
+    },
+    "requirements": {
+      "required_evidence": []
+    },
+    "guards": {
+      "spec": [],
+      "eval": []
+    }
+  },
+  "guards": [
+    {
+      "guard_id": "repo.clean",
+      "applies_to": {
+        "artifact_kinds": [
+          "state_space",
+          "gate_decision"
+        ],
+        "transitions": [
+          "T.RUN->GATE.checks_done"
+        ]
+      },
+      "deny_decision": "DENY",
+      "reason_code": "DIRTY_REPO_DENIED",
+      "required_evidence": [
+        "evidence_capsule"
+      ],
+      "predicate_ref": "git_status_clean"
+    }
+  ]
+}

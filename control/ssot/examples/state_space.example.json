@@ -1,0 +1,65 @@
+{
+  "schema_version": "0.1",
+  "generated_at_utc": "2026-02-10T00:00:00Z",
+  "meta": {
+    "policy_linkage": {
+      "reason_codes_ref": {
+        "path": "control/ssot/reason_codes.json",
+        "version": "0.1"
+      }
+    },
+    "requirements": {
+      "required_evidence": []
+    },
+    "guards": {
+      "spec": [],
+      "eval": []
+    }
+  },
+  "repo": {
+    "repo_key": "xtrlv2",
+    "repo_root": "/repo",
+    "base_ref": "main",
+    "head_sha": "deadbeef",
+    "clean": true
+  },
+  "contract": {
+    "allowed_paths": [
+      "src/",
+      "tests/"
+    ],
+    "budgets": {
+      "max_tool_calls_per_iter": 20
+    },
+    "actions": [
+      "read_file",
+      "apply_patch",
+      "run_tests"
+    ]
+  },
+  "latest": {
+    "state_latest_path": "out/RUN123/state_latest.json",
+    "ledger_tail": []
+  },
+  "state_resolution": {
+    "status": "RESOLVED",
+    "state_id": "S.RUN",
+    "candidates": [
+      {
+        "state_id": "S.RUN",
+        "confidence": 1.0
+      }
+    ],
+    "unknowns": []
+  },
+  "transition_evaluation": {
+    "admissible": [
+      "T.RUN->GATE.checks_done"
+    ],
+    "denied": []
+  },
+  "decision_digest": {
+    "decision": "ALLOW",
+    "reason_codes": []
+  }
+}

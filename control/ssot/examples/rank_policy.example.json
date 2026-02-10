@@ -2,15 +2,52 @@
   "artifact_kind": "rank_policy",
   "rank_policy_id": "rank-policy-001",
   "hard_filters": {
-    "forbidden_paths": [".git/", ".codex/", "state/"],
+    "forbidden_paths": [
+      ".git/",
+      ".codex/",
+      "state/"
+    ],
     "max_diff_lines_total": 500
   },
   "tuple_order": [
-    {"field": "checks_passed", "direction": "desc"},
-    {"field": "checks_failed", "direction": "asc"},
-    {"field": "diff_lines_total", "direction": "asc"},
-    {"field": "files_touched", "direction": "asc"},
-    {"field": "policy_warnings", "direction": "asc"},
-    {"field": "created_at", "direction": "asc"}
-  ]
+    {
+      "field": "checks_passed",
+      "direction": "desc"
+    },
+    {
+      "field": "checks_failed",
+      "direction": "asc"
+    },
+    {
+      "field": "diff_lines_total",
+      "direction": "asc"
+    },
+    {
+      "field": "files_touched",
+      "direction": "asc"
+    },
+    {
+      "field": "policy_warnings",
+      "direction": "asc"
+    },
+    {
+      "field": "created_at",
+      "direction": "asc"
+    }
+  ],
+  "meta": {
+    "policy_linkage": {
+      "reason_codes_ref": {
+        "path": "control/ssot/reason_codes.json",
+        "version": "0.1"
+      }
+    },
+    "requirements": {
+      "required_evidence": []
+    },
+    "guards": {
+      "spec": [],
+      "eval": []
+    }
+  }
 }

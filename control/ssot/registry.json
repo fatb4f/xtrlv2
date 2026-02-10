@@ -38,7 +38,8 @@
       "schema": "control/ssot/schemas/rank_policy.schema.json"
     },
     "pattern_catalog": {
-      "schema": "control/ssot/schemas/pattern_catalog.schema.json"
+      "schema": "control/ssot/schemas/pattern_catalog.schema.json",
+      "version": "0.1"
     },
     "state_space": {
       "version": "0.1",
@@ -55,6 +56,14 @@
     "src_conventions": {
       "version": "0.1",
       "schema": "control/ssot/schemas/src_conventions.schema.json"
+    },
+    "control_strategy": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/control_strategy.schema.json"
+    },
+    "guardrails_bundle": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/guardrails_bundle.schema.json"
     }
   }
 }
