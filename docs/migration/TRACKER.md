@@ -28,60 +28,80 @@ Format: keep entries short and auditable.
 - Artifacts: `control/ssot/reason_codes.json`, `control/ssot/schemas/reason_codes.schema.json`
 - Schema refs: `reason_codes` v0.1 (new)
 - Tests: schema validation; example file validates; negative case for unknown code
-- Status: Not started
+- Status: Done (local, not pushed)
 - Owner: TBD
 - Links: (PR/commit)
 - DoD gate: schema validation + example + negative case
-- Evidence: (CI run / validation report)
+- Evidence:
+  - Touched files: `control/ssot/reason_codes.json`, `control/ssot/schemas/reason_codes.schema.json`, `control/ssot/registry.json`, `control/ssot/examples/reason_codes.example.json`, `tests/test_reason_codes_schema.py`
+  - Validation: `UV_CACHE_DIR=/tmp/uv-cache uv run --with jsonschema --with pytest python -m pytest -q tests/test_reason_codes_schema.py tests/test_schema_examples_validate.py`
+    - Key output: `4 passed in 0.07s`
+  - Commit: not committed
 - Blockers: none
 
 ### M1-T02 — Gate decision bundle choice
 - Repo: xtrlv2
-- Artifacts: `control/ssot/schemas/gate_decision.schema.json` (and/or gate_worker schema if chosen)
-- Schema refs: `gate_decision` v0.1 (+ run_manifest/evidence_capsule if used)
+- Artifacts: `control/ssot/schemas/gate_decision.schema.json`, `control/ssot/schemas/run_manifest.schema.json`, `control/ssot/schemas/evidence_capsule.schema.json`
+- Schema refs: `gate_decision` v0.1 + `run_manifest` v0.1 + `evidence_capsule` v0.1 (canonical bundle)
 - Tests: schema validation; golden example; negative case for missing reason code
-- Status: Not started
+- Status: Done (local, not pushed)
 - Owner: TBD
-- Links: (PR/commit)
+- Links: `docs/migration/decisions/M1-T02-gate-bundle.md`
 - DoD gate: schema validation + example + negative case
-- Evidence: (CI run / validation report)
-- Blockers: ReasonCodes schema
+- Evidence:
+  - Touched files: `tests/test_gate_decision_schema.py`, `docs/migration/decisions/M1-T02-gate-bundle.md`, `docs/migration/TRACKER.md`, `docs/migration/STATUS.md`
+  - Validation: `UV_CACHE_DIR=/tmp/uv-cache uv run --with jsonschema --with pytest python -m pytest -q tests/test_gate_decision_schema.py tests/test_schema_examples_validate.py`
+    - Key output: `3 passed in 0.07s`
+  - Commit: not committed
+- Blockers: none
 
 ### M1-T03 — helper_created event schema
 - Repo: xtrlv2
-- Artifacts: `control/ssot/schemas/helper_event.schema.json` (name TBD), JSONL envelope spec
+- Artifacts: `control/ssot/schemas/helper_event.schema.json`, `control/ssot/examples/helper_event.example.json`
 - Schema refs: helper event v0.1
 - Tests: schema validation; example JSONL line validates; negative case for missing required fields
-- Status: Not started
+- Status: Done (local, not pushed)
 - Owner: TBD
 - Links: (PR/commit)
 - DoD gate: schema validation + example + negative case
-- Evidence: (CI run / validation report)
-- Blockers: ReasonCodes schema
+- Evidence:
+  - Touched files: `control/ssot/schemas/helper_event.schema.json`, `control/ssot/examples/helper_event.example.json`, `control/ssot/registry.json`, `tests/test_helper_event_schema.py`, `docs/migration/TRACKER.md`
+  - Validation: `UV_CACHE_DIR=/tmp/uv-cache uv run --with jsonschema --with pytest python -m pytest -q tests/test_reason_codes_schema.py tests/test_gate_decision_schema.py tests/test_helper_event_schema.py tests/test_ledger_latest_schema.py tests/test_src_snapshot_schemas.py tests/test_schema_examples_validate.py`
+    - Key output: `15 passed in 0.10s`
+  - Commit: not committed
+- Blockers: none
 
 ### M1-T04 — Ledger/latest pointer schemas
 - Repo: xtrlv2
-- Artifacts: `control/ssot/schemas/ledger_entry.schema.json`, `control/ssot/schemas/latest_state.schema.json` (names TBD)
+- Artifacts: `control/ssot/schemas/ledger_entry.schema.json`, `control/ssot/schemas/latest_state.schema.json`, `control/ssot/examples/ledger_entry.example.json`, `control/ssot/examples/latest_state.example.json`
 - Schema refs: ledger/latest v0.1
 - Tests: schema validation; example validates; negative case for missing base_ref/run_id
-- Status: Not started
+- Status: Done (local, not pushed)
 - Owner: TBD
 - Links: (PR/commit)
 - DoD gate: schema validation + example + negative case
-- Evidence: (CI run / validation report)
-- Blockers: ReasonCodes schema
+- Evidence:
+  - Touched files: `control/ssot/schemas/ledger_entry.schema.json`, `control/ssot/schemas/latest_state.schema.json`, `control/ssot/examples/ledger_entry.example.json`, `control/ssot/examples/latest_state.example.json`, `control/ssot/registry.json`, `tests/test_ledger_latest_schema.py`, `docs/migration/TRACKER.md`
+  - Validation: `UV_CACHE_DIR=/tmp/uv-cache uv run --with jsonschema --with pytest python -m pytest -q tests/test_reason_codes_schema.py tests/test_gate_decision_schema.py tests/test_helper_event_schema.py tests/test_ledger_latest_schema.py tests/test_src_snapshot_schemas.py tests/test_schema_examples_validate.py`
+    - Key output: `15 passed in 0.10s`
+  - Commit: not committed
+- Blockers: none
 
 ### M1-T05 — Phase E snapshot schemas
 - Repo: xtrlv2
-- Artifacts: `control/ssot/schemas/dep_graph.schema.json`, `api_surface.schema.json`, `module_manifest.schema.json` (names TBD)
+- Artifacts: `control/ssot/schemas/dep_graph.schema.json`, `control/ssot/schemas/api_surface.schema.json`, `control/ssot/schemas/module_manifest.schema.json`, `control/ssot/examples/dep_graph.example.json`, `control/ssot/examples/api_surface.example.json`, `control/ssot/examples/module_manifest.example.json`
 - Schema refs: snapshots v0.1
 - Tests: schema validation; example validates; negative case for unstable ordering
-- Status: Not started
+- Status: Done (local, not pushed)
 - Owner: TBD
 - Links: (PR/commit)
 - DoD gate: schema validation + example + negative case
-- Evidence: (CI run / validation report)
-- Blockers: ReasonCodes schema
+- Evidence:
+  - Touched files: `control/ssot/schemas/dep_graph.schema.json`, `control/ssot/schemas/api_surface.schema.json`, `control/ssot/schemas/module_manifest.schema.json`, `control/ssot/examples/dep_graph.example.json`, `control/ssot/examples/api_surface.example.json`, `control/ssot/examples/module_manifest.example.json`, `control/ssot/registry.json`, `tests/test_src_snapshot_schemas.py`, `docs/migration/TRACKER.md`
+  - Validation: `UV_CACHE_DIR=/tmp/uv-cache uv run --with jsonschema --with pytest python -m pytest -q tests/test_reason_codes_schema.py tests/test_gate_decision_schema.py tests/test_helper_event_schema.py tests/test_ledger_latest_schema.py tests/test_src_snapshot_schemas.py tests/test_schema_examples_validate.py`
+    - Key output: `15 passed in 0.10s`
+  - Commit: not committed
+- Blockers: none
 
 ### M2-T01 — xtrl alignment + schema pin
 - Repo: xtrl

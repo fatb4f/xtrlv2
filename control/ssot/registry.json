@@ -64,6 +64,34 @@
     "guardrails_bundle": {
       "version": "0.1",
       "schema": "control/ssot/schemas/guardrails_bundle.schema.json"
+    },
+    "reason_codes": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/reason_codes.schema.json"
+    },
+    "helper_event": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/helper_event.schema.json"
+    },
+    "ledger_entry": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/ledger_entry.schema.json"
+    },
+    "latest_state": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/latest_state.schema.json"
+    },
+    "dep_graph": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/dep_graph.schema.json"
+    },
+    "api_surface": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/api_surface.schema.json"
+    },
+    "module_manifest": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/module_manifest.schema.json"
     }
   }
 }

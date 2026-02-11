@@ -1,0 +1,19 @@
+{
+  "schema_version": "0.1",
+  "artifact_kind": "module_manifest",
+  "ordering": "stable_lexicographic",
+  "modules": [
+    {
+      "module": "xtrl.loop.tick",
+      "path": "src/xtrl/loop/tick.py",
+      "layer": "core",
+      "public": false
+    },
+    {
+      "module": "xtrl.api",
+      "path": "src/xtrl/api.py",
+      "layer": "api",
+      "public": true
+    }
+  ]
+}

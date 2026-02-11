@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "control/ssot/schemas/module_manifest.schema.json",
+  "title": "Module Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact_kind",
+    "ordering",
+    "modules"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "0.1"
+    },
+    "artifact_kind": {
+      "type": "string",
+      "const": "module_manifest"
+    },
+    "ordering": {
+      "type": "string",
+      "const": "stable_lexicographic"
+    },
+    "modules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "module",
+          "path",
+          "layer",
+          "public"
+        ],
+        "properties": {
+          "module": {
+            "type": "string",
+            "minLength": 1
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "layer": {
+            "type": "string",
+            "enum": [
+              "api",
+              "core",
+              "adapters",
+              "infra"
+            ]
+          },
+          "public": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

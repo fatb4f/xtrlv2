@@ -1,0 +1,115 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "control/ssot/schemas/reason_codes.schema.json",
+  "title": "xtrlv2 Reason Codes SSOT",
+  "schema_version": "0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "version",
+    "classes_precedence",
+    "codes",
+    "restart_mode_by_class"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "0.1"
+    },
+    "version": {
+      "type": "string",
+      "const": "0.1"
+    },
+    "classes_precedence": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "stop",
+          "structural",
+          "repairable",
+          "advisory"
+        ]
+      }
+    },
+    "codes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "class"
+        ],
+        "properties": {
+          "class": {
+            "type": "string",
+            "enum": [
+              "stop",
+              "structural",
+              "repairable",
+              "advisory"
+            ]
+          }
+        }
+      },
+      "required": [
+        "BUDGET_EXHAUSTED",
+        "TOUCHED_FORBIDDEN_PATH",
+        "DIFF_BUDGET_EXCEEDED",
+        "SCHEMA_INVALID",
+        "TESTS_FAILED",
+        "LINT_FAILED",
+        "TYPECHECK_FAILED",
+        "DIRTY_REPO_DENIED",
+        "AMBIGUOUS_STATE_DENIED",
+        "MISSING_EVIDENCE_DENIED"
+      ],
+      "propertyNames": {
+        "enum": [
+          "BUDGET_EXHAUSTED",
+          "TOUCHED_FORBIDDEN_PATH",
+          "DIFF_BUDGET_EXCEEDED",
+          "SCHEMA_INVALID",
+          "TESTS_FAILED",
+          "LINT_FAILED",
+          "TYPECHECK_FAILED",
+          "DIRTY_REPO_DENIED",
+          "AMBIGUOUS_STATE_DENIED",
+          "MISSING_EVIDENCE_DENIED"
+        ]
+      }
+    },
+    "restart_mode_by_class": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stop",
+        "structural",
+        "repairable",
+        "advisory"
+      ],
+      "properties": {
+        "stop": {
+          "type": "string",
+          "const": "STOP"
+        },
+        "structural": {
+          "type": "string",
+          "const": "REITERATE_FROM_LAST_GOOD"
+        },
+        "repairable": {
+          "type": "string",
+          "const": "REITERATE_FROM_CANDIDATE"
+        },
+        "advisory": {
+          "type": "string",
+          "const": "REITERATE_FROM_CANDIDATE"
+        }
+      }
+    }
+  }
+}

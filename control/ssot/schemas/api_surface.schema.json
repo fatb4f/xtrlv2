@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "control/ssot/schemas/api_surface.schema.json",
+  "title": "Source API Surface",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact_kind",
+    "ordering",
+    "packages"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "0.1"
+    },
+    "artifact_kind": {
+      "type": "string",
+      "const": "api_surface"
+    },
+    "ordering": {
+      "type": "string",
+      "const": "stable_lexicographic"
+    },
+    "packages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "package",
+          "exports"
+        ],
+        "properties": {
+          "package": {
+            "type": "string",
+            "minLength": 1
+          },
+          "exports": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "name",
+                "module",
+                "kind"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "module": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "function",
+                    "class",
+                    "constant",
+                    "module"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

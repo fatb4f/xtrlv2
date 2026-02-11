@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "control/ssot/schemas/latest_state.schema.json",
+  "title": "Latest State Pointer",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact_kind",
+    "updated_at",
+    "run_id",
+    "iteration_id",
+    "last_decision",
+    "out_dir",
+    "base_ref",
+    "ledger_ref"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "0.1"
+    },
+    "artifact_kind": {
+      "type": "string",
+      "const": "latest_state"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "iteration_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "last_decision": {
+      "type": "string",
+      "enum": [
+        "ALLOW",
+        "DENY",
+        "STOP",
+        "SKIPPED"
+      ]
+    },
+    "out_dir": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "next_base_ref": {
+      "type": "string"
+    },
+    "ledger_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    }
+  }
+}

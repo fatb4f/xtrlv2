@@ -1,0 +1,17 @@
+{
+  "schema_version": "0.1",
+  "artifact_kind": "api_surface",
+  "ordering": "stable_lexicographic",
+  "packages": [
+    {
+      "package": "xtrl",
+      "exports": [
+        {
+          "name": "run_tick",
+          "module": "xtrl.loop.tick",
+          "kind": "function"
+        }
+      ]
+    }
+  ]
+}

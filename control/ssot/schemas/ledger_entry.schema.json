@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "control/ssot/schemas/ledger_entry.schema.json",
+  "title": "Ledger Entry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact_kind",
+    "timestamp",
+    "run_id",
+    "iteration_id",
+    "phase",
+    "decision",
+    "reason_codes",
+    "out_dir",
+    "base_ref"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "0.1"
+    },
+    "artifact_kind": {
+      "type": "string",
+      "const": "ledger_entry"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "iteration_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "phase": {
+      "type": "string",
+      "enum": [
+        "PRECHECK",
+        "PLAN",
+        "EXEC",
+        "CHECK",
+        "GATE",
+        "PROMOTE",
+        "ITERATE"
+      ]
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "ALLOW",
+        "DENY",
+        "STOP",
+        "SKIPPED"
+      ]
+    },
+    "reason_codes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z0-9_]+$"
+      }
+    },
+    "out_dir": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_ref": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

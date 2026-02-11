@@ -1,0 +1,29 @@
+{
+  "schema_version": "0.1",
+  "artifact_kind": "helper_event",
+  "event": "helper_created",
+  "packet_id": "pkt-loop-0008-helper-created-event",
+  "run_id": "run-2026-02-11-001",
+  "base_ref": "origin/main",
+  "base_sha": "0e3fa09",
+  "helper_path": "tools/migration/helper_created.py",
+  "helper_hash": "6f8f57715090da2632453988d9a1501b4fcb4b61728e7d8f63fdf4a6f7d2b0b3",
+  "trigger_reason_code": "MISSING_EVIDENCE_DENIED",
+  "gate_decision_ref": {
+    "path": "out/xtrl/pkt-loop-0008/evidence/gate_decision.json",
+    "sha256": "71c480df93d6ae2f1efad1447c66c9525e316218cf51fc8d9ed832f2daf18b73"
+  },
+  "prompt_ref": {
+    "path": "out/xtrl/pkt-loop-0008/exec-prompt.md",
+    "sha256": "4a44dc15364204a80fe80e9039455cc1608281820fe2b24f1e523a7f8f5f7f59"
+  },
+  "touched_paths": [
+    "tools/migration/helper_created.py",
+    "tests/test_helper_created_event.py"
+  ],
+  "diffstat": {
+    "files_changed": 2,
+    "lines_added": 98,
+    "lines_removed": 0
+  }
+}
