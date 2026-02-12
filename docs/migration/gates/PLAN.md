@@ -9,7 +9,7 @@ This plan covers:
   - `just ssot-pin-check`
   - `pytest -q tests/test_ssot_pin_check_m2_t01.py tests/test_ssot_conformance.py`
 - **Branch protection** that requires the workflow to pass before merge.
-- A focused **gate audit** (enumerate → verify → negative test) before declaring migration “Done”.
+- A focused **gate audit** (enumerate -> verify -> negative test) before declaring migration "Done".
 
 ## Operating posture (cutover)
 - **xtrlv2 = primary**: active development, planning, schema SSOT.
@@ -67,8 +67,8 @@ Record one row per gate in `GATE_MATRIX.md`.
 
 ### 4) Negative test sweep
 Prove each gate blocks correctly with **one intentional failure** per gate:
-- Example: change SSOT pin target to an incorrect hash → `just ssot-pin-check` fails.
-- Example: break a conformance fixture → `tests/test_ssot_conformance.py` fails.
+- Example: change SSOT pin target to an incorrect hash -> `just ssot-pin-check` fails.
+- Example: break a conformance fixture -> `tests/test_ssot_conformance.py` fails.
 
 Capture:
 - failing command output
@@ -76,7 +76,7 @@ Capture:
 - expected remediation
 
 ### 5) Finalize DoD
-Only mark “Done” when:
+Only mark "Done" when:
 - CI gate workflow runs on PR + push to `main`
 - Branch protection **requires** it to pass prior to merge
 - Negative tests have proven the blocking behavior

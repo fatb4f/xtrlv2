@@ -89,21 +89,27 @@ jobs:
 ---
 
 ## Branch protection settings (operational)
+
 In GitHub UI:
-- **Settings → Branches → Add branch protection rule**
+
+- `Settings -> Branches -> Add branch protection rule`
 - Branch name pattern: `main`
-- Enable:
-  - **Require status checks to pass before merging**
-  - Select required checks:
-    - `schema-ssot-gate / ssot-gate` (label depends on GitHub UI)
-  - (Recommended) **Require branches to be up to date before merging**
-  - (Recommended) **Include administrators**
+
+Enable:
+
+- `Require status checks to pass before merging`
+- Select required checks:
+  - `schema-ssot-gate / ssot-gate` (label depends on GitHub UI)
+- (Recommended) `Require branches to be up to date before merging`
+- (Recommended) `Include administrators`
 
 ---
 
-## Audit requirement before declaring migration “Done”
+## Audit requirement before declaring migration "Done"
+
 Before marking DoD complete:
-1. Enumerate gates by layer (precheck, schema-pin, conformance, tests, promote, branch-protection).
+
+1. Enumerate gates by layer (`precheck`, `schema-pin`, `conformance`, `tests`, `promote`, `branch-protection`).
 2. For each gate, verify:
    - trigger path
    - fail condition
@@ -111,4 +117,5 @@ Before marking DoD complete:
    - required/optional status in CI policy
 3. Record one row per gate in `docs/migration/gates/GATE_MATRIX.md`.
 4. Execute a negative test sweep (one intentional failure per gate).
-5. Only then finalize: DoD is “Done” after branch protection requires the CI gate checks on `main`.
+
+Only then finalize: DoD is "Done" after branch protection requires the CI gate checks on `main`.

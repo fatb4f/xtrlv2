@@ -18,11 +18,11 @@ One row per gate. Keep entries short, auditable, and enforceable.
 
 ## Notes
 - Replace `owner` with a concrete team/person.
-- Expand `failure_reason_codes` to match the repo’s canonical taxonomy (if present).
+- Expand `failure_reason_codes` to match the repo's canonical taxonomy (if present).
 - If a gate writes explicit evidence files, link them here and standardize locations.
 
 ## Negative test checklist (one per gate)
-- G-SSOT-001: intentionally change expected SSOT hash → `just ssot-pin-check` fails.
-- G-CONF-001: break a conformance rule/fixture → conformance test fails.
-- G-CONF-002: change pin schema target incorrectly → pin test fails.
+- G-SSOT-001: intentionally change expected SSOT hash -> `just ssot-pin-check` fails.
+- G-CONF-001: break a conformance rule/fixture -> conformance test fails.
+- G-CONF-002: change pin schema target incorrectly -> pin test fails.
 - G-BP-001: verify merge is blocked when checks are failing.
