@@ -32,6 +32,11 @@ This reduces split-brain risk and matches the migration objective.
    - Steps: setup (python), install deps, run `just ...`, run `pytest ...`
 4. Branch protection rule on `main`
    - Require the workflow status check(s) to pass.
+5. CI branch gate requirements (enforced)
+   - Required check: `schema-ssot-gate / ssot-gate`
+   - Require branches to be up to date before merging
+   - Include administrators in protection scope
+   - Optional hardening: disallow direct pushes to `main`
 
 ---
 
@@ -47,6 +52,15 @@ This reduces split-brain risk and matches the migration objective.
 ### 2) Turn on branch protection
 - Add a `main` branch protection rule requiring the workflow checks.
 - Include admins (recommended) to prevent bypass.
+- Add CI branch gate requirements:
+  - required status check `schema-ssot-gate / ssot-gate`
+  - require up-to-date branch before merge
+  - require PR-based merge flow (no direct pushes) when policy allows
+
+### 2.5) Verify branch-gate enforcement
+- Open a test PR that intentionally fails `ssot-gate` and confirm merge is blocked.
+- Re-run with passing checks and confirm merge unblocks.
+- Capture screenshots/links in migration evidence for auditability.
 
 ### 3) Gate audit pass
 Enumerate gates by layer:
