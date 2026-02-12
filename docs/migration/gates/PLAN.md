@@ -36,7 +36,6 @@ This reduces split-brain risk and matches the migration objective.
    - Required check: `schema-ssot-gate / ssot-gate`
    - Require branches to be up to date before merging
    - Include administrators in protection scope
-   - Optional hardening: disallow direct pushes to `main`
 
 ---
 
@@ -55,7 +54,6 @@ This reduces split-brain risk and matches the migration objective.
 - Add CI branch gate requirements:
   - required status check `schema-ssot-gate / ssot-gate`
   - require up-to-date branch before merge
-  - require PR-based merge flow (no direct pushes) when policy allows
 
 ### 2.5) Verify branch-gate enforcement
 - Open a test PR that intentionally fails `ssot-gate` and confirm merge is blocked.

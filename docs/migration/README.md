@@ -5,6 +5,7 @@ Entry points:
 - `TRACKER.md` — authoritative task list and status
 - `STATUS.md` — current phase and next actions
 - `DEPENDENCY_MATRIX.md` / `DAG.md` — dependency views
+- `GIT_STRATEGY_AND_PYTHON_GATES.md` — git governance status and Python gate rollout plan
 
 Usage
 - Update `STATUS.md` whenever migration docs/tools change.
