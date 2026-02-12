@@ -9,7 +9,7 @@ Goal: re-establish xtrlv2 as SSOT for post-pivot features, then align xtrl runti
 ## Current State
 - SSOT update landed in xtrlv2: commit `0fdb685`
 - New SSOT schemas now include `control_strategy` and `guardrails_bundle` (registered)
-- ReasonCodes exist as `reason_codes.json` but still lack a formal JSON Schema
+- ReasonCodes schema is implemented in SSOT (`reason_codes` v0.1)
 - xtrlv2 gap tracker: https://github.com/fatb4f/xtrlv2/issues/1
 
 ## Work Items (ordered, blocking-first)
@@ -28,7 +28,7 @@ Format: keep entries short and auditable.
 - Artifacts: `control/ssot/reason_codes.json`, `control/ssot/schemas/reason_codes.schema.json`
 - Schema refs: `reason_codes` v0.1 (new)
 - Tests: schema validation; example file validates; negative case for unknown code
-- Status: Done (local, not pushed)
+- Status: Done (pushed)
 - Owner: TBD
 - Links: (PR/commit)
 - DoD gate: schema validation + example + negative case
@@ -36,7 +36,7 @@ Format: keep entries short and auditable.
   - Touched files: `control/ssot/reason_codes.json`, `control/ssot/schemas/reason_codes.schema.json`, `control/ssot/registry.json`, `control/ssot/examples/reason_codes.example.json`, `tests/test_reason_codes_schema.py`
   - Validation: `UV_CACHE_DIR=/tmp/uv-cache uv run --with jsonschema --with pytest python -m pytest -q tests/test_reason_codes_schema.py tests/test_schema_examples_validate.py`
     - Key output: `4 passed in 0.07s`
-  - Commit: not committed
+  - Commit: `328806e`
 - Blockers: none
 
 ### M1-T02 — Gate decision bundle choice
@@ -44,7 +44,7 @@ Format: keep entries short and auditable.
 - Artifacts: `control/ssot/schemas/gate_decision.schema.json`, `control/ssot/schemas/run_manifest.schema.json`, `control/ssot/schemas/evidence_capsule.schema.json`
 - Schema refs: `gate_decision` v0.1 + `run_manifest` v0.1 + `evidence_capsule` v0.1 (canonical bundle)
 - Tests: schema validation; golden example; negative case for missing reason code
-- Status: Done (local, not pushed)
+- Status: Done (pushed)
 - Owner: TBD
 - Links: `docs/migration/decisions/M1-T02-gate-bundle.md`
 - DoD gate: schema validation + example + negative case
@@ -52,7 +52,7 @@ Format: keep entries short and auditable.
   - Touched files: `tests/test_gate_decision_schema.py`, `docs/migration/decisions/M1-T02-gate-bundle.md`, `docs/migration/TRACKER.md`, `docs/migration/STATUS.md`
   - Validation: `UV_CACHE_DIR=/tmp/uv-cache uv run --with jsonschema --with pytest python -m pytest -q tests/test_gate_decision_schema.py tests/test_schema_examples_validate.py`
     - Key output: `3 passed in 0.07s`
-  - Commit: not committed
+  - Commit: `328806e`
 - Blockers: none
 
 ### M1-T03 — helper_created event schema
@@ -60,7 +60,7 @@ Format: keep entries short and auditable.
 - Artifacts: `control/ssot/schemas/helper_event.schema.json`, `control/ssot/examples/helper_event.example.json`
 - Schema refs: helper event v0.1
 - Tests: schema validation; example JSONL line validates; negative case for missing required fields
-- Status: Done (local, not pushed)
+- Status: Done (pushed)
 - Owner: TBD
 - Links: (PR/commit)
 - DoD gate: schema validation + example + negative case
@@ -68,7 +68,7 @@ Format: keep entries short and auditable.
   - Touched files: `control/ssot/schemas/helper_event.schema.json`, `control/ssot/examples/helper_event.example.json`, `control/ssot/registry.json`, `tests/test_helper_event_schema.py`, `docs/migration/TRACKER.md`
   - Validation: `UV_CACHE_DIR=/tmp/uv-cache uv run --with jsonschema --with pytest python -m pytest -q tests/test_reason_codes_schema.py tests/test_gate_decision_schema.py tests/test_helper_event_schema.py tests/test_ledger_latest_schema.py tests/test_src_snapshot_schemas.py tests/test_schema_examples_validate.py`
     - Key output: `15 passed in 0.10s`
-  - Commit: not committed
+  - Commit: `328806e`
 - Blockers: none
 
 ### M1-T04 — Ledger/latest pointer schemas
@@ -76,7 +76,7 @@ Format: keep entries short and auditable.
 - Artifacts: `control/ssot/schemas/ledger_entry.schema.json`, `control/ssot/schemas/latest_state.schema.json`, `control/ssot/examples/ledger_entry.example.json`, `control/ssot/examples/latest_state.example.json`
 - Schema refs: ledger/latest v0.1
 - Tests: schema validation; example validates; negative case for missing base_ref/run_id
-- Status: Done (local, not pushed)
+- Status: Done (pushed)
 - Owner: TBD
 - Links: (PR/commit)
 - DoD gate: schema validation + example + negative case
@@ -84,7 +84,7 @@ Format: keep entries short and auditable.
   - Touched files: `control/ssot/schemas/ledger_entry.schema.json`, `control/ssot/schemas/latest_state.schema.json`, `control/ssot/examples/ledger_entry.example.json`, `control/ssot/examples/latest_state.example.json`, `control/ssot/registry.json`, `tests/test_ledger_latest_schema.py`, `docs/migration/TRACKER.md`
   - Validation: `UV_CACHE_DIR=/tmp/uv-cache uv run --with jsonschema --with pytest python -m pytest -q tests/test_reason_codes_schema.py tests/test_gate_decision_schema.py tests/test_helper_event_schema.py tests/test_ledger_latest_schema.py tests/test_src_snapshot_schemas.py tests/test_schema_examples_validate.py`
     - Key output: `15 passed in 0.10s`
-  - Commit: not committed
+  - Commit: `328806e`
 - Blockers: none
 
 ### M1-T05 — Phase E snapshot schemas
@@ -92,7 +92,7 @@ Format: keep entries short and auditable.
 - Artifacts: `control/ssot/schemas/dep_graph.schema.json`, `control/ssot/schemas/api_surface.schema.json`, `control/ssot/schemas/module_manifest.schema.json`, `control/ssot/examples/dep_graph.example.json`, `control/ssot/examples/api_surface.example.json`, `control/ssot/examples/module_manifest.example.json`
 - Schema refs: snapshots v0.1
 - Tests: schema validation; example validates; negative case for unstable ordering
-- Status: Done (local, not pushed)
+- Status: Done (pushed)
 - Owner: TBD
 - Links: (PR/commit)
 - DoD gate: schema validation + example + negative case
@@ -100,7 +100,7 @@ Format: keep entries short and auditable.
   - Touched files: `control/ssot/schemas/dep_graph.schema.json`, `control/ssot/schemas/api_surface.schema.json`, `control/ssot/schemas/module_manifest.schema.json`, `control/ssot/examples/dep_graph.example.json`, `control/ssot/examples/api_surface.example.json`, `control/ssot/examples/module_manifest.example.json`, `control/ssot/registry.json`, `tests/test_src_snapshot_schemas.py`, `docs/migration/TRACKER.md`
   - Validation: `UV_CACHE_DIR=/tmp/uv-cache uv run --with jsonschema --with pytest python -m pytest -q tests/test_reason_codes_schema.py tests/test_gate_decision_schema.py tests/test_helper_event_schema.py tests/test_ledger_latest_schema.py tests/test_src_snapshot_schemas.py tests/test_schema_examples_validate.py`
     - Key output: `15 passed in 0.10s`
-  - Commit: not committed
+  - Commit: `328806e`
 - Blockers: none
 
 ### M2-T01 — xtrl alignment + schema pin
@@ -108,12 +108,39 @@ Format: keep entries short and auditable.
 - Artifacts: pinned schema hash file, conformance validator, updated emitters
 - Schema refs: all SSOT items above
 - Tests: schema pin gate; artifact conformance gate (B–E)
+- Status: Done (pushed)
+- Owner: TBD
+- Links: `e329450`
+- DoD gate: schema pin + artifact conformance
+- Evidence:
+  - Commit: `e329450`
+  - Validation: `just ssot-pin-check`; `pytest -q tests/test_ssot_pin_check_m2_t01.py tests/test_ssot_conformance.py`
+  - Key output: `4 passed`
+- Blockers: none
+
+### M2-T02 — Activate required branch gates on `main`
+- Repo: xtrlv2
+- Artifacts: `.github/workflows/schema-ssot-gate.yml`, branch protection config evidence
+- Schema refs: n/a (policy enforcement)
+- Tests: failing PR cannot merge; passing PR can merge
+- Status: In progress
+- Owner: TBD
+- Links: `docs/migration/gates/MAIN_BRANCH_ENFORCEMENT.md`, issue `#2`
+- DoD gate: required status checks active in branch protection
+- Evidence: `docs/migration/gates/ISSUE_2_IMPLEMENTATION_CHECKLIST.md`
+- Blockers: workflow still `workflow_dispatch` only
+
+### M2-T03 — Python quality gates (`ruff` + `pytest`)
+- Repo: xtrlv2
+- Artifacts: `python-quality-gate` workflow, gate matrix rows, branch protection required checks
+- Schema refs: n/a (quality gates)
+- Tests: lint/format/test failures block merge
 - Status: Not started
 - Owner: TBD
-- Links: (PR/commit)
-- DoD gate: schema pin + artifact conformance
+- Links: `docs/migration/GIT_STRATEGY_AND_PYTHON_GATES.md`
+- DoD gate: required checks enforce Python quality on `main`
 - Evidence: (CI run / validation report)
-- Blockers: 1–5 complete
+- Blockers: M2-T02
 
 ## Definition of Done
 - SSOT covers all post-pivot artifacts.
