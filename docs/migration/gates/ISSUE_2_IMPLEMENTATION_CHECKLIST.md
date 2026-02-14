@@ -15,12 +15,12 @@ Scope: make schema SSOT checks preventive on `main` (not advisory), then extend 
 - [x] Include administrators.
 
 ## Verification evidence
-- [ ] Open a PR with an intentional gate failure and confirm merge is blocked.
-- [ ] Open/refresh a PR with passing checks and confirm merge is allowed.
-- [ ] Capture evidence links:
-  - failing run URL:
-  - blocked merge screenshot/URL:
-  - passing run URL: https://github.com/fatb4f/xtrlv2/actions/runs/22011601104/job/63606437236
+- [x] Open a PR with an intentional gate failure and confirm merge is blocked.
+- [x] Open/refresh a PR with passing checks and confirm merge is allowed once branch policy requirements are met.
+- [x] Capture evidence links:
+  - failing run URL: https://github.com/fatb4f/xtrlv2/actions/runs/22011677068/job/63606647917
+  - blocked merge proof URL: https://github.com/fatb4f/xtrlv2/pull/3 (CLI proof: `gh pr merge 3 --merge --delete-branch` -> "base branch policy prohibits the merge")
+  - passing run URL: https://github.com/fatb4f/xtrlv2/actions/runs/22011688947/job/63606678737
 
 ## Python gates (follow-on)
 - [x] Add `python-quality-gate` workflow.
@@ -31,5 +31,5 @@ Scope: make schema SSOT checks preventive on `main` (not advisory), then extend 
 
 ## Closeout criteria
 - [x] `GATE_MATRIX.md` rows reflect real enforcement state.
-- [ ] `TRACKER.md` M2-T02 and M2-T03 marked done with evidence.
-- [ ] `STATUS.md` updated with completion date and next phase.
+- [x] `TRACKER.md` M2-T02 and M2-T03 marked done with evidence.
+- [x] `STATUS.md` updated with completion date and next phase.

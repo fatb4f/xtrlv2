@@ -124,7 +124,7 @@ Format: keep entries short and auditable.
 - Artifacts: `.github/workflows/schema-ssot-gate.yml`, branch protection config evidence
 - Schema refs: n/a (policy enforcement)
 - Tests: failing PR cannot merge; passing PR can merge
-- Status: In progress
+- Status: Done
 - Owner: TBD
 - Links: `docs/migration/gates/MAIN_BRANCH_ENFORCEMENT.md`, issue `#2`
 - DoD gate: required status checks active in branch protection
@@ -134,7 +134,13 @@ Format: keep entries short and auditable.
     - required checks: `schema-ssot-gate / ssot-gate`, `python-quality-gate / python-quality`
     - strict/up-to-date: enabled
     - enforce admins: enabled
-- Blockers: capture failing/pass PR run links for audit evidence
+  - Intentional failure proof (2026-02-14):
+    - failing required check: https://github.com/fatb4f/xtrlv2/actions/runs/22011677068/job/63606647917 (`python-quality` fail)
+    - blocked merge proof: `gh pr merge 3 --merge --delete-branch` -> base branch policy prohibits merge
+  - Passing proof after remediation (2026-02-14):
+    - `python-quality`: https://github.com/fatb4f/xtrlv2/actions/runs/22011688947/job/63606678737 (pass)
+    - `ssot-gate`: https://github.com/fatb4f/xtrlv2/actions/runs/22011688944/job/63606678711 (pass)
+- Blockers: none
 
 ### M2-T03 — Python quality gates (`ruff` + `pytest`)
 - Repo: xtrlv2

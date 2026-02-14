@@ -29,4 +29,4 @@ Scope: dependencies for Python-actuator gate cutover and enforcement hardening.
 
 ## Active blockers
 
-- Issue #2 evidence links not yet populated with failing/passing run URLs.
+- none.
