@@ -1,0 +1,81 @@
+{
+  "schema_version": "xtrl.pre_contract/v0.2",
+  "packet_id": "pkt-dome-m-01-slos-gates",
+  "component": "dome",
+  "repo": "dome",
+  "base_ref": "origin/main",
+  "mode": "NORMAL",
+  "budgets": {
+    "time_minutes": 90,
+    "iteration_budget": 2,
+    "diff_budget": {
+      "max_files_changed": 20,
+      "max_lines_changed": 800
+    }
+  },
+  "constraints": {
+    "clean_repo_required": true,
+    "deny_repo_local_roots": [
+      ".codex",
+      ".quint"
+    ],
+    "allowed_paths": [
+      "doc/**",
+      "README.md",
+      "ssot/**",
+      "tools/orchestrator/**",
+      "tests/**",
+      ".github/workflows/**"
+    ],
+    "forbidden_paths": [
+      ".git/**"
+    ],
+    "forbidden_patterns": [
+      "subprocess\\.run\\(.*shell\\s*=\\s*True",
+      "os\\.system\\(",
+      "eval\\(",
+      "exec\\(",
+      "\\|\\|\\s*true"
+    ]
+  },
+  "actions": {
+    "test": [
+      "python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests"
+    ]
+  },
+  "evidence": {
+    "required_files": [
+      "evidence/plan.md",
+      "evidence/decision.md",
+      "evidence/scope.json",
+      "evidence/integrity.json",
+      "evidence/tests.junit.xml",
+      "evidence/regression.md",
+      "evidence/events.jsonl",
+      "commands.log",
+      "summary.md",
+      "packet.json",
+      "contract.json",
+      "exec-prompt.md"
+    ]
+  },
+  "plan_card": {
+    "why": "Milestone 1 requires a concrete production definition and explicit SLO/go-no-go gates for dome.",
+    "what": "Define production scope and measurable M-01 checks, then wire verification evidence into tracker artifacts.",
+    "how": "Update docs and tests/workflow checks so M-01 has explicit pass/fail evidence paths.",
+    "where": "dome/doc + dome/.github/workflows + dome/tests",
+    "who": "controller",
+    "when": "PLAN -> EXEC -> CHECK"
+  },
+  "inputs": {
+    "notes": [
+      "M-01 must be auditable: include exact verification commands and expected evidence paths.",
+      "Any policy additions should remain compatible with xtrlv2 substrate mappings.",
+      "Prefer minimal scope for first pass: docs + gate wiring only; no runtime refactors."
+    ]
+  }
+}
