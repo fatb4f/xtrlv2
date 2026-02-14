@@ -16,8 +16,7 @@ Record what is implemented vs missing for migration-grade git governance, and de
 ### Partial
 - `schema-ssot-gate` now runs on `pull_request` + `push` to `main` using Python-native commands.
 - `python-quality-gate` baseline is green locally and in PR evidence runs.
-- Branch protection is active with required checks; contexts are bound to emitted check names (`ssot-gate`, `python-quality`).
-- `migration-final-guards` is active in CI but not yet required in branch protection.
+- Branch protection is active with required checks; contexts are bound to emitted check names (`ssot-gate`, `python-quality`, `final-guards`).
 - Trailer usage policy is optional and independent from xtrl runtime conventions.
 
 ### Missing
