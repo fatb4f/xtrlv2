@@ -21,12 +21,12 @@ def ssot_root() -> Path:
 def state_root() -> Path:
     """Default runtime state root.
 
-    - If CODEX_STATE is set, use $CODEX_STATE/xtrl (aligned with your canonical XDG model).
+    - If CODEX_STATE is set, use $CODEX_STATE/xtrlv2 (standalone v2 root).
     - Otherwise, use repo-local ./state
     """
     codex_state = os.environ.get("CODEX_STATE")
     if codex_state:
-        return Path(codex_state).expanduser() / "xtrl"
+        return Path(codex_state).expanduser() / "xtrlv2"
     return repo_root() / "state"
 
 

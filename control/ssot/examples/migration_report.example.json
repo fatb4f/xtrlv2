@@ -1,0 +1,101 @@
+{
+  "schema_version": "0.1",
+  "artifact_kind": "migration_report",
+  "run_id": "migrate-20260214T051500Z",
+  "generated_at": "2026-02-14T05:15:00Z",
+  "mode": "apply",
+  "source_root": "/tmp/codex-state/xtrl",
+  "target_root": "/tmp/codex-state/xtrlv2",
+  "layout": {
+    "required_dirs": [
+      "queue",
+      "out",
+      "locks",
+      "promote",
+      "worktrees",
+      "ledger"
+    ],
+    "directory_mappings": [
+      {
+        "source": "out",
+        "target": "out"
+      },
+      {
+        "source": "worktrees",
+        "target": "worktrees"
+      },
+      {
+        "source": "queue",
+        "target": "queue"
+      },
+      {
+        "source": "promote",
+        "target": "promote"
+      },
+      {
+        "source": "locks",
+        "target": "locks"
+      },
+      {
+        "source": "ledger",
+        "target": "ledger"
+      }
+    ],
+    "file_mappings": [
+      {
+        "target": "ledger/latest.json",
+        "candidates": [
+          "latest.json",
+          "state/latest.json",
+          "ledger/latest.json"
+        ]
+      },
+      {
+        "target": "ledger/ledger.jsonl",
+        "candidates": [
+          "ledger/ledger.jsonl",
+          "state/ledger.jsonl"
+        ]
+      }
+    ]
+  },
+  "operations": [
+    {
+      "action": "ensure_dir",
+      "status": "created",
+      "path": "queue",
+      "target": "queue"
+    },
+    {
+      "action": "migrate_file",
+      "status": "copied",
+      "path": "ledger/latest.json",
+      "source": "state/latest.json",
+      "target": "ledger/latest.json"
+    },
+    {
+      "action": "migrate_dir",
+      "status": "missing_source",
+      "path": "promote",
+      "source": "promote",
+      "target": "promote"
+    },
+    {
+      "action": "migrate_file",
+      "status": "skipped",
+      "path": "out/run-0001/result.json",
+      "source": "out/run-0001/result.json",
+      "target": "out/run-0001/result.json"
+    }
+  ],
+  "summary": {
+    "planned": 0,
+    "created": 1,
+    "copied": 1,
+    "skipped": 1,
+    "missing_source": 1,
+    "conflict": 0,
+    "error": 0
+  },
+  "idempotent": false
+}

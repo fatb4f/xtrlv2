@@ -75,7 +75,7 @@ Owner
 - TBD
 
 Tracker IDs
-- M2-T01
+- M2-T01..M2-T04
 
 Links
 - https://github.com/fatb4f/xtrlv2/issues/1
@@ -100,7 +100,9 @@ Owner
 - TBD
 
 Tracker IDs
-- (to be assigned)
+- M3-T01 (migration report schema)
+- M3-T02 (state migration tool + report outputs)
+- M3-T03 (state doctor validator)
 
 Links
 - https://github.com/fatb4f/xtrlv2/issues/1

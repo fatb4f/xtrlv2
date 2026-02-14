@@ -13,9 +13,15 @@ Legend: X depends on Y.
 | M2-T02 required branch gates on `main` | M2-T01 |
 | M2-T03 Python quality gates (`ruff` + `pytest`) | M2-T02 |
 | M2-T04 refactoring quality contract | M2-T03 |
+| M3-T01 migration report schema (`migration_report`) | M2-T03 |
+| M3-T02 state migration tool (`state_migrate.py`) | M3-T01 |
+| M3-T03 state doctor validator (`state_doctor.py`) | M3-T02 |
+| M4 packet/contract migration harness | M3-T03 |
 
 ## Rationale (short)
 - `reason_codes` is foundational and referenced by multiple downstream schemas/artifacts.
 - Compatibility validation should happen only after SSOT contracts are stable.
 - Branch protection must be active before quality gates are fully enforceable.
 - Refactoring policy is operationally meaningful only once core quality gates are in place.
+- Migration tool outputs should be schema-bound before applying state changes.
+- State doctor should validate post-migration layout before M4 runtime harness work.

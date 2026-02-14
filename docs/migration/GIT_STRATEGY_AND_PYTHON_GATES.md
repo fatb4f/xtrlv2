@@ -14,8 +14,8 @@ Record what is implemented vs missing for migration-grade git governance, and de
 
 ### Partial
 - `schema-ssot-gate` now runs on `pull_request` + `push` to `main` using Python-native commands.
-- `python-quality-gate` baseline is green locally; CI evidence links still need to be captured in issue `#2`.
-- Branch protection is active with required checks, but run-evidence links for failing/passing PR cases are still pending.
+- `python-quality-gate` baseline is green locally and in PR evidence runs.
+- Branch protection is active with required checks; contexts are bound to emitted check names (`ssot-gate`, `python-quality`).
 - Trailer usage policy is optional and independent from xtrl runtime conventions.
 
 ### Missing
@@ -54,6 +54,6 @@ Record what is implemented vs missing for migration-grade git governance, and de
 5. Add changelog/trailer gates after core Python gates are green.
 
 ## Evidence to collect
-- Workflow run links for first green PR and first blocked PR.
+- Workflow run links for first green PR and first blocked PR (captured in issue `#2` closeout).
 - Branch protection screenshot/config export.
 - One intentional failure per required gate with remediation note.
