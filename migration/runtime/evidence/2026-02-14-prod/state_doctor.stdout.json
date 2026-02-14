@@ -1,0 +1,1 @@
+{"created_dirs": [], "invalid_artifacts": [], "missing_dirs": [], "ok": true, "required_dirs": ["queue", "out", "locks", "promote", "worktrees", "ledger"], "state_root": "/home/src404/.local/state/codex/xtrlv2"}

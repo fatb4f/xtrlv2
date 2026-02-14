@@ -311,7 +311,12 @@ Format: keep entries short and auditable.
   - Cutover demo run (2026-02-14):
     - `migration/runtime/evidence/2026-02-14/migration_report.json`
     - `migration/runtime/evidence/2026-02-14/state_doctor.stdout.json`
-- Blockers: production environment signoff pending
+  - Production cutover run (2026-02-14):
+    - `migration/runtime/evidence/2026-02-14-prod/migration_report.json`
+    - `migration/runtime/evidence/2026-02-14-prod/state_doctor.stdout.json`
+    - `migration/runtime/evidence/2026-02-14-prod/evidence_summary.json`
+  - Deprecation signoff: `docs/migration/cutover.md` (`v1 deprecation signoff` section)
+- Blockers: none
 
 ### M6-T01 — Final validation tool (`final_validate.py`)
 - Repo: xtrlv2
@@ -354,8 +359,10 @@ Format: keep entries short and auditable.
 - Evidence:
   - Touched files: `docs/migration/final_report.md`
   - Validation: `python tools/migration/final_validate.py`
-  - Consolidated evidence index: `migration/runtime/evidence/2026-02-14/evidence_summary.json`
-- Blockers: production cutover evidence + branch-protection promotion signoff pending
+  - Consolidated evidence indexes:
+    - `migration/runtime/evidence/2026-02-14/evidence_summary.json`
+    - `migration/runtime/evidence/2026-02-14-prod/evidence_summary.json`
+- Blockers: none
 
 ## Definition of Done
 - SSOT covers all post-pivot artifacts.

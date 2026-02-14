@@ -5,11 +5,11 @@ import argparse
 import hashlib
 import json
 import os
-import shutil
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from typing import Callable
 
 TOOLS_DIR = Path(__file__).resolve().parents[1]
 if str(TOOLS_DIR) not in sys.path:
@@ -140,9 +140,11 @@ def migrate_file(
     dry_run: bool,
     operations: list[dict[str, Any]],
     summary: dict[str, int],
+    content_transform: Callable[[Path, bytes], bytes] | None = None,
 ) -> None:
     source_rel = rel_to_root(source_file, source_root)
     target_rel = rel_to_root(target_file, target_root)
+    transform = content_transform or (lambda _source, data: data)
 
     if not source_file.exists():
         record_op(
@@ -156,10 +158,13 @@ def migrate_file(
         )
         return
 
+    source_bytes = source_file.read_bytes()
+    migrated_bytes = transform(source_file, source_bytes)
+    migrated_hash = hashlib.sha256(migrated_bytes).hexdigest()
+
     if target_file.exists():
-        src_hash = sha256_file(source_file)
-        dst_hash = sha256_file(target_file)
-        if src_hash == dst_hash:
+        target_hash = sha256_file(target_file)
+        if migrated_hash == target_hash:
             record_op(
                 operations,
                 summary,
@@ -195,7 +200,7 @@ def migrate_file(
         return
 
     target_file.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(source_file, target_file)
+    target_file.write_bytes(migrated_bytes)
     record_op(
         operations,
         summary,
@@ -252,6 +257,7 @@ def migrate_first_available_file(
     dry_run: bool,
     operations: list[dict[str, Any]],
     summary: dict[str, int],
+    content_transform: Callable[[Path, bytes], bytes] | None = None,
 ) -> None:
     for candidate in candidates:
         source = source_root / candidate
@@ -264,6 +270,7 @@ def migrate_first_available_file(
                 dry_run,
                 operations,
                 summary,
+                content_transform=content_transform,
             )
             return
 
@@ -321,6 +328,54 @@ def default_source_root() -> Path:
     return repo_root() / "state_legacy"
 
 
+def normalize_latest_state(source: Path, raw: bytes) -> bytes:
+    try:
+        obj = json.loads(raw.decode("utf-8"))
+    except Exception:  # noqa: BLE001
+        return raw
+
+    try:
+        validate_artifact("latest_state", obj)
+        return raw
+    except Exception:  # noqa: BLE001
+        pass
+
+    ledger_ref_obj = (
+        obj.get("ledger_ref") if isinstance(obj.get("ledger_ref"), dict) else {}
+    )
+    mapped = {
+        "schema_version": "0.1",
+        "artifact_kind": "latest_state",
+        "updated_at": obj.get("updated_at") or obj.get("timestamp_utc") or now_utc(),
+        "run_id": obj.get("run_id")
+        or obj.get("packet_id")
+        or source.stem
+        or "legacy-run",
+        "iteration_id": obj.get("iteration_id")
+        or obj.get("packet_id")
+        or "legacy-iter-0001",
+        "last_decision": obj.get("last_decision") or obj.get("decision") or "SKIPPED",
+        "out_dir": obj.get("out_dir") or "out/legacy",
+        "base_ref": obj.get("base_ref") or "legacy/base_ref",
+        "ledger_ref": {
+            "path": ledger_ref_obj.get("path")
+            or obj.get("ledger_path")
+            or "ledger/ledger.jsonl"
+        },
+    }
+    if obj.get("next_base_ref"):
+        mapped["next_base_ref"] = obj["next_base_ref"]
+
+    if mapped["last_decision"] not in {"ALLOW", "DENY", "STOP", "SKIPPED"}:
+        mapped["last_decision"] = "SKIPPED"
+
+    try:
+        validate_artifact("latest_state", mapped)
+    except Exception:  # noqa: BLE001
+        return raw
+    return (json.dumps(mapped, indent=2, sort_keys=True) + "\n").encode("utf-8")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Migrate legacy state layout into standalone xtrlv2 state root."
@@ -373,6 +428,11 @@ def main() -> int:
         )
 
     for mapping in FILE_MAPPINGS:
+        transform = (
+            normalize_latest_state
+            if mapping["target"] == "ledger/latest.json"
+            else None
+        )
         migrate_first_available_file(
             source_root,
             target_root,
@@ -381,6 +441,7 @@ def main() -> int:
             dry_run,
             operations,
             summary,
+            content_transform=transform,
         )
 
     report = {

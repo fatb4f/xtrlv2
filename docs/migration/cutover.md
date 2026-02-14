@@ -6,7 +6,7 @@ Goal: make `xtrlv2` the default operational path and deprecate v1 usage.
 
 1. M3 state migration tool and doctor validator are merged.
 2. M4 packet harness regression (`run-golden-packet`) is green in CI.
-3. Branch protection requires `ssot-gate` and `python-quality`.
+3. Branch protection requires `ssot-gate`, `python-quality`, and `final-guards`.
 
 ## Cutover steps
 
@@ -19,6 +19,13 @@ Goal: make `xtrlv2` the default operational path and deprecate v1 usage.
 4. Run final validation gate:
    - `python tools/migration/xtrlv2.py final-validate`
 5. Update operational docs to reference v2 command path only.
+
+## v1 deprecation signoff
+
+- Effective date: 2026-02-14
+- Status: `xtrl` actuator/runbook commands are deprecated for operational usage.
+- Approved command path: `python tools/migration/xtrlv2.py ...`
+- Legacy `xtrl` state may still be referenced only as migration input (`--source-root`).
 
 ## Rollback
 

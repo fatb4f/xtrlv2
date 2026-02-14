@@ -26,7 +26,22 @@ Status date: 2026-02-14
 - Consolidated index:
   - `migration/runtime/evidence/2026-02-14/evidence_summary.json`
 
+## Production evidence snapshot (2026-02-14)
+
+- Real legacy root migration report:
+  - `migration/runtime/evidence/2026-02-14-prod/migration_report.json`
+  - `migration/runtime/evidence/2026-02-14-prod/migration_report.md`
+- Real target state doctor validation:
+  - `migration/runtime/evidence/2026-02-14-prod/state_doctor.stdout.json`
+- Golden packet production-contract run:
+  - `migration/runtime/evidence/2026-02-14-prod/run_golden_packet.stdout.json`
+  - `migration/runtime/evidence/2026-02-14-prod/golden_packet_runs/pkt-v2-migrate-0002-runner-cutover/golden-m4-prod-20260214/golden_report.json`
+- Final validator snapshot:
+  - `migration/runtime/evidence/2026-02-14-prod/final_validate.stdout.json`
+- Consolidated index:
+  - `migration/runtime/evidence/2026-02-14-prod/evidence_summary.json`
+
 ## Remaining completion criteria
 
-1. Capture production-grade state migration report artifacts from real cutover run owner environment.
-2. Final signoff that v1 operation is deprecated in active runbooks.
+1. Migration signoff complete for M0–M6 scope.
+2. Continue post-migration hardening as regular backlog work.

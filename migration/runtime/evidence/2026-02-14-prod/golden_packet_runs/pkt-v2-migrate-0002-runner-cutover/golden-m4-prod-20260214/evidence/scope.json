@@ -1,0 +1,5 @@
+{
+  "packet_id": "pkt-v2-migrate-0002-runner-cutover",
+  "path": "evidence/scope.json",
+  "run_id": "golden-m4-prod-20260214"
+}
