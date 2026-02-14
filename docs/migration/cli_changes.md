@@ -29,3 +29,4 @@ Supported commands:
 
 - `xtrlv2` is standalone and should not depend on `xtrl` actuator scripts.
 - `xtrl` may still be referenced as a legacy source-state input for one-time migration.
+- Direct operational invocation of `tools/migration/state_migrate.py`, `state_doctor.py`, `run_golden_packet.py`, and `final_validate.py` is deprecated in runbooks; use `tools/migration/xtrlv2.py` subcommands.

@@ -1,12 +1,12 @@
 # Migration Status
 
-Current phase: M4 (Packet harness + cutover enablement)
+Current phase: M6 (Migration signoff)
 Last updated: 2026-02-14
 
 Next 3 actions:
-1. Execute cutover sequence from `docs/migration/cutover.md` against a real migrated state root (issue `#6`).
-2. Complete deprecation signoff for v1 operational runbooks (issue `#6`).
-3. Close milestone signoff issue `#7` after production evidence from issue `#6` is attached.
+1. Monitor required checks (`ssot-gate`, `python-quality`, `final-guards`) for stability on new PRs.
+2. Keep `docs/migration/final_report.md` updated for any post-signoff evidence deltas.
+3. Track post-migration enhancements outside the M0–M6 migration scope.
 
 Blockers:
-- no code blockers; production environment evidence/signoff is pending.
+- none in migration implementation/signoff scope.

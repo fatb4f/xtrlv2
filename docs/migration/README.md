@@ -17,4 +17,5 @@ Entry points:
 
 Usage
 - Update `STATUS.md` whenever migration docs/tools change.
+- Use canonical runbook commands via `python tools/migration/xtrlv2.py <command> ...`.
 - Use `python tools/migration/migrate_check.py` to validate doc consistency.

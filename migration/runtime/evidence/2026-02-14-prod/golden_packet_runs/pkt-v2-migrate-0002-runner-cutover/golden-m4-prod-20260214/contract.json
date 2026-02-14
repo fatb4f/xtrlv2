@@ -1,0 +1,82 @@
+{
+  "actions": {
+    "test": [
+      "python",
+      "-m",
+      "pytest",
+      "-q",
+      "--junitxml",
+      "evidence/tests.junit.xml"
+    ]
+  },
+  "base_ref": "origin/main",
+  "budgets": {
+    "diff_budget": {
+      "max_files_changed": 150,
+      "max_lines_changed": 4000
+    },
+    "iteration_budget": 2,
+    "time_minutes": 90
+  },
+  "component": "xtrlv2",
+  "constraints": {
+    "allowed_paths": [
+      "tools/**",
+      "schemas/**",
+      "control/**",
+      "docs/**",
+      "packets/**",
+      "README.md"
+    ],
+    "clean_repo_required": true,
+    "deny_repo_local_roots": [
+      ".codex",
+      ".quint"
+    ],
+    "forbidden_paths": [
+      ".git/**"
+    ],
+    "forbidden_patterns": [
+      "bash\\s+-lc",
+      "subprocess\\.run\\(.*shell\\s*=\\s*True",
+      "os\\.system\\(",
+      "eval\\(",
+      "exec\\(",
+      "\\|\\|\\s*true"
+    ]
+  },
+  "evidence": {
+    "required_files": [
+      "evidence/plan.md",
+      "evidence/decision.md",
+      "evidence/scope.json",
+      "evidence/integrity.json",
+      "evidence/tests.junit.xml",
+      "evidence/regression.md",
+      "evidence/events.jsonl",
+      "commands.log",
+      "summary.md",
+      "packet.json",
+      "contract.json",
+      "exec-prompt.md"
+    ]
+  },
+  "inputs": {
+    "notes": [
+      "Runner must execute argv-only actions; no shell wrappers.",
+      "End-to-end run should emit full EvidenceCapsule v0.2 tree."
+    ]
+  },
+  "mode": "NORMAL",
+  "packet_id": "pkt-v2-migrate-0002-runner-cutover",
+  "plan_card": {
+    "how": "Replace string commands with argv-only; deny bash -lc and || true; ensure evidence v0.2 is emitted.",
+    "what": "Port runner + contract materializer; run at least one packet end-to-end in xtrlv2 with truthful signals.",
+    "when": "EXEC \u2192 CHECK",
+    "where": "xtrlv2/tools/",
+    "who": "controller",
+    "why": "Cut over runner to xtrlv2 with argv-only execution and no masking."
+  },
+  "repo": "xtrlv2",
+  "schema_version": "xtrl.pre_contract/v0.2"
+}

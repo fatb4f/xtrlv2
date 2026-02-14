@@ -1,0 +1,7 @@
+{
+  "generated_at": "2026-02-14T06:08:30.473421Z",
+  "output_root": "/home/src404/src/xtrlv2/migration/runtime/evidence/2026-02-14-prod/golden_packet_runs/pkt-v2-migrate-0002-runner-cutover/golden-m4-prod-20260214",
+  "packet_id": "pkt-v2-migrate-0002-runner-cutover",
+  "run_id": "golden-m4-prod-20260214",
+  "status": "PASS"
+}
