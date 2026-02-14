@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Callable
+from typing import Callable
 
 
 def build_rank_key(rank_policy: dict) -> Callable[[dict], tuple]:

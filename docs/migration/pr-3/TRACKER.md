@@ -14,16 +14,17 @@ PR: https://github.com/fatb4f/xtrlv2/pull/3
 | PR3-T04 | Enable required checks on `main` branch protection | Done | required checks configured: `schema-ssot-gate / ssot-gate`, `python-quality-gate / python-quality` |
 | PR3-T05 | Align migration docs with standalone `xtrlv2` intent | Done | `docs/migration/TRACKER.md`, `docs/migration/DEPENDENCY_MATRIX.md`, `docs/migration/DAG.md` |
 | PR3-T08 | Add ast-grep policy gate to block legacy actuator drift | Done | `sgconfig.yml`, `.ast-grep/rules/*.yml`, `schema-ssot-gate` |
+| PR3-T09 | Define refactoring pattern + feedback contract | Done | `docs/migration/QUALITY_REFACTORING_CONTRACT.md` |
 | PR3-T06 | Capture failing and passing PR run links for Issue #2 audit | In progress | `docs/migration/gates/ISSUE_2_IMPLEMENTATION_CHECKLIST.md` |
-| PR3-T07 | Resolve `ruff` lint/format baseline debt to make quality gate green | In progress | `ruff check .` and `ruff format --check .` currently fail |
+| PR3-T07 | Resolve `ruff` lint/format baseline debt to make quality gate green | Done | `ruff check .` and `ruff format --check .` pass locally |
 
 ## Validation snapshot
 
 - `python tools/migration/migrate_check.py` -> pass
 - schema suite (`tests/test_*schema*.py`) -> pass
 - `pytest -q` -> pass
-- `ruff check .` -> fail (known baseline findings)
-- `ruff format --check .` -> fail (known baseline findings)
+- `ruff check .` -> pass
+- `ruff format --check .` -> pass
 
 ## Exit criteria for PR #3 closeout
 

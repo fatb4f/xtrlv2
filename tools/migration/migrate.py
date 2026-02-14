@@ -4,7 +4,9 @@ import argparse
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="xtrlv2 migration tool (skeleton)")
-    parser.add_argument("--dry-run", action="store_true", help="no-op; show planned actions")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="no-op; show planned actions"
+    )
     args = parser.parse_args()
 
     if args.dry_run:

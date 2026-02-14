@@ -19,6 +19,7 @@ Goal: establish xtrlv2 as a standalone SSOT + execution toolchain for post-pivot
 4. **M1-T04** Ledger/latest pointer schemas — if required by runtime.
 5. **M1-T05** Phase E snapshot schemas — dep_graph, api_surface, module_manifest.
 6. **M2-T01** Validate external compatibility bridge (xtrl artifacts against xtrlv2 SSOT), without reusing xtrl actuators in xtrlv2.
+7. **M2-T04** Refactoring quality contract — define repeatable design-pattern baseline + MCP-assisted feedback workflow.
 
 ## Work Item Details (executable checklist)
 Format: keep entries short and auditable.
@@ -148,9 +149,23 @@ Format: keep entries short and auditable.
   - Workflow added: `.github/workflows/python-quality-gate.yml`
   - Local validation snapshot (2026-02-14):
     - `UV_CACHE_DIR=/tmp/uv-cache uv run --with pytest --with jsonschema python -m pytest -q` -> `15 passed`
-    - `UV_CACHE_DIR=/tmp/uv-cache uv run --with ruff ruff check .` -> fails (2 existing lint findings)
-    - `UV_CACHE_DIR=/tmp/uv-cache uv run --with ruff ruff format --check .` -> fails (7 files need formatting)
-- Blockers: M2-T02 (required checks binding) and lint/format baseline debt
+    - `UV_CACHE_DIR=/tmp/uv-cache uv run --with ruff ruff check .` -> `All checks passed!`
+    - `UV_CACHE_DIR=/tmp/uv-cache uv run --with ruff ruff format --check .` -> `17 files already formatted`
+- Blockers: pending CI run links in issue `#2` evidence checklist
+
+### M2-T04 — Refactoring quality contract
+- Repo: xtrlv2
+- Artifacts: `docs/migration/QUALITY_REFACTORING_CONTRACT.md`
+- Schema refs: n/a (engineering quality policy)
+- Tests: policy referenced from migration docs; gate commands remain deterministic
+- Status: Done (pushed)
+- Owner: TBD
+- Links: `docs/migration/QUALITY_REFACTORING_CONTRACT.md`
+- DoD gate: explicit pattern baseline + feedback loop contract documented
+- Evidence:
+  - Touched files: `docs/migration/QUALITY_REFACTORING_CONTRACT.md`, `docs/migration/README.md`, `docs/migration/GIT_STRATEGY_AND_PYTHON_GATES.md`
+  - Validation: `python tools/migration/migrate_check.py` (docs consistency remains green)
+- Blockers: none
 
 ## Definition of Done
 - SSOT covers all post-pivot artifacts.

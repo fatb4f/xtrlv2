@@ -18,15 +18,27 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
-from _util import AtomicLock, ensure_state_layout, load_json, now_iso, validate_artifact, write_json, state_root
+from _util import (
+    AtomicLock,
+    ensure_state_layout,
+    load_json,
+    now_iso,
+    validate_artifact,
+    write_json,
+    state_root,
+)
 from rank import build_rank_key, passes_hard_filters
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--queue", default=str(state_root() / "queue" / "work_queue.json"))
-    ap.add_argument("--candidate-set", default=str(state_root() / "queue" / "candidate_set.json"))
-    ap.add_argument("--rank-policy", default=str(state_root() / "queue" / "rank_policy.json"))
+    ap.add_argument(
+        "--candidate-set", default=str(state_root() / "queue" / "candidate_set.json")
+    )
+    ap.add_argument(
+        "--rank-policy", default=str(state_root() / "queue" / "rank_policy.json")
+    )
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
@@ -37,7 +49,9 @@ def main() -> int:
     rp_path = Path(args.rank_policy)
 
     if not queue_path.exists() or not cand_path.exists() or not rp_path.exists():
-        print("Missing queue/candidate-set/rank-policy under state/queue", file=sys.stderr)
+        print(
+            "Missing queue/candidate-set/rank-policy under state/queue", file=sys.stderr
+        )
         return 2
 
     work_queue = load_json(queue_path)
