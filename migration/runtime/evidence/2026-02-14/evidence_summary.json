@@ -1,0 +1,49 @@
+{
+  "final_validate": {
+    "missing_docs": [],
+    "missing_tests": [],
+    "missing_tools": [],
+    "ok": true
+  },
+  "golden_packet": {
+    "contract": "/home/src404/src/xtrlv2/packets/engineering/migration_xtrlv2_cutover/pkt-v2-migrate-0002-runner-cutover.pre_contract.json",
+    "output_dir": "/home/src404/src/xtrlv2/migration/runtime/evidence/2026-02-14/golden_packet_runs/pkt-v2-migrate-0002-runner-cutover/golden-m4-20260214",
+    "packet_id": "pkt-v2-migrate-0002-runner-cutover",
+    "required_files": [
+      "commands.log",
+      "contract.json",
+      "evidence/decision.md",
+      "evidence/events.jsonl",
+      "evidence/integrity.json",
+      "evidence/plan.md",
+      "evidence/regression.md",
+      "evidence/scope.json",
+      "evidence/tests.junit.xml",
+      "exec-prompt.md",
+      "packet.json",
+      "summary.md"
+    ],
+    "run_id": "golden-m4-20260214",
+    "summary": {
+      "created": 12,
+      "skipped": 0,
+      "updated": 0
+    }
+  },
+  "migration_report": "migration/runtime/evidence/2026-02-14/migration_report.json",
+  "state_doctor": {
+    "created_dirs": [],
+    "invalid_artifacts": [],
+    "missing_dirs": [],
+    "ok": true,
+    "required_dirs": [
+      "queue",
+      "out",
+      "locks",
+      "promote",
+      "worktrees",
+      "ledger"
+    ],
+    "state_root": "/tmp/xtrlv2_cutover_demo/xtrlv2_state"
+  }
+}

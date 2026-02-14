@@ -1,0 +1,167 @@
+{
+  "artifact_kind": "migration_report",
+  "generated_at": "2026-02-14T05:41:10.390452Z",
+  "idempotent": false,
+  "layout": {
+    "directory_mappings": [
+      {
+        "source": "out",
+        "target": "out"
+      },
+      {
+        "source": "worktrees",
+        "target": "worktrees"
+      },
+      {
+        "source": "queue",
+        "target": "queue"
+      },
+      {
+        "source": "promote",
+        "target": "promote"
+      },
+      {
+        "source": "locks",
+        "target": "locks"
+      },
+      {
+        "source": "ledger",
+        "target": "ledger"
+      }
+    ],
+    "file_mappings": [
+      {
+        "candidates": [
+          "latest.json",
+          "state/latest.json",
+          "ledger/latest.json"
+        ],
+        "target": "ledger/latest.json"
+      },
+      {
+        "candidates": [
+          "ledger/ledger.jsonl",
+          "state/ledger.jsonl"
+        ],
+        "target": "ledger/ledger.jsonl"
+      }
+    ],
+    "required_dirs": [
+      "queue",
+      "out",
+      "locks",
+      "promote",
+      "worktrees",
+      "ledger"
+    ]
+  },
+  "mode": "apply",
+  "operations": [
+    {
+      "action": "ensure_dir",
+      "path": "queue",
+      "status": "created",
+      "target": "queue"
+    },
+    {
+      "action": "ensure_dir",
+      "path": "out",
+      "status": "created",
+      "target": "out"
+    },
+    {
+      "action": "ensure_dir",
+      "path": "locks",
+      "status": "created",
+      "target": "locks"
+    },
+    {
+      "action": "ensure_dir",
+      "path": "promote",
+      "status": "created",
+      "target": "promote"
+    },
+    {
+      "action": "ensure_dir",
+      "path": "worktrees",
+      "status": "created",
+      "target": "worktrees"
+    },
+    {
+      "action": "ensure_dir",
+      "path": "ledger",
+      "status": "created",
+      "target": "ledger"
+    },
+    {
+      "action": "migrate_file",
+      "path": "out/run-001/result.txt",
+      "source": "out/run-001/result.txt",
+      "status": "copied",
+      "target": "out/run-001/result.txt"
+    },
+    {
+      "action": "migrate_file",
+      "path": "worktrees/wt-a/meta.txt",
+      "source": "worktrees/wt-a/meta.txt",
+      "status": "copied",
+      "target": "worktrees/wt-a/meta.txt"
+    },
+    {
+      "action": "migrate_dir",
+      "path": "queue",
+      "source": "queue",
+      "status": "missing_source",
+      "target": "queue"
+    },
+    {
+      "action": "migrate_dir",
+      "path": "promote",
+      "source": "promote",
+      "status": "missing_source",
+      "target": "promote"
+    },
+    {
+      "action": "migrate_dir",
+      "path": "locks",
+      "source": "locks",
+      "status": "missing_source",
+      "target": "locks"
+    },
+    {
+      "action": "migrate_dir",
+      "path": "ledger",
+      "source": "ledger",
+      "status": "missing_source",
+      "target": "ledger"
+    },
+    {
+      "action": "migrate_file",
+      "path": "ledger/latest.json",
+      "source": "state/latest.json",
+      "status": "copied",
+      "target": "ledger/latest.json"
+    },
+    {
+      "action": "migrate_file",
+      "note": "no candidate source file found",
+      "path": "ledger/ledger.jsonl",
+      "source": "ledger/ledger.jsonl",
+      "status": "missing_source",
+      "target": "ledger/ledger.jsonl"
+    }
+  ],
+  "run_id": "migrate-20260214T054110Z",
+  "schema_version": "0.1",
+  "source_root": "/tmp/xtrlv2_cutover_demo/legacy_xtrl_state",
+  "summary": {
+    "conflict": 0,
+    "copied": 3,
+    "created": 6,
+    "error": 0,
+    "missing_source": 5,
+    "planned": 0,
+    "skipped": 0
+  },
+  "target_root": "/tmp/xtrlv2_cutover_demo/xtrlv2_state"
+}

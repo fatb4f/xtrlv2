@@ -264,7 +264,10 @@ Format: keep entries short and auditable.
 - Evidence:
   - Touched files: `tools/migration/run_golden_packet.py`, `tests/test_run_golden_packet.py`
   - Validation: `UV_CACHE_DIR=/tmp/uv-cache uv run --with pytest --with jsonschema python -m pytest -q tests/test_run_golden_packet.py`
-- Blockers: production packet contract run evidence pending
+  - Evidence run (2026-02-14):
+    - `migration/runtime/evidence/2026-02-14/run_golden_packet.stdout.json`
+    - `migration/runtime/evidence/2026-02-14/golden_packet_runs/pkt-v2-migrate-0002-runner-cutover/golden-m4-20260214/golden_report.json`
+- Blockers: none
 
 ### M4-T03 — Golden packet regression tests
 - Repo: xtrlv2
@@ -305,7 +308,10 @@ Format: keep entries short and auditable.
 - Evidence:
   - Touched files: `docs/migration/cli_changes.md`, `docs/migration/cutover.md`
   - Validation: `python tools/migration/final_validate.py`
-- Blockers: production cutover run evidence pending
+  - Cutover demo run (2026-02-14):
+    - `migration/runtime/evidence/2026-02-14/migration_report.json`
+    - `migration/runtime/evidence/2026-02-14/state_doctor.stdout.json`
+- Blockers: production environment signoff pending
 
 ### M6-T01 — Final validation tool (`final_validate.py`)
 - Repo: xtrlv2
@@ -347,7 +353,8 @@ Format: keep entries short and auditable.
 - Evidence:
   - Touched files: `docs/migration/final_report.md`
   - Validation: `python tools/migration/final_validate.py`
-- Blockers: signoff pending production cutover evidence
+  - Consolidated evidence index: `migration/runtime/evidence/2026-02-14/evidence_summary.json`
+- Blockers: production cutover evidence + branch-protection promotion signoff pending
 
 ## Definition of Done
 - SSOT covers all post-pivot artifacts.

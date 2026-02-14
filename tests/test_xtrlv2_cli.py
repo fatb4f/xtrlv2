@@ -23,3 +23,22 @@ def test_xtrlv2_cli_help_commands():
     run_ok("state-doctor", "--help")
     run_ok("run-golden-packet", "--help")
     run_ok("final-validate", "--help")
+
+
+def test_xtrlv2_cli_passthrough_arguments(tmp_path: Path):
+    state_root = tmp_path / "state"
+    proc = subprocess.run(
+        [
+            sys.executable,
+            str(CLI),
+            "state-doctor",
+            "--state-root",
+            str(state_root),
+            "--create-missing",
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stderr
