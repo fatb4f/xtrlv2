@@ -141,7 +141,7 @@ Format: keep entries short and auditable.
 - Artifacts: `python-quality-gate` workflow, gate matrix rows, branch protection required checks
 - Schema refs: n/a (quality gates)
 - Tests: lint/format/test failures block merge
-- Status: In progress
+- Status: Done
 - Owner: TBD
 - Links: `docs/migration/GIT_STRATEGY_AND_PYTHON_GATES.md`
 - DoD gate: required checks enforce Python quality on `main`
@@ -151,7 +151,10 @@ Format: keep entries short and auditable.
     - `UV_CACHE_DIR=/tmp/uv-cache uv run --with pytest --with jsonschema python -m pytest -q` -> `15 passed`
     - `UV_CACHE_DIR=/tmp/uv-cache uv run --with ruff ruff check .` -> `All checks passed!`
     - `UV_CACHE_DIR=/tmp/uv-cache uv run --with ruff ruff format --check .` -> `17 files already formatted`
-- Blockers: pending CI run links in issue `#2` evidence checklist
+  - PR #3 CI evidence (2026-02-14):
+    - `python-quality`: https://github.com/fatb4f/xtrlv2/actions/runs/22011601104/job/63606437236 (pass)
+    - `ssot-gate`: https://github.com/fatb4f/xtrlv2/actions/runs/22011601105/job/63606437156 (pass)
+- Blockers: none
 
 ### M2-T04 — Refactoring quality contract
 - Repo: xtrlv2

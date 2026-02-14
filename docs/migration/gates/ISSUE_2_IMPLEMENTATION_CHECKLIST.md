@@ -20,7 +20,7 @@ Scope: make schema SSOT checks preventive on `main` (not advisory), then extend 
 - [ ] Capture evidence links:
   - failing run URL:
   - blocked merge screenshot/URL:
-  - passing run URL:
+  - passing run URL: https://github.com/fatb4f/xtrlv2/actions/runs/22011601104/job/63606437236
 
 ## Python gates (follow-on)
 - [x] Add `python-quality-gate` workflow.
