@@ -26,7 +26,9 @@ def load_json(path: Path) -> dict[str, Any]:
 
 
 def save_json(path: Path, payload: dict[str, Any]) -> None:
-    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    path.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
 
 
 def append_jsonl(path: Path, payload: dict[str, Any]) -> None:
@@ -40,13 +42,23 @@ def validate_phase(phase: str) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Run one stateless migration loop tick")
-    parser.add_argument("--state", default="migration/runtime/loop_state.json", help="State JSON path")
-    parser.add_argument("--log", default="migration/runtime/loop_log.jsonl", help="Log JSONL path")
+    parser = argparse.ArgumentParser(
+        description="Run one stateless migration loop tick"
+    )
+    parser.add_argument(
+        "--state", default="migration/runtime/loop_state.json", help="State JSON path"
+    )
+    parser.add_argument(
+        "--log", default="migration/runtime/loop_log.jsonl", help="Log JSONL path"
+    )
     parser.add_argument("--run-id", required=True, help="Run identifier")
-    parser.add_argument("--phase", required=True, choices=PHASES, help="Phase to execute")
+    parser.add_argument(
+        "--phase", required=True, choices=PHASES, help="Phase to execute"
+    )
     parser.add_argument("--status", default="OK", help="Tick status")
-    parser.add_argument("--artifact", action="append", default=[], help="Artifact path (repeatable)")
+    parser.add_argument(
+        "--artifact", action="append", default=[], help="Artifact path (repeatable)"
+    )
     args = parser.parse_args()
 
     state_path = Path(args.state)

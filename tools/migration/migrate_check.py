@@ -21,9 +21,11 @@ def fail(msg: str) -> int:
 def file_contains(path: pathlib.Path, needle: str) -> bool:
     return needle in path.read_text(encoding="utf-8")
 
+
 def require_headings(path: pathlib.Path, headings: list[str]) -> bool:
     text = path.read_text(encoding="utf-8")
     return all(h in text for h in headings)
+
 
 def parse_status_date(path: pathlib.Path) -> date | None:
     for line in path.read_text(encoding="utf-8").splitlines():
@@ -50,12 +52,16 @@ def main() -> int:
     if not require_headings(workplan, ["Milestone 0", "Milestone 1"]):
         return fail("WORKPLAN.md must include Milestone sections")
 
-    if not require_headings(tracker, ["Work Items", "Work Item Details", "Operational Gates"]):
+    if not require_headings(
+        tracker, ["Work Items", "Work Item Details", "Operational Gates"]
+    ):
         return fail("TRACKER.md missing required headings")
     if not file_contains(tracker, "M1-T01"):
         return fail("TRACKER.md must include tracker IDs (e.g., M1-T01)")
 
-    if not require_headings(status, ["Current phase:", "Last updated:", "Next 3 actions:", "Blockers:"]):
+    if not require_headings(
+        status, ["Current phase:", "Last updated:", "Next 3 actions:", "Blockers:"]
+    ):
         return fail("STATUS.md must include required dashboard fields")
     status_date = parse_status_date(status)
     if status_date is None:
@@ -65,9 +71,13 @@ def main() -> int:
 
     # If last commit touched migration docs/tools, require STATUS.md change in that commit.
     try:
-        changed = subprocess.check_output(
-            ["git", "diff", "--name-only", "HEAD~1"], cwd=REPO_ROOT
-        ).decode("utf-8").splitlines()
+        changed = (
+            subprocess.check_output(
+                ["git", "diff", "--name-only", "HEAD~1"], cwd=REPO_ROOT
+            )
+            .decode("utf-8")
+            .splitlines()
+        )
     except Exception:
         changed = []
 

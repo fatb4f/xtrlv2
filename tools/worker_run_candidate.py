@@ -15,7 +15,6 @@ NOTE: This repo stages the control plane. You must have `codex` installed for ex
 from __future__ import annotations
 
 import argparse
-import json
 import subprocess
 import sys
 from pathlib import Path
@@ -33,7 +32,13 @@ from _util import (
 )
 
 
-def run_codex(prompt: str, output_schema_path: Path, out_json: Path, out_events_jsonl: Path, cwd: Path) -> int:
+def run_codex(
+    prompt: str,
+    output_schema_path: Path,
+    out_json: Path,
+    out_events_jsonl: Path,
+    cwd: Path,
+) -> int:
     """Run codex non-interactive.
 
     Contract:
@@ -55,7 +60,9 @@ def run_codex(prompt: str, output_schema_path: Path, out_json: Path, out_events_
     return int(proc.returncode)
 
 
-def make_evidence_stub(candidate_id: str, base_ref: str, work_item_id: str, codex_rc: int, out_dir: Path) -> Dict[str, Any]:
+def make_evidence_stub(
+    candidate_id: str, base_ref: str, work_item_id: str, codex_rc: int, out_dir: Path
+) -> Dict[str, Any]:
     """Minimal evidence capsule; controller/linearizer can extend.
 
     Current schema is permissive; this is a placeholder that keeps the artifact graph intact.
@@ -65,10 +72,14 @@ def make_evidence_stub(candidate_id: str, base_ref: str, work_item_id: str, code
         "run_id": candidate_id,
         "base_ref": base_ref,
         "checks": {
-            "codex": {"ok": codex_rc == 0, "rc": codex_rc, "work_item_id": work_item_id},
+            "codex": {
+                "ok": codex_rc == 0,
+                "rc": codex_rc,
+                "work_item_id": work_item_id,
+            },
         },
         "diff": {"files": [], "lines_added": 0, "lines_removed": 0},
-        "notes": [f"events_jsonl={str(out_dir / 'codex_events.jsonl')}"]
+        "notes": [f"events_jsonl={str(out_dir / 'codex_events.jsonl')}"],
     }
 
 
@@ -88,7 +99,7 @@ def worker_gate_stub(candidate_id: str, base_ref: str, codex_rc: int) -> Dict[st
         "reason_codes": reason_codes,
         "base_ref": base_ref,
         "created_at": now_iso(),
-        "notes": ["worker-local admissibility only"]
+        "notes": ["worker-local admissibility only"],
     }
 
 
@@ -108,11 +119,20 @@ def append_candidate(candidate_set_path: Path, entry: Dict[str, Any]) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--queue", default=str(state_root() / "queue" / "work_queue.json"))
-    parser.add_argument("--rank-policy", default=str(state_root() / "queue" / "rank_policy.json"))
-    parser.add_argument("--candidate-set", default=str(state_root() / "queue" / "candidate_set.json"))
+    parser.add_argument(
+        "--queue", default=str(state_root() / "queue" / "work_queue.json")
+    )
+    parser.add_argument(
+        "--rank-policy", default=str(state_root() / "queue" / "rank_policy.json")
+    )
+    parser.add_argument(
+        "--candidate-set", default=str(state_root() / "queue" / "candidate_set.json")
+    )
     parser.add_argument("--worker-id", default="worker-001")
-    parser.add_argument("--prompt", default="Implement the smallest change for the given objective slice. Output a unified diff.")
+    parser.add_argument(
+        "--prompt",
+        default="Implement the smallest change for the given objective slice. Output a unified diff.",
+    )
     args = parser.parse_args()
 
     ensure_state_layout()
@@ -141,7 +161,14 @@ def main() -> int:
                 "last_good_ref": queue["base_ref"],
                 "desired_state_id": queue["desired_state_id"],
                 "budgets": wi.get("budgets", {}),
-                "policy": wi.get("policy", {"allowed_paths": [], "forbidden_paths": [], "allowed_commands": []}),
+                "policy": wi.get(
+                    "policy",
+                    {
+                        "allowed_paths": [],
+                        "forbidden_paths": [],
+                        "allowed_commands": [],
+                    },
+                ),
                 "output_root": str(out_dir),
             }
             write_json(out_dir / "run_manifest.json", run_manifest)
@@ -161,7 +188,9 @@ def main() -> int:
             if patch_out.exists():
                 validate_artifact("patch_proposal", load_json(patch_out))
 
-            evidence = make_evidence_stub(candidate_id, queue["base_ref"], work_item_id, rc, out_dir)
+            evidence = make_evidence_stub(
+                candidate_id, queue["base_ref"], work_item_id, rc, out_dir
+            )
             write_json(out_dir / "evidence.json", evidence)
             validate_artifact("evidence_capsule", evidence)
 

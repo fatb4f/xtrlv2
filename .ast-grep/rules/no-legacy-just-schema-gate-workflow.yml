@@ -1,0 +1,14 @@
+id: no-legacy-just-schema-gate-workflow
+language: yaml
+message: "schema-ssot-gate must use Python actuators; `just` is not allowed."
+severity: error
+rule:
+  any:
+    - kind: plain_scalar
+      regex: '\bjust\b'
+    - kind: block_scalar
+      regex: '\bjust\b'
+    - kind: string_scalar
+      regex: '\bjust\b'
+files:
+  - .github/workflows/schema-ssot-gate.yml

@@ -38,7 +38,19 @@ def list_tree(root: Path) -> Dict[str, List[str]]:
             results.append(str(p.relative_to(root)))
         return results
 
-    for rel in ["control", "packets", "schemas", "tools", "templates", "docs", "state", "ledger", "out", "skills", "skills-pack"]:
+    for rel in [
+        "control",
+        "packets",
+        "schemas",
+        "tools",
+        "templates",
+        "docs",
+        "state",
+        "ledger",
+        "out",
+        "skills",
+        "skills-pack",
+    ]:
         categories[f"files::{rel}"] = list_files(rel)
 
     return categories
@@ -49,29 +61,97 @@ def build_mapping(root: Path) -> List[Dict[str, str]]:
     # Action: PORT/REPLACE/DROP/DEFER
     mapping = []
 
-    def add(src: str, dest: str, action: str, notes: str, owner: str = "TBD", depends: str = "") -> None:
-        mapping.append({
-            "source": src,
-            "target": dest,
-            "action": action,
-            "notes": notes,
-            "owner": owner,
-            "depends": depends,
-        })
+    def add(
+        src: str,
+        dest: str,
+        action: str,
+        notes: str,
+        owner: str = "TBD",
+        depends: str = "",
+    ) -> None:
+        mapping.append(
+            {
+                "source": src,
+                "target": dest,
+                "action": action,
+                "notes": notes,
+                "owner": owner,
+                "depends": depends,
+            }
+        )
 
-    add("control/", "control/ssot/", "PORT", "SSOT exists in v2; align schemas and policies.", depends="M1-T01")
-    add("schemas/", "control/ssot/schemas/", "REPLACE", "v2 owns schemas; map/merge as needed.", depends="M1-T01")
-    add("tools/", "tools/", "PORT", "Runtime tooling to be ported selectively.", depends="M2-T01")
-    add("packets/", "packets/", "REPLACE", "v2 packet formats may differ; normalize then port.", depends="M2-T01")
+    add(
+        "control/",
+        "control/ssot/",
+        "PORT",
+        "SSOT exists in v2; align schemas and policies.",
+        depends="M1-T01",
+    )
+    add(
+        "schemas/",
+        "control/ssot/schemas/",
+        "REPLACE",
+        "v2 owns schemas; map/merge as needed.",
+        depends="M1-T01",
+    )
+    add(
+        "tools/",
+        "tools/",
+        "PORT",
+        "Runtime tooling to be ported selectively.",
+        depends="M2-T01",
+    )
+    add(
+        "packets/",
+        "packets/",
+        "REPLACE",
+        "v2 packet formats may differ; normalize then port.",
+        depends="M2-T01",
+    )
     add("templates/", "(tbd)", "DEFER", "Decide if templates live in v2 or tooling.")
-    add("docs/", "docs/", "PORT", "Migration docs should move; keep as sources of truth.")
-    add("state/", "(v2 state root)", "REPLACE", "State layout changes handled in migration tool.", depends="M1-T04")
-    add("ledger/", "(v2 state root)", "REPLACE", "Ledger schema and location to be finalized.", depends="M1-T04")
-    add("out/", "(v2 state root)", "REPLACE", "Out dir layout to be defined by v2 evidence capsule.", depends="M1-T02")
+    add(
+        "docs/",
+        "docs/",
+        "PORT",
+        "Migration docs should move; keep as sources of truth.",
+    )
+    add(
+        "state/",
+        "(v2 state root)",
+        "REPLACE",
+        "State layout changes handled in migration tool.",
+        depends="M1-T04",
+    )
+    add(
+        "ledger/",
+        "(v2 state root)",
+        "REPLACE",
+        "Ledger schema and location to be finalized.",
+        depends="M1-T04",
+    )
+    add(
+        "out/",
+        "(v2 state root)",
+        "REPLACE",
+        "Out dir layout to be defined by v2 evidence capsule.",
+        depends="M1-T02",
+    )
     add("skills/", "(tbd)", "DEFER", "Decide: keep in v1 only or port.")
     add("skills-pack/", "(tbd)", "DEFER", "Decide: keep in v1 only or port.")
-    add("worktrees/", "(v2 state root)", "REPLACE", "Worktree layout defined in v2 state model.", depends="M1-T04")
-    add("xtrl (entrypoint)", "xtrlv2 entrypoint", "REPLACE", "Define new canonical CLI and wrapper.", depends="M2-T01")
+    add(
+        "worktrees/",
+        "(v2 state root)",
+        "REPLACE",
+        "Worktree layout defined in v2 state model.",
+        depends="M1-T04",
+    )
+    add(
+        "xtrl (entrypoint)",
+        "xtrlv2 entrypoint",
+        "REPLACE",
+        "Define new canonical CLI and wrapper.",
+        depends="M2-T01",
+    )
 
     return mapping
 
@@ -107,9 +187,13 @@ def write_mapping(md_path: Path, mapping: List[Dict[str, str]]) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Inventory xtrl repo and produce mapping")
+    parser = argparse.ArgumentParser(
+        description="Inventory xtrl repo and produce mapping"
+    )
     parser.add_argument("--xtrl-root", required=True, help="Path to xtrl repo root")
-    parser.add_argument("--out-dir", required=True, help="Output dir for docs/migration")
+    parser.add_argument(
+        "--out-dir", required=True, help="Output dir for docs/migration"
+    )
     args = parser.parse_args()
 
     xtrl_root = Path(args.xtrl_root).resolve()
@@ -118,7 +202,9 @@ def main() -> int:
 
     inventory = list_tree(xtrl_root)
     metadata = {
-        "generated_at_utc": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "generated_at_utc": datetime.now(timezone.utc)
+        .isoformat()
+        .replace("+00:00", "Z"),
         "source_root": str(xtrl_root),
         "tool": "tools/migration/inventory_xtrl.py",
         "tool_version": "0.1",
@@ -126,7 +212,10 @@ def main() -> int:
     }
     inventory_path = out_dir / "inventory_xtrl.json"
     inventory_path.write_text(
-        json.dumps({"metadata": metadata, "inventory": inventory}, indent=2, sort_keys=True) + "\n",
+        json.dumps(
+            {"metadata": metadata, "inventory": inventory}, indent=2, sort_keys=True
+        )
+        + "\n",
         encoding="utf-8",
     )
 

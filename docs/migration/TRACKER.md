@@ -1,10 +1,10 @@
 # Migration Tracker (Authoritative)
 
-Goal: re-establish xtrlv2 as SSOT for post-pivot features, then align xtrl runtime/emitters.
+Goal: establish xtrlv2 as a standalone SSOT + execution toolchain for post-pivot features.
 
 ## Source of Truth
-- xtrlv2: SSOT schemas and policies
-- xtrl: runtime/emitters/adapters
+- xtrlv2: SSOT schemas, gates, and runtime policies
+- xtrl: external compatibility reference only (not an actuator dependency)
 
 ## Current State
 - SSOT update landed in xtrlv2: commit `0fdb685`
@@ -18,7 +18,8 @@ Goal: re-establish xtrlv2 as SSOT for post-pivot features, then align xtrl runti
 3. **M1-T03** helper_created event schema — JSONL envelope + payload.
 4. **M1-T04** Ledger/latest pointer schemas — if required by runtime.
 5. **M1-T05** Phase E snapshot schemas — dep_graph, api_surface, module_manifest.
-6. **M2-T01** Align xtrl emitters/validators to SSOT + pin schema hash.
+6. **M2-T01** Validate external compatibility bridge (xtrl artifacts against xtrlv2 SSOT), without reusing xtrl actuators in xtrlv2.
+7. **M2-T04** Refactoring quality contract — define repeatable design-pattern baseline + MCP-assisted feedback workflow.
 
 ## Work Item Details (executable checklist)
 Format: keep entries short and auditable.
@@ -103,9 +104,9 @@ Format: keep entries short and auditable.
   - Commit: `328806e`
 - Blockers: none
 
-### M2-T01 — xtrl alignment + schema pin
-- Repo: xtrl
-- Artifacts: pinned schema hash file, conformance validator, updated emitters
+### M2-T01 — external compatibility bridge validation
+- Repo: xtrl (external bridge evidence), tracked from xtrlv2
+- Artifacts: pinned schema hash file, conformance validator, bridge evidence
 - Schema refs: all SSOT items above
 - Tests: schema pin gate; artifact conformance gate (B–E)
 - Status: Done (pushed)
@@ -114,7 +115,7 @@ Format: keep entries short and auditable.
 - DoD gate: schema pin + artifact conformance
 - Evidence:
   - Commit: `e329450`
-  - Validation: `just ssot-pin-check`; `pytest -q tests/test_ssot_pin_check_m2_t01.py tests/test_ssot_conformance.py`
+  - Validation (external bridge run in `xtrl`): `python tools/ssot_gate.py pin --pin-file control/ssot_pin.json --ssot-root /home/src404/src/xtrlv2/control/ssot`; `pytest -q tests/test_ssot_pin_check_m2_t01.py tests/test_ssot_conformance.py`
   - Key output: `4 passed`
 - Blockers: none
 
@@ -123,34 +124,67 @@ Format: keep entries short and auditable.
 - Artifacts: `.github/workflows/schema-ssot-gate.yml`, branch protection config evidence
 - Schema refs: n/a (policy enforcement)
 - Tests: failing PR cannot merge; passing PR can merge
-- Status: In progress
+- Status: Done
 - Owner: TBD
 - Links: `docs/migration/gates/MAIN_BRANCH_ENFORCEMENT.md`, issue `#2`
 - DoD gate: required status checks active in branch protection
-- Evidence: `docs/migration/gates/ISSUE_2_IMPLEMENTATION_CHECKLIST.md`
-- Blockers: workflow still `workflow_dispatch` only
+- Evidence:
+  - Checklist: `docs/migration/gates/ISSUE_2_IMPLEMENTATION_CHECKLIST.md`
+  - Branch protection update applied (2026-02-14):
+    - required checks: `schema-ssot-gate / ssot-gate`, `python-quality-gate / python-quality`
+    - strict/up-to-date: enabled
+    - enforce admins: enabled
+  - Intentional failure proof (2026-02-14):
+    - failing required check: https://github.com/fatb4f/xtrlv2/actions/runs/22011677068/job/63606647917 (`python-quality` fail)
+    - blocked merge proof: `gh pr merge 3 --merge --delete-branch` -> base branch policy prohibits merge
+  - Passing proof after remediation (2026-02-14):
+    - `python-quality`: https://github.com/fatb4f/xtrlv2/actions/runs/22011688947/job/63606678737 (pass)
+    - `ssot-gate`: https://github.com/fatb4f/xtrlv2/actions/runs/22011688944/job/63606678711 (pass)
+- Blockers: none
 
 ### M2-T03 — Python quality gates (`ruff` + `pytest`)
 - Repo: xtrlv2
 - Artifacts: `python-quality-gate` workflow, gate matrix rows, branch protection required checks
 - Schema refs: n/a (quality gates)
 - Tests: lint/format/test failures block merge
-- Status: Not started
+- Status: Done
 - Owner: TBD
 - Links: `docs/migration/GIT_STRATEGY_AND_PYTHON_GATES.md`
 - DoD gate: required checks enforce Python quality on `main`
-- Evidence: (CI run / validation report)
-- Blockers: M2-T02
+- Evidence:
+  - Workflow added: `.github/workflows/python-quality-gate.yml`
+  - Local validation snapshot (2026-02-14):
+    - `UV_CACHE_DIR=/tmp/uv-cache uv run --with pytest --with jsonschema python -m pytest -q` -> `15 passed`
+    - `UV_CACHE_DIR=/tmp/uv-cache uv run --with ruff ruff check .` -> `All checks passed!`
+    - `UV_CACHE_DIR=/tmp/uv-cache uv run --with ruff ruff format --check .` -> `17 files already formatted`
+  - PR #3 CI evidence (2026-02-14):
+    - `python-quality`: https://github.com/fatb4f/xtrlv2/actions/runs/22011601104/job/63606437236 (pass)
+    - `ssot-gate`: https://github.com/fatb4f/xtrlv2/actions/runs/22011601105/job/63606437156 (pass)
+- Blockers: none
+
+### M2-T04 — Refactoring quality contract
+- Repo: xtrlv2
+- Artifacts: `docs/migration/QUALITY_REFACTORING_CONTRACT.md`
+- Schema refs: n/a (engineering quality policy)
+- Tests: policy referenced from migration docs; gate commands remain deterministic
+- Status: Done (pushed)
+- Owner: TBD
+- Links: `docs/migration/QUALITY_REFACTORING_CONTRACT.md`
+- DoD gate: explicit pattern baseline + feedback loop contract documented
+- Evidence:
+  - Touched files: `docs/migration/QUALITY_REFACTORING_CONTRACT.md`, `docs/migration/README.md`, `docs/migration/GIT_STRATEGY_AND_PYTHON_GATES.md`
+  - Validation: `python tools/migration/migrate_check.py` (docs consistency remains green)
+- Blockers: none
 
 ## Definition of Done
 - SSOT covers all post-pivot artifacts.
-- xtrl emits schema-valid artifacts for B–E.
+- xtrlv2 emits and validates schema-valid artifacts for B–E.
 - Drift checks prevent schema divergence.
 
 ## Operational Gates (stop rules)
-- xtrl cannot add new artifact shapes unless an xtrlv2 schema exists or an approved temporary extension is recorded.
+- xtrlv2 cannot add new artifact shapes unless an xtrlv2 schema exists or an approved temporary extension is recorded.
 - Schema pin gate must fail on mismatch between xtrl and xtrlv2 schema hash.
-- Artifact conformance gate must fail when emitted artifacts violate SSOT schemas.
+- Artifact conformance gate must fail when xtrlv2 artifacts violate SSOT schemas.
 
 ## Migration Health Signals
 - % of emitted artifacts passing SSOT schema validation (CI).
@@ -162,3 +196,4 @@ Format: keep entries short and auditable.
 - xtrl schema gap map: `reports/xtrl_vs_xtrlv2_schema_mapping.md`
 - alignment checklist: `reports/xtrlv2-cross-repo-alignment-checklist.md`
 - pivot report: `reports/xtrlv2-migration-pivot-report.md`
+- git plant plan review: `docs/migration/gate/git/git_plant_plan_review.md`

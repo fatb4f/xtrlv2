@@ -167,7 +167,9 @@ def main() -> int:
         hashes["entries"].append(
             {
                 "schema": str(e.schema),
-                "schema_sha256": sha256_file(schema_abs) if schema_abs.exists() else None,
+                "schema_sha256": sha256_file(schema_abs)
+                if schema_abs.exists()
+                else None,
                 "output": str(e.output),
                 "output_sha256": sha256_file(out_abs) if out_abs.exists() else None,
             }
