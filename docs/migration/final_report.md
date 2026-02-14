@@ -29,5 +29,4 @@ Status date: 2026-02-14
 ## Remaining completion criteria
 
 1. Capture production-grade state migration report artifacts from real cutover run owner environment.
-2. Promote `migration-final-guards` to required branch-protection check after stability window.
-3. Final signoff that v1 operation is deprecated in active runbooks.
+2. Final signoff that v1 operation is deprecated in active runbooks.

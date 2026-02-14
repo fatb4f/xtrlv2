@@ -15,10 +15,10 @@ One row per gate. Keep entries short, auditable, and enforceable.
 | G-PY-001-ruff-lint | tests | Migration Maintainers | GitHub Actions (`python-quality-gate`) on PR + push main | `ruff check .` | `LINT_FAILED` | CI logs (+ junit if configured) | yes |
 | G-PY-002-ruff-format | tests | Migration Maintainers | GitHub Actions (`python-quality-gate`) on PR + push main | `ruff format --check .` | `FORMAT_FAILED` | CI logs | yes |
 | G-PY-003-pytest-suite | tests | Migration Maintainers | GitHub Actions (`python-quality-gate`) on PR + push main | `pytest -q` | `TEST_FAILURE` | pytest output (+ junit) | yes |
-| G-MIG-001-final-validate | tests | Migration Maintainers | GitHub Actions (`migration-final-guards`) on PR + push main | `python tools/migration/final_validate.py` | `MIGRATION_FINAL_VALIDATION_FAILED` | CI logs | no |
-| G-MIG-002-golden-regression | tests | Migration Maintainers | GitHub Actions (`migration-final-guards`) on PR + push main | `pytest -q tests/test_packet_pre_contract_schema.py tests/test_run_golden_packet.py tests/test_xtrlv2_cli.py tests/test_final_validate.py` | `GOLDEN_PACKET_REGRESSION` | pytest output | no |
+| G-MIG-001-final-validate | tests | Migration Maintainers | GitHub Actions (`migration-final-guards`) on PR + push main | `python tools/migration/final_validate.py` | `MIGRATION_FINAL_VALIDATION_FAILED` | CI logs | yes |
+| G-MIG-002-golden-regression | tests | Migration Maintainers | GitHub Actions (`migration-final-guards`) on PR + push main | `pytest -q tests/test_packet_pre_contract_schema.py tests/test_run_golden_packet.py tests/test_xtrlv2_cli.py tests/test_final_validate.py` | `GOLDEN_PACKET_REGRESSION` | pytest output | yes |
 | G-PROM-001-release-tag | promote | Release Maintainers | release workflow | release command (TBD) | `RELEASE_BLOCKED` | release notes + tag | no |
-| G-BP-001-main-required-checks | branch-protection | Repo Admins | GitHub branch protection | require `ssot-gate` + `python-quality` checks | `STATUS_CHECK_REQUIRED` | GitHub settings + merge UI | yes |
+| G-BP-001-main-required-checks | branch-protection | Repo Admins | GitHub branch protection | require `ssot-gate` + `python-quality` + `final-guards` checks | `STATUS_CHECK_REQUIRED` | GitHub settings + merge UI | yes |
 
 ## Notes
 - Replace `Migration Maintainers` with concrete team/person as part of issue `#2` closeout.

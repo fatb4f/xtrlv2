@@ -339,7 +339,8 @@ Format: keep entries short and auditable.
 - Evidence:
   - Touched files: `.github/workflows/migration-final-guards.yml`
   - Validation: workflow executes `python tools/migration/final_validate.py` + regression pytest slice
-- Blockers: not yet configured as required branch-protection check
+  - Branch protection update (2026-02-14): required checks now include `final-guards`
+- Blockers: none
 
 ### M6-T03 — Final report draft (`final_report.md`)
 - Repo: xtrlv2
