@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="golden-packet" tests="1" failures="0"><testcase classname="golden" name="materialize_evidence"/></testsuite>
