@@ -1,0 +1,52 @@
+{
+  "allowed_paths": [
+    "*"
+  ],
+  "area": "engineering/dome_production_readiness",
+  "base_ref": "origin/main",
+  "branch": "packet/pkt-dome-m-07-retry-backoff-policy",
+  "budgets": {
+    "max_changed_files": 200,
+    "max_changed_lines": 20000
+  },
+  "evidence": {
+    "include_git_diff_patch": false,
+    "out_dir": "out/dome"
+  },
+  "forbidden_outputs": [],
+  "github": {
+    "issue": {
+      "body": "",
+      "close_on_success": false,
+      "comment_on_run": false,
+      "ensure": false,
+      "labels": [],
+      "milestone": "",
+      "template": "packet-default.yml",
+      "title": "pkt-dome-m-07-retry-backoff-policy"
+    },
+    "repo": "<org>/<repo>"
+  },
+  "github_ops_required": false,
+  "net_ops_required": false,
+  "network_policy": {
+    "additional_domains": [],
+    "allowed_http_methods": [],
+    "domain_allowlist_preset": "none",
+    "internet_access": "off"
+  },
+  "packet_id": "pkt-dome-m-07-retry-backoff-policy",
+  "repo": "dome",
+  "run": {
+    "commands": [],
+    "regen_cmd": "",
+    "test_cmd": ""
+  },
+  "worktree_policy": {
+    "allow_dirty_globs": [],
+    "allow_untracked_globs": [],
+    "deny_if_worktree_exists": true,
+    "mode": "strict",
+    "worktree_root": "$CODEX_STATE/xtrl/worktrees"
+  }
+}

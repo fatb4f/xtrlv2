@@ -1,0 +1,81 @@
+{
+  "schema_version": "xtrl.pre_contract/v0.2",
+  "packet_id": "pkt-dome-m-02-runtime-contracts",
+  "component": "dome",
+  "repo": "dome",
+  "base_ref": "origin/main",
+  "mode": "NORMAL",
+  "budgets": {
+    "time_minutes": 90,
+    "iteration_budget": 2,
+    "diff_budget": {
+      "max_files_changed": 20,
+      "max_lines_changed": 800
+    }
+  },
+  "constraints": {
+    "clean_repo_required": true,
+    "deny_repo_local_roots": [
+      ".codex",
+      ".quint"
+    ],
+    "allowed_paths": [
+      "doc/**",
+      "README.md",
+      "ssot/**",
+      "tools/orchestrator/**",
+      "tests/**",
+      ".github/workflows/**"
+    ],
+    "forbidden_paths": [
+      ".git/**"
+    ],
+    "forbidden_patterns": [
+      "subprocess\\.run\\(.*shell\\s*=\\s*True",
+      "os\\.system\\(",
+      "eval\\(",
+      "exec\\(",
+      "\\|\\|\\s*true"
+    ]
+  },
+  "actions": {
+    "test": [
+      "python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests"
+    ]
+  },
+  "evidence": {
+    "required_files": [
+      "evidence/plan.md",
+      "evidence/decision.md",
+      "evidence/scope.json",
+      "evidence/integrity.json",
+      "evidence/tests.junit.xml",
+      "evidence/regression.md",
+      "evidence/events.jsonl",
+      "commands.log",
+      "summary.md",
+      "packet.json",
+      "contract.json",
+      "exec-prompt.md"
+    ]
+  },
+  "plan_card": {
+    "why": "Milestone M-02 needs substrate-backed execution planning for dome production readiness.",
+    "what": "Stable runtime config + policy schemas",
+    "how": "Implement and validate milestone M-02 with explicit checks and evidence artifacts.",
+    "where": "dome repository",
+    "who": "controller",
+    "when": "PLAN -> EXEC -> CHECK"
+  },
+  "inputs": {
+    "notes": [
+      "Milestone focus: Runtime Contracts",
+      "All acceptance checks must be auditable via command + artifact path.",
+      "Preserve xtrlv2 substrate compatibility in contracts and outputs."
+    ]
+  }
+}
