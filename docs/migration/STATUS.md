@@ -1,12 +1,12 @@
 # Migration Status
 
-Current phase: M2 (Runtime alignment + gate enforcement)
+Current phase: M3 (State layout + one-time migration tool)
 Last updated: 2026-02-14
 
 Next 3 actions:
-1. Mark M2 milestone complete and open M3 planning tasks.
-2. Apply the refactoring contract (`QUALITY_REFACTORING_CONTRACT.md`) on all upcoming tooling changes.
-3. Expand policy gates incrementally (type/security/changelog) after stability review.
+1. Run `tools/migration/state_migrate.py` against a real legacy state root and attach the generated report artifacts.
+2. Wire `tools/migration/state_doctor.py` into CI for periodic state-layout health checks.
+3. Open M4 packet-contract migration tasks after first production migration report lands.
 
 Blockers:
-- none in M2 gate-enforcement scope.
+- no code blockers; production migration evidence run still pending.

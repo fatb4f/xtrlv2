@@ -92,6 +92,10 @@
     "module_manifest": {
       "version": "0.1",
       "schema": "control/ssot/schemas/module_manifest.schema.json"
+    },
+    "migration_report": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/migration_report.schema.json"
     }
   }
 }

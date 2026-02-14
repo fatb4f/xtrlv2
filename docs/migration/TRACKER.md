@@ -19,7 +19,12 @@ Goal: establish xtrlv2 as a standalone SSOT + execution toolchain for post-pivot
 4. **M1-T04** Ledger/latest pointer schemas — if required by runtime.
 5. **M1-T05** Phase E snapshot schemas — dep_graph, api_surface, module_manifest.
 6. **M2-T01** Validate external compatibility bridge (xtrl artifacts against xtrlv2 SSOT), without reusing xtrl actuators in xtrlv2.
-7. **M2-T04** Refactoring quality contract — define repeatable design-pattern baseline + MCP-assisted feedback workflow.
+7. **M2-T02** Activate required branch gates on `main`.
+8. **M2-T03** Python quality gates (`ruff` + `pytest`).
+9. **M2-T04** Refactoring quality contract — define repeatable design-pattern baseline + MCP-assisted feedback workflow.
+10. **M3-T01** Add `migration_report` schema + example and register it in SSOT.
+11. **M3-T02** Implement `tools/migration/state_migrate.py` (dry-run/apply + report emission + idempotence).
+12. **M3-T03** Implement `tools/migration/state_doctor.py` (layout validator + optional repair).
 
 ## Work Item Details (executable checklist)
 Format: keep entries short and auditable.
@@ -131,7 +136,7 @@ Format: keep entries short and auditable.
 - Evidence:
   - Checklist: `docs/migration/gates/ISSUE_2_IMPLEMENTATION_CHECKLIST.md`
   - Branch protection update applied (2026-02-14):
-    - required checks: `schema-ssot-gate / ssot-gate`, `python-quality-gate / python-quality`
+    - required checks: `ssot-gate`, `python-quality`
     - strict/up-to-date: enabled
     - enforce admins: enabled
   - Intentional failure proof (2026-02-14):
@@ -175,6 +180,54 @@ Format: keep entries short and auditable.
   - Touched files: `docs/migration/QUALITY_REFACTORING_CONTRACT.md`, `docs/migration/README.md`, `docs/migration/GIT_STRATEGY_AND_PYTHON_GATES.md`
   - Validation: `python tools/migration/migrate_check.py` (docs consistency remains green)
 - Blockers: none
+
+### M3-T01 — Migration report schema (`migration_report`)
+- Repo: xtrlv2
+- Artifacts: `control/ssot/schemas/migration_report.schema.json`, `control/ssot/examples/migration_report.example.json`, `control/ssot/registry.json`
+- Schema refs: `migration_report` v0.1
+- Tests: schema validation; example validates; negative case for missing summary
+- Status: Done
+- Owner: TBD
+- Links: (PR/commit)
+- DoD gate: report artifacts are schema-bound and included in registry-driven example validation
+- Evidence:
+  - Touched files: `control/ssot/schemas/migration_report.schema.json`, `control/ssot/examples/migration_report.example.json`, `control/ssot/registry.json`, `tests/test_migration_report_schema.py`
+  - Validation: `UV_CACHE_DIR=/tmp/uv-cache uv run --with pytest --with jsonschema python -m pytest -q tests/test_migration_report_schema.py tests/test_schema_examples_validate.py`
+    - Key output: `3 passed`
+- Blockers: none
+
+### M3-T02 — State migration tool (`state_migrate.py`)
+- Repo: xtrlv2
+- Artifacts: `tools/migration/state_migrate.py`, `migration/runtime/migration_report.json`, `migration/runtime/migration_report.md`
+- Schema refs: `migration_report` v0.1
+- Tests: dry-run leaves target untouched; apply copies data; second apply run is idempotent
+- Status: Done
+- Owner: TBD
+- Links: (PR/commit)
+- DoD gate: tool emits schema-valid report json + markdown summary and supports deterministic dry-run/apply modes
+- Evidence:
+  - Touched files: `tools/migration/state_migrate.py`, `tools/_util.py`, `tests/test_state_migrate.py`
+  - Validation:
+    - `UV_CACHE_DIR=/tmp/uv-cache uv run --with pytest --with jsonschema python -m pytest -q tests/test_state_migrate.py`
+    - `UV_CACHE_DIR=/tmp/uv-cache uv run --with ruff ruff check tools/migration/state_migrate.py`
+  - Key output: dry-run/apply/idempotence test passes
+- Blockers: none
+
+### M3-T03 — State doctor validator (`state_doctor.py`)
+- Repo: xtrlv2
+- Artifacts: `tools/migration/state_doctor.py`
+- Schema refs: validates optional artifacts via SSOT (`work_queue`, `rank_policy`, `candidate_set`, `latest_state`)
+- Tests: missing layout fails; `--create-missing` repairs; invalid optional artifact fails validation
+- Status: Done
+- Owner: TBD
+- Links: (PR/commit)
+- DoD gate: machine-readable validator output with non-zero exit on missing dirs or invalid artifacts
+- Evidence:
+  - Touched files: `tools/migration/state_doctor.py`, `tests/test_state_doctor.py`
+  - Validation:
+    - `UV_CACHE_DIR=/tmp/uv-cache uv run --with pytest --with jsonschema python -m pytest -q tests/test_state_doctor.py`
+    - `UV_CACHE_DIR=/tmp/uv-cache uv run --with ruff ruff check tools/migration/state_doctor.py`
+- Blockers: production migration run evidence pending (non-blocking for implementation)
 
 ## Definition of Done
 - SSOT covers all post-pivot artifacts.
