@@ -1,0 +1,78 @@
+{
+  "schema_version": "xtrl.pre_contract/v0.2",
+  "packet_id": "pkt-v2-golden-0001",
+  "component": "xtrlv2",
+  "repo": "xtrlv2",
+  "base_ref": "origin/main",
+  "mode": "NORMAL",
+  "budgets": {
+    "time_minutes": 30,
+    "iteration_budget": 1,
+    "diff_budget": {
+      "max_files_changed": 25,
+      "max_lines_changed": 800
+    }
+  },
+  "constraints": {
+    "clean_repo_required": true,
+    "deny_repo_local_roots": [
+      ".codex",
+      ".quint"
+    ],
+    "allowed_paths": [
+      "tools/**",
+      "docs/**",
+      "control/**",
+      "tests/**",
+      "packets/**"
+    ],
+    "forbidden_paths": [
+      ".git/**"
+    ],
+    "forbidden_patterns": [
+      "subprocess\\.run\\(.*shell\\s*=\\s*True",
+      "os\\.system\\(",
+      "eval\\(",
+      "exec\\(",
+      "\\|\\|\\s*true"
+    ]
+  },
+  "actions": {
+    "test": [
+      "python",
+      "-m",
+      "pytest",
+      "-q"
+    ]
+  },
+  "evidence": {
+    "required_files": [
+      "evidence/plan.md",
+      "evidence/decision.md",
+      "evidence/scope.json",
+      "evidence/integrity.json",
+      "evidence/tests.junit.xml",
+      "evidence/regression.md",
+      "evidence/events.jsonl",
+      "commands.log",
+      "summary.md",
+      "packet.json",
+      "contract.json",
+      "exec-prompt.md"
+    ]
+  },
+  "plan_card": {
+    "why": "Establish deterministic packet harness output contract in xtrlv2.",
+    "what": "Run one golden packet and verify required evidence tree exists.",
+    "how": "Use a local harness to materialize and validate required files.",
+    "where": "xtrlv2 migration/runtime/golden_packet",
+    "who": "controller",
+    "when": "PRECHECK -> EXEC"
+  },
+  "inputs": {
+    "notes": [
+      "Harness run is deterministic and CI-safe.",
+      "No external repo mutations required."
+    ]
+  }
+}

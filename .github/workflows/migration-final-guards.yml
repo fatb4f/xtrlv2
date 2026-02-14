@@ -1,0 +1,38 @@
+name: migration-final-guards
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  final-guards:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f pyproject.toml ]; then pip install .; fi
+          pip install pytest jsonschema
+
+      - name: Final validation gate
+        run: python tools/migration/final_validate.py
+
+      - name: Golden harness regression
+        run: >
+          pytest -q
+          tests/test_packet_pre_contract_schema.py
+          tests/test_run_golden_packet.py
+          tests/test_xtrlv2_cli.py
+          tests/test_final_validate.py

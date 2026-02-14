@@ -1,7 +1,7 @@
 # Migration Workplan (M0–M6)
 
 Scope SSOT: `docs/migration/TRACKER.md`
-Decision log SSOT: https://github.com/fatb4f/xtrlv2/issues/1
+Decision log SSOT: milestone issues `#5` / `#6` / `#7`
 
 ## Operating rule
 - SSOT for scope: `docs/migration/TRACKER.md` (tasks + status).
@@ -30,7 +30,7 @@ Tracker IDs
 - M0-T01 (control plane + guardrails)
 
 Links
-- https://github.com/fatb4f/xtrlv2/issues/1
+- https://github.com/fatb4f/xtrlv2/issues/5
 
 ## Milestone 1 — Inventory + Mapping
 Goal: deterministic map of xtrl -> xtrlv2.
@@ -54,7 +54,7 @@ Tracker IDs
 - M1-T01..M1-T05
 
 Links
-- https://github.com/fatb4f/xtrlv2/issues/1
+- https://github.com/fatb4f/xtrlv2/issues/6
 
 ## Milestone 2 — Entry-point + CLI parity in v2
 Goal: define canonical v2 invocation and compatibility shim.
@@ -78,7 +78,7 @@ Tracker IDs
 - M2-T01..M2-T04
 
 Links
-- https://github.com/fatb4f/xtrlv2/issues/1
+- https://github.com/fatb4f/xtrlv2/issues/7
 
 ## Milestone 3 — State layout + one-time migration tool
 Goal: idempotent state migration.
@@ -125,7 +125,7 @@ Owner
 - TBD
 
 Tracker IDs
-- (to be assigned)
+- M4-T01..M4-T03
 
 Links
 - https://github.com/fatb4f/xtrlv2/issues/1
@@ -147,7 +147,7 @@ Owner
 - TBD
 
 Tracker IDs
-- (to be assigned)
+- M5-T01..M5-T02
 
 Links
 - https://github.com/fatb4f/xtrlv2/issues/1
@@ -170,7 +170,7 @@ Owner
 - TBD
 
 Tracker IDs
-- (to be assigned)
+- M6-T01..M6-T03
 
 Links
 - https://github.com/fatb4f/xtrlv2/issues/1
