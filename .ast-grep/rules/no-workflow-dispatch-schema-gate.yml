@@ -1,0 +1,9 @@
+id: no-workflow-dispatch-schema-gate
+language: yaml
+message: "schema-ssot-gate must not use workflow_dispatch-only/manual trigger mode."
+severity: error
+rule:
+  kind: plain_scalar
+  regex: '^workflow_dispatch$'
+files:
+  - .github/workflows/schema-ssot-gate.yml

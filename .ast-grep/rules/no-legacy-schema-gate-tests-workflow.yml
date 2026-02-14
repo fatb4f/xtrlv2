@@ -1,0 +1,14 @@
+id: no-legacy-schema-gate-tests-workflow
+language: yaml
+message: "Do not reference legacy xtrl schema gate tests in schema-ssot-gate workflow."
+severity: error
+rule:
+  any:
+    - kind: plain_scalar
+      regex: 'test_ssot_pin_check_m2_t01\.py|test_ssot_conformance\.py'
+    - kind: block_scalar
+      regex: 'test_ssot_pin_check_m2_t01\.py|test_ssot_conformance\.py'
+    - kind: string_scalar
+      regex: 'test_ssot_pin_check_m2_t01\.py|test_ssot_conformance\.py'
+files:
+  - .github/workflows/schema-ssot-gate.yml

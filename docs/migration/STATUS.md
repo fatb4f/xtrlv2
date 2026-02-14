@@ -6,7 +6,7 @@ Last updated: 2026-02-14
 Next 3 actions:
 1. Fix current `ruff` lint/format baseline violations so `python-quality-gate` can pass.
 2. Capture first failing and first passing PR run links for issue `#2` evidence.
-3. Mark M2-T02/M2-T03 done after evidence links and green quality gate baseline.
+3. Keep ast-grep policy gate active to prevent legacy actuator drift.
 
 Blockers:
 - Current lint/format baseline failures block M2-T03 closeout.

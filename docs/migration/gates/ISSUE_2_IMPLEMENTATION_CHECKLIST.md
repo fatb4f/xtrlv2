@@ -6,6 +6,7 @@ Scope: make schema SSOT checks preventive on `main` (not advisory), then extend 
 - [x] Confirm `.github/workflows/schema-ssot-gate.yml` runs on `pull_request` and `push` to `main`.
 - [x] Confirm workflow/job names are stable: `schema-ssot-gate` / `ssot-gate`.
 - [x] Confirm required commands are runnable in CI context.
+- [x] Confirm migration policy checks run via `ast-grep scan --config sgconfig.yml`.
 
 ## Branch protection
 - [x] Enable branch protection on `main`.
@@ -26,7 +27,7 @@ Scope: make schema SSOT checks preventive on `main` (not advisory), then extend 
 - [x] Add `ruff check .` gate.
 - [x] Add `ruff format --check .` gate.
 - [x] Add `pytest -q` gate.
-- [ ] Bind all required checks in branch protection.
+- [x] Bind all required checks in branch protection.
 
 ## Closeout criteria
 - [x] `GATE_MATRIX.md` rows reflect real enforcement state.

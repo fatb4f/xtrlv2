@@ -19,12 +19,20 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
       - name: Install Python deps
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           if [ -f pyproject.toml ]; then pip install .; fi
           pip install pytest jsonschema
+
+      - name: Install ast-grep
+        run: npm install -g @ast-grep/cli
 
       - name: Preflight required gate artifacts
         run: |
@@ -34,6 +42,9 @@ jobs:
           test -f tests/test_ledger_latest_schema.py || { echo "Missing test file: tests/test_ledger_latest_schema.py"; exit 1; }
           test -f tests/test_src_snapshot_schemas.py || { echo "Missing test file: tests/test_src_snapshot_schemas.py"; exit 1; }
           test -f tests/test_schema_examples_validate.py || { echo "Missing test file: tests/test_schema_examples_validate.py"; exit 1; }
+
+      - name: Migration policy gate (ast-grep)
+        run: ast-grep scan --config sgconfig.yml
 
       - name: Migration docs consistency check
         run: python tools/migration/migrate_check.py

@@ -1,0 +1,14 @@
+id: no-hardcoded-local-xtrl-path-workflow
+language: yaml
+message: "Do not hardcode local absolute xtrl paths in schema gate workflow."
+severity: error
+rule:
+  any:
+    - kind: plain_scalar
+      regex: '/home/src404/src/xtrl(/|\\b)'
+    - kind: block_scalar
+      regex: '/home/src404/src/xtrl(/|\\b)'
+    - kind: string_scalar
+      regex: '/home/src404/src/xtrl(/|\\b)'
+files:
+  - .github/workflows/schema-ssot-gate.yml
