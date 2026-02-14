@@ -6,8 +6,8 @@ Prevent schema divergence by making the schema SSOT checks **required on `main`*
 ## Scope
 This plan covers:
 - A **required** GitHub Actions workflow that runs:
-  - `just ssot-pin-check`
-  - `pytest -q tests/test_ssot_pin_check_m2_t01.py tests/test_ssot_conformance.py`
+  - `python tools/migration/migrate_check.py`
+  - `pytest -q tests/test_reason_codes_schema.py tests/test_gate_decision_schema.py tests/test_helper_event_schema.py tests/test_ledger_latest_schema.py tests/test_src_snapshot_schemas.py tests/test_schema_examples_validate.py`
 - **Branch protection** that requires the workflow to pass before merge.
 - A focused **gate audit** (enumerate -> verify -> negative test) before declaring migration "Done".
 
@@ -29,7 +29,7 @@ This reduces split-brain risk and matches the migration objective.
 3. GitHub Actions workflow (to be implemented per policy)
    - Suggested name: `schema-ssot-gate`
    - Triggers: `pull_request`, `push` to `main`
-   - Steps: setup (python), install deps, run `just ...`, run `pytest ...`
+   - Steps: setup (python), install deps, run migration doc check, run schema pytest suite
 4. Branch protection rule on `main`
    - Require the workflow status check(s) to pass.
 5. CI branch gate requirements (enforced)
@@ -79,8 +79,8 @@ Record one row per gate in `GATE_MATRIX.md`.
 
 ### 4) Negative test sweep
 Prove each gate blocks correctly with **one intentional failure** per gate:
-- Example: change SSOT pin target to an incorrect hash -> `just ssot-pin-check` fails.
-- Example: break a conformance fixture -> `tests/test_ssot_conformance.py` fails.
+- Example: break migration docs consistency -> `python tools/migration/migrate_check.py` fails.
+- Example: break a schema example -> `tests/test_schema_examples_validate.py` fails.
 
 Capture:
 - failing command output

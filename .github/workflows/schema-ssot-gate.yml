@@ -1,7 +1,10 @@
 name: schema-ssot-gate
 
 on:
-  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
   ssot-gate:
@@ -21,20 +24,26 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           if [ -f pyproject.toml ]; then pip install .; fi
-          pip install pytest
-
-      - name: Install just
-        uses: taiki-e/install-action@just
+          pip install pytest jsonschema
 
       - name: Preflight required gate artifacts
         run: |
-          test -f Justfile
-          grep -q '^ssot-pin-check:' Justfile || { echo "Missing Justfile target: ssot-pin-check"; exit 1; }
-          test -f tests/test_ssot_pin_check_m2_t01.py || { echo "Missing test file: tests/test_ssot_pin_check_m2_t01.py"; exit 1; }
-          test -f tests/test_ssot_conformance.py || { echo "Missing test file: tests/test_ssot_conformance.py"; exit 1; }
+          test -f tests/test_reason_codes_schema.py || { echo "Missing test file: tests/test_reason_codes_schema.py"; exit 1; }
+          test -f tests/test_gate_decision_schema.py || { echo "Missing test file: tests/test_gate_decision_schema.py"; exit 1; }
+          test -f tests/test_helper_event_schema.py || { echo "Missing test file: tests/test_helper_event_schema.py"; exit 1; }
+          test -f tests/test_ledger_latest_schema.py || { echo "Missing test file: tests/test_ledger_latest_schema.py"; exit 1; }
+          test -f tests/test_src_snapshot_schemas.py || { echo "Missing test file: tests/test_src_snapshot_schemas.py"; exit 1; }
+          test -f tests/test_schema_examples_validate.py || { echo "Missing test file: tests/test_schema_examples_validate.py"; exit 1; }
 
-      - name: SSOT pin check
-        run: just ssot-pin-check
+      - name: Migration docs consistency check
+        run: python tools/migration/migrate_check.py
 
-      - name: Conformance gate
-        run: pytest -q tests/test_ssot_pin_check_m2_t01.py tests/test_ssot_conformance.py
+      - name: SSOT schema conformance gate
+        run: >
+          pytest -q
+          tests/test_reason_codes_schema.py
+          tests/test_gate_decision_schema.py
+          tests/test_helper_event_schema.py
+          tests/test_ledger_latest_schema.py
+          tests/test_src_snapshot_schemas.py
+          tests/test_schema_examples_validate.py

@@ -1,12 +1,12 @@
 # Migration Status
 
 Current phase: M2 (Runtime alignment + gate enforcement)
-Last updated: 2026-02-12
+Last updated: 2026-02-14
 
 Next 3 actions:
-1. Convert `schema-ssot-gate` from `workflow_dispatch` to `pull_request` + `push` on `main`.
-2. Configure required branch checks and capture issue `#2` evidence.
-3. Implement Python quality gates (`ruff`, `pytest`) as required checks.
+1. Fix current `ruff` lint/format baseline violations so `python-quality-gate` can pass.
+2. Capture first failing and first passing PR run links for issue `#2` evidence.
+3. Mark M2-T02/M2-T03 done after evidence links and green quality gate baseline.
 
 Blockers:
-- Branch protection not yet configured.
+- Current lint/format baseline failures block M2-T03 closeout.

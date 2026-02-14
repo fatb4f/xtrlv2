@@ -18,10 +18,10 @@ Deliverables
 - `docs/migration/WORKPLAN.md` (this plan)
 - `docs/migration/STATUS.md` (single page: current phase + next 3 actions)
 - `tools/migration/migrate.py` (skeleton with `--dry-run`)
-- Local gate: `just migrate-check`
+- Local gate: `python tools/migration/migrate_check.py`
 
 DoD
-- PR adds above and `just migrate-check` passes.
+- PR adds above and `python tools/migration/migrate_check.py` passes.
 
 Owner
 - TBD

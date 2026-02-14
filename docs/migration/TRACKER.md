@@ -114,7 +114,7 @@ Format: keep entries short and auditable.
 - DoD gate: schema pin + artifact conformance
 - Evidence:
   - Commit: `e329450`
-  - Validation: `just ssot-pin-check`; `pytest -q tests/test_ssot_pin_check_m2_t01.py tests/test_ssot_conformance.py`
+  - Validation (in `xtrl`): `python tools/ssot_gate.py pin --pin-file control/ssot_pin.json --ssot-root /home/src404/src/xtrlv2/control/ssot`; `pytest -q tests/test_ssot_pin_check_m2_t01.py tests/test_ssot_conformance.py`
   - Key output: `4 passed`
 - Blockers: none
 
@@ -127,20 +127,30 @@ Format: keep entries short and auditable.
 - Owner: TBD
 - Links: `docs/migration/gates/MAIN_BRANCH_ENFORCEMENT.md`, issue `#2`
 - DoD gate: required status checks active in branch protection
-- Evidence: `docs/migration/gates/ISSUE_2_IMPLEMENTATION_CHECKLIST.md`
-- Blockers: workflow still `workflow_dispatch` only
+- Evidence:
+  - Checklist: `docs/migration/gates/ISSUE_2_IMPLEMENTATION_CHECKLIST.md`
+  - Branch protection update applied (2026-02-14):
+    - required checks: `schema-ssot-gate / ssot-gate`, `python-quality-gate / python-quality`
+    - strict/up-to-date: enabled
+    - enforce admins: enabled
+- Blockers: capture failing/pass PR run links for audit evidence
 
 ### M2-T03 — Python quality gates (`ruff` + `pytest`)
 - Repo: xtrlv2
 - Artifacts: `python-quality-gate` workflow, gate matrix rows, branch protection required checks
 - Schema refs: n/a (quality gates)
 - Tests: lint/format/test failures block merge
-- Status: Not started
+- Status: In progress
 - Owner: TBD
 - Links: `docs/migration/GIT_STRATEGY_AND_PYTHON_GATES.md`
 - DoD gate: required checks enforce Python quality on `main`
-- Evidence: (CI run / validation report)
-- Blockers: M2-T02
+- Evidence:
+  - Workflow added: `.github/workflows/python-quality-gate.yml`
+  - Local validation snapshot (2026-02-14):
+    - `UV_CACHE_DIR=/tmp/uv-cache uv run --with pytest --with jsonschema python -m pytest -q` -> `15 passed`
+    - `UV_CACHE_DIR=/tmp/uv-cache uv run --with ruff ruff check .` -> fails (2 existing lint findings)
+    - `UV_CACHE_DIR=/tmp/uv-cache uv run --with ruff ruff format --check .` -> fails (7 files need formatting)
+- Blockers: M2-T02 (required checks binding) and lint/format baseline debt
 
 ## Definition of Done
 - SSOT covers all post-pivot artifacts.
@@ -162,3 +172,4 @@ Format: keep entries short and auditable.
 - xtrl schema gap map: `reports/xtrl_vs_xtrlv2_schema_mapping.md`
 - alignment checklist: `reports/xtrlv2-cross-repo-alignment-checklist.md`
 - pivot report: `reports/xtrlv2-migration-pivot-report.md`
+- git plant plan review: `docs/migration/gate/git/git_plant_plan_review.md`

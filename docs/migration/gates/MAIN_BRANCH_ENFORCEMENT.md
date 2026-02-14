@@ -16,8 +16,8 @@ The workflow **must** run on:
 
 ### 2) Required commands
 The workflow **must** execute:
-- `just ssot-pin-check`
-- `pytest -q tests/test_ssot_pin_check_m2_t01.py tests/test_ssot_conformance.py`
+- `python tools/migration/migrate_check.py`
+- `pytest -q tests/test_reason_codes_schema.py tests/test_gate_decision_schema.py tests/test_helper_event_schema.py tests/test_ledger_latest_schema.py tests/test_src_snapshot_schemas.py tests/test_schema_examples_validate.py`
 
 ### 3) Branch protection
 A branch protection rule on `main` **must**:
@@ -74,16 +74,20 @@ jobs:
           # - pyproject.toml
           # - etc.
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          # Ensure `just` is available (pin version if desired)
-          if ! command -v just >/dev/null 2>&1; then
-            curl -Ls https://just.systems/install.sh | bash -s -- --to /usr/local/bin
-          fi
+          pip install pytest jsonschema
 
-      - name: SSOT pin check
-        run: just ssot-pin-check
+      - name: Migration docs consistency
+        run: python tools/migration/migrate_check.py
 
-      - name: Conformance gate
-        run: pytest -q tests/test_ssot_pin_check_m2_t01.py tests/test_ssot_conformance.py
+      - name: SSOT schema gate
+        run: >
+          pytest -q
+          tests/test_reason_codes_schema.py
+          tests/test_gate_decision_schema.py
+          tests/test_helper_event_schema.py
+          tests/test_ledger_latest_schema.py
+          tests/test_src_snapshot_schemas.py
+          tests/test_schema_examples_validate.py
 ```
 
 ---
@@ -100,6 +104,7 @@ Enable:
 - `Require status checks to pass before merging`
 - Select required checks:
   - `schema-ssot-gate / ssot-gate` (label depends on GitHub UI)
+  - `python-quality-gate / python-quality` (when baseline is green)
 - (Recommended) `Require branches to be up to date before merging`
 - (Recommended) `Include administrators`
 
