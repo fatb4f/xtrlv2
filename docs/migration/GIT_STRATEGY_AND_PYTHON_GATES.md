@@ -10,12 +10,14 @@ Record what is implemented vs missing for migration-grade git governance, and de
 - Migration gate policy docs exist under `docs/migration/gates/`.
 - `schema-ssot-gate` workflow exists at `.github/workflows/schema-ssot-gate.yml`.
 - `python-quality-gate` workflow exists at `.github/workflows/python-quality-gate.yml`.
+- `migration-final-guards` workflow exists at `.github/workflows/migration-final-guards.yml`.
 - Refactoring policy contract exists at `docs/migration/QUALITY_REFACTORING_CONTRACT.md` (Refactoring Guru pattern baseline + feedback loop).
 
 ### Partial
 - `schema-ssot-gate` now runs on `pull_request` + `push` to `main` using Python-native commands.
 - `python-quality-gate` baseline is green locally and in PR evidence runs.
 - Branch protection is active with required checks; contexts are bound to emitted check names (`ssot-gate`, `python-quality`).
+- `migration-final-guards` is active in CI but not yet required in branch protection.
 - Trailer usage policy is optional and independent from xtrl runtime conventions.
 
 ### Missing

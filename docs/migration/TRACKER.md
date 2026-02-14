@@ -10,7 +10,8 @@ Goal: establish xtrlv2 as a standalone SSOT + execution toolchain for post-pivot
 - SSOT update landed in xtrlv2: commit `0fdb685`
 - New SSOT schemas now include `control_strategy` and `guardrails_bundle` (registered)
 - ReasonCodes schema is implemented in SSOT (`reason_codes` v0.1)
-- xtrlv2 gap tracker: https://github.com/fatb4f/xtrlv2/issues/1
+- M1/M2/M3 milestone implementations are merged to `main`
+- Active milestone evidence tracking: issue `#5` (M4), issue `#6` (M5), issue `#7` (M6)
 
 ## Work Items (ordered, blocking-first)
 1. **M1-T01** ReasonCodes schema (SSOT) — formalize `reason_codes.json` as a schema-bound artifact.
@@ -25,6 +26,14 @@ Goal: establish xtrlv2 as a standalone SSOT + execution toolchain for post-pivot
 10. **M3-T01** Add `migration_report` schema + example and register it in SSOT.
 11. **M3-T02** Implement `tools/migration/state_migrate.py` (dry-run/apply + report emission + idempotence).
 12. **M3-T03** Implement `tools/migration/state_doctor.py` (layout validator + optional repair).
+13. **M4-T01** Add `packet_pre_contract` schema + example to SSOT.
+14. **M4-T02** Implement deterministic golden packet execution harness (`run_golden_packet.py`).
+15. **M4-T03** Add regression tests for golden packet evidence tree.
+16. **M5-T01** Add canonical xtrlv2 migration CLI entrypoint (`tools/migration/xtrlv2.py`).
+17. **M5-T02** Publish cutover docs (`cli_changes.md`, `cutover.md`).
+18. **M6-T01** Add final validation tool (`tools/migration/final_validate.py`).
+19. **M6-T02** Add CI final guard workflow (`migration-final-guards`).
+20. **M6-T03** Publish final report draft (`docs/migration/final_report.md`).
 
 ## Work Item Details (executable checklist)
 Format: keep entries short and auditable.
@@ -229,6 +238,117 @@ Format: keep entries short and auditable.
     - `UV_CACHE_DIR=/tmp/uv-cache uv run --with ruff ruff check tools/migration/state_doctor.py`
 - Blockers: production migration run evidence pending (non-blocking for implementation)
 
+### M4-T01 — Packet pre-contract schema (`packet_pre_contract`)
+- Repo: xtrlv2
+- Artifacts: `control/ssot/schemas/packet_pre_contract.schema.json`, `control/ssot/examples/packet_pre_contract.example.json`, `control/ssot/registry.json`
+- Schema refs: `packet_pre_contract` v0.1
+- Tests: schema validation; example validates; negative case for missing required evidence files
+- Status: Done
+- Owner: TBD
+- Links: (PR/commit)
+- DoD gate: packet pre-contract format is machine-validated in SSOT
+- Evidence:
+  - Touched files: `control/ssot/schemas/packet_pre_contract.schema.json`, `control/ssot/examples/packet_pre_contract.example.json`, `control/ssot/registry.json`, `tests/test_packet_pre_contract_schema.py`
+  - Validation: `UV_CACHE_DIR=/tmp/uv-cache uv run --with pytest --with jsonschema python -m pytest -q tests/test_packet_pre_contract_schema.py tests/test_schema_examples_validate.py`
+- Blockers: none
+
+### M4-T02 — Golden packet execution harness (`run_golden_packet.py`)
+- Repo: xtrlv2
+- Artifacts: `tools/migration/run_golden_packet.py`
+- Schema refs: consumes `packet_pre_contract` v0.1
+- Tests: harness materializes required evidence files from contract
+- Status: Done
+- Owner: TBD
+- Links: (PR/commit)
+- DoD gate: deterministic harness emits complete evidence tree for one packet run
+- Evidence:
+  - Touched files: `tools/migration/run_golden_packet.py`, `tests/test_run_golden_packet.py`
+  - Validation: `UV_CACHE_DIR=/tmp/uv-cache uv run --with pytest --with jsonschema python -m pytest -q tests/test_run_golden_packet.py`
+- Blockers: production packet contract run evidence pending
+
+### M4-T03 — Golden packet regression tests
+- Repo: xtrlv2
+- Artifacts: `tests/test_run_golden_packet.py`, `tests/test_packet_pre_contract_schema.py`
+- Schema refs: `packet_pre_contract` v0.1
+- Tests: regression test ensures required evidence files exist in harness output tree
+- Status: Done
+- Owner: TBD
+- Links: (PR/commit)
+- DoD gate: regression test suite is runnable in CI
+- Evidence:
+  - Validation: `UV_CACHE_DIR=/tmp/uv-cache uv run --with pytest --with jsonschema python -m pytest -q tests/test_packet_pre_contract_schema.py tests/test_run_golden_packet.py`
+- Blockers: none
+
+### M5-T01 — Canonical migration CLI (`tools/migration/xtrlv2.py`)
+- Repo: xtrlv2
+- Artifacts: `tools/migration/xtrlv2.py`
+- Schema refs: n/a (entrypoint wrapper)
+- Tests: CLI help and subcommand wiring
+- Status: Done
+- Owner: TBD
+- Links: (PR/commit)
+- DoD gate: one canonical xtrlv2 command path for migrate/doctor/harness/final validation
+- Evidence:
+  - Touched files: `tools/migration/xtrlv2.py`, `tests/test_xtrlv2_cli.py`
+  - Validation: `UV_CACHE_DIR=/tmp/uv-cache uv run --with pytest --with jsonschema python -m pytest -q tests/test_xtrlv2_cli.py`
+- Blockers: none
+
+### M5-T02 — Cutover docs (`cli_changes.md`, `cutover.md`)
+- Repo: xtrlv2
+- Artifacts: `docs/migration/cli_changes.md`, `docs/migration/cutover.md`
+- Schema refs: n/a
+- Tests: included in final validation checks
+- Status: Done
+- Owner: TBD
+- Links: (PR/commit)
+- DoD gate: operational cutover sequence is documented with canonical CLI commands
+- Evidence:
+  - Touched files: `docs/migration/cli_changes.md`, `docs/migration/cutover.md`
+  - Validation: `python tools/migration/final_validate.py`
+- Blockers: production cutover run evidence pending
+
+### M6-T01 — Final validation tool (`final_validate.py`)
+- Repo: xtrlv2
+- Artifacts: `tools/migration/final_validate.py`
+- Schema refs: n/a
+- Tests: verifies required docs/tools/tests for migration closeout baseline
+- Status: Done
+- Owner: TBD
+- Links: (PR/commit)
+- DoD gate: explicit pass/fail validator for migration closeout artifacts
+- Evidence:
+  - Touched files: `tools/migration/final_validate.py`, `tests/test_final_validate.py`
+  - Validation: `UV_CACHE_DIR=/tmp/uv-cache uv run --with pytest --with jsonschema python -m pytest -q tests/test_final_validate.py`
+- Blockers: none
+
+### M6-T02 — Final guard workflow (`migration-final-guards`)
+- Repo: xtrlv2
+- Artifacts: `.github/workflows/migration-final-guards.yml`
+- Schema refs: validates packet contract/harness/final validate tests
+- Tests: workflow runs final validator + targeted migration regression tests
+- Status: Done
+- Owner: TBD
+- Links: (PR/commit)
+- DoD gate: CI job exists and is green on PR/main
+- Evidence:
+  - Touched files: `.github/workflows/migration-final-guards.yml`
+  - Validation: workflow executes `python tools/migration/final_validate.py` + regression pytest slice
+- Blockers: not yet configured as required branch-protection check
+
+### M6-T03 — Final report draft (`final_report.md`)
+- Repo: xtrlv2
+- Artifacts: `docs/migration/final_report.md`
+- Schema refs: n/a
+- Tests: included in final validation checks
+- Status: Done
+- Owner: TBD
+- Links: (PR/commit)
+- DoD gate: written migration closeout summary with remaining production evidence gaps
+- Evidence:
+  - Touched files: `docs/migration/final_report.md`
+  - Validation: `python tools/migration/final_validate.py`
+- Blockers: signoff pending production cutover evidence
+
 ## Definition of Done
 - SSOT covers all post-pivot artifacts.
 - xtrlv2 emits and validates schema-valid artifacts for B–E.
@@ -245,7 +365,9 @@ Format: keep entries short and auditable.
 - Schema hash pinned + verified (Yes/No).
 
 ## References
-- xtrlv2 SSOT catch-up: https://github.com/fatb4f/xtrlv2/issues/1
+- M4 evidence tracking: https://github.com/fatb4f/xtrlv2/issues/5
+- M5 cutover tracking: https://github.com/fatb4f/xtrlv2/issues/6
+- M6 finalization tracking: https://github.com/fatb4f/xtrlv2/issues/7
 - xtrl schema gap map: `reports/xtrl_vs_xtrlv2_schema_mapping.md`
 - alignment checklist: `reports/xtrlv2-cross-repo-alignment-checklist.md`
 - pivot report: `reports/xtrlv2-migration-pivot-report.md`

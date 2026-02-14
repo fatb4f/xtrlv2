@@ -41,6 +41,7 @@ jobs:
           test -f tests/test_helper_event_schema.py || { echo "Missing test file: tests/test_helper_event_schema.py"; exit 1; }
           test -f tests/test_ledger_latest_schema.py || { echo "Missing test file: tests/test_ledger_latest_schema.py"; exit 1; }
           test -f tests/test_migration_report_schema.py || { echo "Missing test file: tests/test_migration_report_schema.py"; exit 1; }
+          test -f tests/test_packet_pre_contract_schema.py || { echo "Missing test file: tests/test_packet_pre_contract_schema.py"; exit 1; }
           test -f tests/test_src_snapshot_schemas.py || { echo "Missing test file: tests/test_src_snapshot_schemas.py"; exit 1; }
           test -f tests/test_schema_examples_validate.py || { echo "Missing test file: tests/test_schema_examples_validate.py"; exit 1; }
 
@@ -58,5 +59,6 @@ jobs:
           tests/test_helper_event_schema.py
           tests/test_ledger_latest_schema.py
           tests/test_migration_report_schema.py
+          tests/test_packet_pre_contract_schema.py
           tests/test_src_snapshot_schemas.py
           tests/test_schema_examples_validate.py

@@ -1,0 +1,214 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "control/ssot/schemas/packet_pre_contract.schema.json",
+  "title": "Packet Pre-Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "packet_id",
+    "component",
+    "repo",
+    "base_ref",
+    "mode",
+    "budgets",
+    "constraints",
+    "actions",
+    "evidence",
+    "plan_card",
+    "inputs"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "xtrl.pre_contract/v0.2"
+    },
+    "packet_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "component": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repo": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "NORMAL",
+        "HOTFIX",
+        "DRYRUN"
+      ]
+    },
+    "budgets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "time_minutes",
+        "iteration_budget",
+        "diff_budget"
+      ],
+      "properties": {
+        "time_minutes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "iteration_budget": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "diff_budget": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "max_files_changed",
+            "max_lines_changed"
+          ],
+          "properties": {
+            "max_files_changed": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_lines_changed": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "clean_repo_required",
+        "allowed_paths",
+        "forbidden_paths",
+        "forbidden_patterns"
+      ],
+      "properties": {
+        "clean_repo_required": {
+          "type": "boolean"
+        },
+        "deny_repo_local_roots": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "allowed_paths": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "forbidden_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "forbidden_patterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "actions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "test"
+      ],
+      "properties": {
+        "test": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required_files"
+      ],
+      "properties": {
+        "required_files": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "plan_card": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "why",
+        "what",
+        "how",
+        "where",
+        "who",
+        "when"
+      ],
+      "properties": {
+        "why": {
+          "type": "string",
+          "minLength": 1
+        },
+        "what": {
+          "type": "string",
+          "minLength": 1
+        },
+        "how": {
+          "type": "string",
+          "minLength": 1
+        },
+        "where": {
+          "type": "string",
+          "minLength": 1
+        },
+        "who": {
+          "type": "string",
+          "minLength": 1
+        },
+        "when": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "notes"
+      ],
+      "properties": {
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

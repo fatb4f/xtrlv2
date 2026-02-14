@@ -96,6 +96,10 @@
     "migration_report": {
       "version": "0.1",
       "schema": "control/ssot/schemas/migration_report.schema.json"
+    },
+    "packet_pre_contract": {
+      "version": "0.1",
+      "schema": "control/ssot/schemas/packet_pre_contract.schema.json"
     }
   }
 }
