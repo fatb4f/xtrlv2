@@ -15,7 +15,7 @@ Record what is implemented vs missing for migration-grade git governance, and de
 - `schema-ssot-gate` now runs on `pull_request` + `push` to `main` using Python-native commands.
 - `python-quality-gate` exists, but baseline currently fails (`ruff check` + `ruff format --check`).
 - Branch protection is active with required checks, but run-evidence links for failing/passing PR cases are still pending.
-- Trailer usage exists in runtime workflows (`Packet:`, `Evidence:`) in `xtrl`, but is not yet a formal CI gate in `xtrlv2`.
+- Trailer usage policy is optional and independent from xtrl runtime conventions.
 
 ### Missing
 - Conventional commit enforcement gate (no `commitlint`/equivalent check).

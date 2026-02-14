@@ -1,10 +1,10 @@
 # Migration Tracker (Authoritative)
 
-Goal: re-establish xtrlv2 as SSOT for post-pivot features, then align xtrl runtime/emitters.
+Goal: establish xtrlv2 as a standalone SSOT + execution toolchain for post-pivot features.
 
 ## Source of Truth
-- xtrlv2: SSOT schemas and policies
-- xtrl: runtime/emitters/adapters
+- xtrlv2: SSOT schemas, gates, and runtime policies
+- xtrl: external compatibility reference only (not an actuator dependency)
 
 ## Current State
 - SSOT update landed in xtrlv2: commit `0fdb685`
@@ -18,7 +18,7 @@ Goal: re-establish xtrlv2 as SSOT for post-pivot features, then align xtrl runti
 3. **M1-T03** helper_created event schema — JSONL envelope + payload.
 4. **M1-T04** Ledger/latest pointer schemas — if required by runtime.
 5. **M1-T05** Phase E snapshot schemas — dep_graph, api_surface, module_manifest.
-6. **M2-T01** Align xtrl emitters/validators to SSOT + pin schema hash.
+6. **M2-T01** Validate external compatibility bridge (xtrl artifacts against xtrlv2 SSOT), without reusing xtrl actuators in xtrlv2.
 
 ## Work Item Details (executable checklist)
 Format: keep entries short and auditable.
@@ -103,9 +103,9 @@ Format: keep entries short and auditable.
   - Commit: `328806e`
 - Blockers: none
 
-### M2-T01 — xtrl alignment + schema pin
-- Repo: xtrl
-- Artifacts: pinned schema hash file, conformance validator, updated emitters
+### M2-T01 — external compatibility bridge validation
+- Repo: xtrl (external bridge evidence), tracked from xtrlv2
+- Artifacts: pinned schema hash file, conformance validator, bridge evidence
 - Schema refs: all SSOT items above
 - Tests: schema pin gate; artifact conformance gate (B–E)
 - Status: Done (pushed)
@@ -114,7 +114,7 @@ Format: keep entries short and auditable.
 - DoD gate: schema pin + artifact conformance
 - Evidence:
   - Commit: `e329450`
-  - Validation (in `xtrl`): `python tools/ssot_gate.py pin --pin-file control/ssot_pin.json --ssot-root /home/src404/src/xtrlv2/control/ssot`; `pytest -q tests/test_ssot_pin_check_m2_t01.py tests/test_ssot_conformance.py`
+  - Validation (external bridge run in `xtrl`): `python tools/ssot_gate.py pin --pin-file control/ssot_pin.json --ssot-root /home/src404/src/xtrlv2/control/ssot`; `pytest -q tests/test_ssot_pin_check_m2_t01.py tests/test_ssot_conformance.py`
   - Key output: `4 passed`
 - Blockers: none
 
@@ -154,13 +154,13 @@ Format: keep entries short and auditable.
 
 ## Definition of Done
 - SSOT covers all post-pivot artifacts.
-- xtrl emits schema-valid artifacts for B–E.
+- xtrlv2 emits and validates schema-valid artifacts for B–E.
 - Drift checks prevent schema divergence.
 
 ## Operational Gates (stop rules)
-- xtrl cannot add new artifact shapes unless an xtrlv2 schema exists or an approved temporary extension is recorded.
+- xtrlv2 cannot add new artifact shapes unless an xtrlv2 schema exists or an approved temporary extension is recorded.
 - Schema pin gate must fail on mismatch between xtrl and xtrlv2 schema hash.
-- Artifact conformance gate must fail when emitted artifacts violate SSOT schemas.
+- Artifact conformance gate must fail when xtrlv2 artifacts violate SSOT schemas.
 
 ## Migration Health Signals
 - % of emitted artifacts passing SSOT schema validation (CI).
