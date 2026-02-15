@@ -10,7 +10,14 @@
       }
     },
     "requirements": {
-      "required_evidence": []
+      "required_evidence": [],
+      "unknowns_policy": {
+        "on_unknown_state": "DENY",
+        "on_unknown_transition": "DENY",
+        "reason_code": "AMBIGUOUS_STATE_DENIED",
+        "emit_unknowns_field": "unknowns",
+        "max_unknowns": 0
+      }
     },
     "guards": {
       "spec": [],
@@ -25,6 +32,14 @@
           "state_space",
           "gate_decision"
         ],
+        "transition": {
+          "from": "T.RUN",
+          "to": "GATE.checks_done"
+        },
+        "known_states": [
+          "T.RUN",
+          "GATE.checks_done"
+        ],
         "transitions": [
           "T.RUN->GATE.checks_done"
         ]
@@ -34,7 +49,15 @@
       "required_evidence": [
         "evidence_capsule"
       ],
-      "predicate_ref": "git_status_clean"
+      "predicate_ref": "git_status_clean",
+      "feedback": {
+        "severity": "error",
+        "operator_message": "Repository has uncommitted changes; transition denied.",
+        "actionable_hint": "Commit or stash local changes, then rerun checks.",
+        "next_step": "hold",
+        "confidence": 0.99,
+        "unknowns": []
+      }
     }
   ]
 }
