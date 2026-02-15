@@ -21,7 +21,9 @@ def test_guardrails_bundle_example_passes():
 
 def test_guardrails_bundle_missing_unknowns_policy_fails():
     schema = load(SSOT / "schemas" / "guardrails_bundle.schema.json")
-    candidate = copy.deepcopy(load(SSOT / "examples" / "guardrails_bundle.example.json"))
+    candidate = copy.deepcopy(
+        load(SSOT / "examples" / "guardrails_bundle.example.json")
+    )
     del candidate["meta"]["requirements"]["unknowns_policy"]
 
     with pytest.raises(jsonschema.ValidationError):
