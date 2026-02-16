@@ -1,0 +1,355 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/failure_adaptation_policy.schema.json",
+  "title": "Failure + Adaptive Strategy Policy",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "done_predicate",
+    "reason_codes",
+    "failure_signals",
+    "strategies",
+    "unknown_failure_policy"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+$"
+    },
+    "enums": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "$ref": "#/$defs/severity_enum"
+        },
+        "mode": {
+          "$ref": "#/$defs/mode_enum"
+        },
+        "failure_category": {
+          "$ref": "#/$defs/failure_category_enum"
+        }
+      }
+    },
+    "done_predicate": {
+      "$ref": "#/$defs/predicate"
+    },
+    "reason_codes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/reason_code"
+      }
+    },
+    "failure_signals": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/failure_signal"
+      }
+    },
+    "strategies": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/strategy"
+      }
+    },
+    "unknown_failure_policy": {
+      "$ref": "#/$defs/strategy"
+    }
+  },
+  "$defs": {
+    "severity_enum": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "WARN",
+          "DEGRADE",
+          "STOP",
+          "DENY"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "mode_enum": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "NORMAL",
+          "SAFE",
+          "DIAGNOSTIC",
+          "REPAIR",
+          "PROMOTE"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "failure_category_enum": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "correctness",
+          "integrity",
+          "scope",
+          "evidence",
+          "policy",
+          "budget",
+          "modeling",
+          "unknown"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "predicate": {
+      "type": "object",
+      "required": [
+        "require_all"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "require_all": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/check_ref"
+          }
+        },
+        "require_any": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/check_ref"
+          }
+        }
+      }
+    },
+    "check_ref": {
+      "type": "object",
+      "required": [
+        "check_ref"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "check_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expect": {
+          "type": "string",
+          "enum": [
+            "true",
+            "false",
+            "nonempty",
+            "empty",
+            "eq",
+            "neq",
+            "lt",
+            "lte",
+            "gt",
+            "gte"
+          ]
+        },
+        "value": {}
+      }
+    },
+    "reason_code": {
+      "type": "object",
+      "required": [
+        "code",
+        "category",
+        "default_severity",
+        "description"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]{3,64}$"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "correctness",
+            "integrity",
+            "scope",
+            "evidence",
+            "policy",
+            "budget",
+            "modeling",
+            "unknown"
+          ]
+        },
+        "default_severity": {
+          "type": "string",
+          "enum": [
+            "WARN",
+            "DEGRADE",
+            "STOP",
+            "DENY"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "suggested_strategy_id": {
+          "type": "string"
+        }
+      }
+    },
+    "failure_signal": {
+      "type": "object",
+      "required": [
+        "id",
+        "category",
+        "detector",
+        "reason_code",
+        "severity",
+        "strategy_id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_\\-]{3,64}$"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "correctness",
+            "integrity",
+            "scope",
+            "evidence",
+            "policy",
+            "budget",
+            "modeling",
+            "unknown"
+          ]
+        },
+        "detector": {
+          "$ref": "#/$defs/detector"
+        },
+        "reason_code": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]{3,64}$"
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "WARN",
+            "DEGRADE",
+            "STOP",
+            "DENY"
+          ]
+        },
+        "strategy_id": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "detector": {
+      "type": "object",
+      "required": [
+        "type",
+        "params"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "command_exit_code",
+            "jsonschema_invalid",
+            "opa_decision",
+            "path_touched",
+            "path_created",
+            "diffstat_exceeded",
+            "hash_mismatch",
+            "custom_predicate"
+          ]
+        },
+        "params": {
+          "type": "object"
+        }
+      }
+    },
+    "strategy": {
+      "type": "object",
+      "required": [
+        "id",
+        "steps"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 3
+        },
+        "on_failure_category": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "correctness",
+              "integrity",
+              "scope",
+              "evidence",
+              "policy",
+              "budget",
+              "modeling",
+              "unknown"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/action_step"
+          }
+        },
+        "resume_gates": {
+          "$ref": "#/$defs/predicate"
+        },
+        "stop_rules": {
+          "$ref": "#/$defs/predicate"
+        }
+      }
+    },
+    "action_step": {
+      "type": "object",
+      "required": [
+        "action",
+        "params"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "set_mode",
+            "shrink_scope",
+            "add_sensors",
+            "bounded_repair",
+            "contain_artifacts",
+            "enforce_invocation",
+            "require_evidence",
+            "model_update",
+            "capture_diagnostics",
+            "stop_and_escalate"
+          ]
+        },
+        "params": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

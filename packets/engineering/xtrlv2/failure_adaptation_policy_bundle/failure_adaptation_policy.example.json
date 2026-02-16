@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.0",
+  "done_predicate": {
+    "require_all": [
+      {
+        "check_ref": "checks.tests.pass",
+        "expect": "true"
+      },
+      {
+        "check_ref": "checks.lint.pass",
+        "expect": "true"
+      },
+      {
+        "check_ref": "checks.scope.ok",
+        "expect": "true"
+      },
+      {
+        "check_ref": "checks.evidence.complete",
+        "expect": "true"
+      },
+      {
+        "check_ref": "checks.policy.allow",
+        "expect": "true"
+      }
+    ]
+  },
+  "reason_codes": [
+    {
+      "code": "HELPER_BIRTH_UNMODELED",
+      "category": "modeling",
+      "default_severity": "STOP",
+      "description": "Helper created outside modeled actuator/state-space."
+    }
+  ],
+  "failure_signals": [
+    {
+      "id": "HELPER_SCRIPT_CREATED",
+      "category": "modeling",
+      "detector": {
+        "type": "path_created",
+        "params": {
+          "glob_any": [
+            "**/*.sh",
+            "**/*.py"
+          ],
+          "within_allowed_paths": false
+        }
+      },
+      "reason_code": "HELPER_BIRTH_UNMODELED",
+      "severity": "STOP",
+      "strategy_id": "STRATEGY_HELPER_CONTAIN_AND_MODEL"
+    }
+  ],
+  "strategies": [
+    {
+      "id": "STRATEGY_HELPER_CONTAIN_AND_MODEL",
+      "on_failure_category": [
+        "modeling"
+      ],
+      "steps": [
+        {
+          "action": "set_mode",
+          "params": {
+            "mode": "SAFE"
+          }
+        },
+        {
+          "action": "contain_artifacts",
+          "params": {
+            "move_to": "OUT_DIR"
+          }
+        },
+        {
+          "action": "enforce_invocation",
+          "params": {
+            "invocation": "ACTION_ONLY"
+          }
+        },
+        {
+          "action": "require_evidence",
+          "params": {
+            "require_hashes": true,
+            "require_decision_trace": true
+          }
+        },
+        {
+          "action": "model_update",
+          "params": {
+            "update_contract_fields": {
+              "helpers.max_new_helpers": 1,
+              "helpers.allowed_paths": [
+                "$OUT_DIR/**"
+              ]
+            }
+          }
+        }
+      ],
+      "resume_gates": {
+        "require_all": [
+          {
+            "check_ref": "checks.scope.ok",
+            "expect": "true"
+          },
+          {
+            "check_ref": "checks.evidence.complete",
+            "expect": "true"
+          },
+          {
+            "check_ref": "checks.policy.allow",
+            "expect": "true"
+          }
+        ]
+      }
+    }
+  ],
+  "unknown_failure_policy": {
+    "id": "UNKNOWN_FAILURE_DEFAULT",
+    "on_failure_category": [
+      "unknown"
+    ],
+    "steps": [
+      {
+        "action": "set_mode",
+        "params": {
+          "mode": "SAFE"
+        }
+      },
+      {
+        "action": "capture_diagnostics",
+        "params": {
+          "include": [
+            "diffstat",
+            "touched_paths",
+            "logs",
+            "hashes"
+          ]
+        }
+      },
+      {
+        "action": "stop_and_escalate",
+        "params": {
+          "require_new_reason_code": true
+        }
+      }
+    ]
+  }
+}
